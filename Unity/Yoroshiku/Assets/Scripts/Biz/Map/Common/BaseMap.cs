@@ -27,7 +27,7 @@ namespace Biz.Map {
 
         [Serializable]
         public class PlayerConfig {
-            public float moveSpeed = 3f;
+            public float moveSpeed = 2f;
             public float jumpForce = 200f;
         }
 

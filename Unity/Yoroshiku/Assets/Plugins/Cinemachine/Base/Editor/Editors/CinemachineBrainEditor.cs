@@ -147,7 +147,7 @@ namespace Cinemachine.Editor
         {
             static InstallGizmos()
             {
-                string srcFile = ScriptableObjectUtility.CinemachineInstallPath + "/Gizmos/" + kGizmoFileName;
+                string srcFile = ScriptableObjectUtility.CinemachineInstallPath + "/Plugins/Cinemachine/" + kGizmoFileName;
                 if (File.Exists(srcFile))
                 {
                     string dstFile = Application.dataPath + "/Gizmos";
