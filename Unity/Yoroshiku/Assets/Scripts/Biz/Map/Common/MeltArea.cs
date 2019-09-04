@@ -6,6 +6,8 @@ using UnityEngine;
 using ZCore;
 
 namespace Biz.Map {
+
+    [RequireComponent(typeof(Collider2D))]
     public class MeltArea : CallerBehaviour {
         public int ColorIndex;
 

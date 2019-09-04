@@ -11,6 +11,7 @@ namespace Biz.Map {
         }
     }
 
+    /// <summary>加载地图</summary>
     public class LoadCommand : MapCommand { }
 
 }

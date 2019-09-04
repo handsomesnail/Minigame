@@ -19,7 +19,7 @@ public class Main : CallerBehaviour {
 
     private void StartGame() {
         //总内容不多的时候尽量PreLoad所有Map到内存
-        Call(new Biz.Gaming.ShowCommand(3)); //直接加载Map0启动游戏
+        Call(new Biz.Gaming.EnterCommand(3)); //直接加载Map0启动游戏
     }
 
     [ContextMenu("Test")]

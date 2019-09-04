@@ -36,6 +36,7 @@ namespace Biz.Player {
         }
     }
 
+    /// <summary>进入溶入区域</summary>
     public class EnterMeltAreaCommand : PlayerCommand {
         public MeltArea MeltArea { get; private set; }
         public EnterMeltAreaCommand(MeltArea meltArea) {
@@ -43,6 +44,7 @@ namespace Biz.Player {
         }
     }
 
+    /// <summary>离开溶入区域</summary>
     public class ExitMeltAreaCommand : PlayerCommand {
         public MeltArea MeltArea { get; private set; }
         public ExitMeltAreaCommand(MeltArea meltArea) {
