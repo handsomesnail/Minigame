@@ -81,7 +81,7 @@ namespace ZCore {
 
         public static TView GetView<TView>() where TView : View, new() {
             object view = null;
-            if (!viewsDic.TryGetValue(typeof(TView), out view)) {
+            if (!viewsDic.TryGetValue(typeof(TView), out view) || view as TView == null) {
                 GameObject viewGoPrefeb = null;
                 viewGoPrefeb = Resources.Load<GameObject>(viewResRootPath + typeof(TView).Name);
                 if (viewGoPrefeb == null) {
@@ -92,7 +92,7 @@ namespace ZCore {
                 }
                 GameObject viewGo = GameObject.Instantiate<GameObject>(viewGoPrefeb);
                 view = viewGo.GetComponent<TView>();
-                viewsDic.Add(typeof(TView), view);
+                viewsDic[typeof(TView)] = view;
             }
             return view as TView;
         }
