@@ -45,6 +45,12 @@ namespace Biz.Player {
         }
 
         private void FixedUpdate() {
+            if (Model.GameStatus == GameStatus.Gaming) {
+                UpdatePlayer();
+            }
+        }
+
+        private void UpdatePlayer() {
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
             float maxSpeed = Model.Map.PlayerConfigData.moveSpeed;
             float jumpForce = Model.Map.PlayerConfigData.jumpForce;

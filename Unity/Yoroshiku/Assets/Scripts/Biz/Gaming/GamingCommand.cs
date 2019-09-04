@@ -11,13 +11,21 @@ namespace Biz.Gaming {
         }
     }
 
-    public class ShowCommand : GamingCommand {
+    /// <summary>进入游戏</summary>
+    public class EnterCommand : GamingCommand {
         public int MapIndex { get; private set; }
-        public ShowCommand(int mapIndex) {
+        public EnterCommand(int mapIndex) {
             this.MapIndex = mapIndex;
         }
     }
 
-    public class CloseCommand : GamingCommand { }
+    /// <summary>离开游戏</summary>
+    public class ExitCommand : GamingCommand { }
+
+    /// <summary>暂停</summary>
+    public class PauseCommand : GamingCommand { }
+
+    /// <summary>恢复</summary>
+    public class ResumeCommand : GamingCommand { }
 
 }

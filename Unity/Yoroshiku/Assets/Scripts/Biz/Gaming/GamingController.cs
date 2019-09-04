@@ -10,8 +10,9 @@ using ZCore;
 namespace Biz.Gaming {
     public sealed class GamingController : Controller<GamingModel, GamingView> {
 
-        public void OnShowCommand(ShowCommand cmd) {
+        public void OnEnterCommand(EnterCommand cmd) {
             Model.MapIndex = cmd.MapIndex;
+            Model.GameStatus = GameStatus.Gaming;
             //先加载地图 获取地图数据(必须先执行该Command)
             Call(new Biz.Map.LoadCommand());
             //初始化Player
@@ -20,8 +21,18 @@ namespace Biz.Gaming {
             Call(new Biz.Input.InitCommand());
         }
 
-        public void OnCloseCommand(CloseCommand cmd) {
-            Destroy(View.gameObject);
+        public void OnExitCommand(ExitCommand cmd) {
+            Model.GameStatus = GameStatus.None;
+            View.Destroy();
         }
+
+        public void OnPauseCommand(PauseCommand cmd) {
+            Model.GameStatus = GameStatus.Pause;
+        }
+
+        public void OnResumeCommand(ResumeCommand cmd) {
+            Model.GameStatus = GameStatus.Gaming;
+        }
+
     }
 }

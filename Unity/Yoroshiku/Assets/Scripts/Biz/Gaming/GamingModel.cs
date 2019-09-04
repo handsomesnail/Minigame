@@ -21,6 +21,9 @@ namespace Biz.Gaming {
 
         #region  Runtime Data
 
+        /// <summary>当前游戏状态</summary>
+        public GameStatus GameStatus { get; set; }
+
         /// <summary>当前所选颜色</summary>
         public int CurrentColorIndex { get; set; }
 
