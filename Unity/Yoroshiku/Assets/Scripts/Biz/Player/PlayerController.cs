@@ -25,7 +25,7 @@ namespace Biz.Player {
 
         public void OnJumpCommand(JumpCommand cmd) {
             //非溶入状态且在地面设置跳跃标志位
-            if (IsGround() && !Model.MeltStatus) {
+            if (IsGroundByCollider() && !Model.MeltStatus) {
                 Model.Jump = true;
             }
         }
@@ -66,19 +66,6 @@ namespace Biz.Player {
 
         /// <summary>当前和MeltArea相交且颜色对应正确</summary>
         private bool IsMeltAvaliable() {
-            #region 对IsTigger无效
-            // ContactFilter2D filter = new ContactFilter2D();
-            // filter.SetLayerMask(LayerMask.NameToLayer("MeltArea"));
-            // Collider2D[] contracts = new Collider2D[] { };
-            // if (View.PlayerView.Collider.GetContacts(filter, contracts) != 0) {
-            //     MeltArea meltArea = contracts[0].GetComponent<MeltArea>();
-            //     if (meltArea.ColorIndex == Model.CurrentColorIndex) {
-            //         return true;
-            //     }
-            //     else return false;
-            // }
-            // else return false;
-            #endregion
             return Model.CurrentStayMeltArea != null && Model.CurrentStayMeltArea.ColorIndex == Model.CurrentColorIndex;
         }
 
@@ -87,20 +74,21 @@ namespace Biz.Player {
             return Physics2D.Linecast(View.PlayerView.Player.transform.position, View.PlayerView.GroundChecker.position, 1 << LayerMask.NameToLayer("Ground"));
         }
 
+        private bool IsGroundByCollider() {
+            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        }
+
         private void SetMeltStatus(bool meltStatus) {
             Model.MeltStatus = meltStatus;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
-            Collider2D collider = View.PlayerView.Collider;
             if (Model.MeltStatus) {
                 rigidbody.velocity = Vector2.zero;
                 rigidbody.gravityScale = 0;
-                collider.isTrigger = true;
             }
             else {
                 rigidbody.gravityScale = 1;
-                collider.isTrigger = false;
             }
         }
 
