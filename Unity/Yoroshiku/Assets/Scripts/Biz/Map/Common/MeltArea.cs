@@ -12,7 +12,7 @@ namespace Biz.Map {
         public int ColorIndex;
 
         private void OnTriggerEnter2D(Collider2D collider) {
-            if (collider.CompareTag("Player")) {
+            if (collider.gameObject.name == "MeltCheckerCollider") {
                 Call(new EnterMeltAreaCommand(this));
             }
         }
@@ -20,7 +20,7 @@ namespace Biz.Map {
 
         }
         private void OnTriggerExit2D(Collider2D collider) {
-            if (collider.CompareTag("Player")) {
+            if (collider.gameObject.name == "MeltCheckerCollider") {
                 Call(new ExitMeltAreaCommand(this));
             }
         }

@@ -52,4 +52,6 @@ namespace Biz.Player {
         }
     }
 
+    public class GetPlayerDataCommand : PlayerCommand { }
+
 }

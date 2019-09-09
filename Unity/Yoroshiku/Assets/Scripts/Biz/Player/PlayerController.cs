@@ -44,6 +44,13 @@ namespace Biz.Player {
             Model.CurrentStayMeltArea = null;
         }
 
+        public PlayerData OnGetPlayerDataCommand(GetPlayerDataCommand cmd) {
+            return new PlayerData() {
+                ColorIndex = Model.CurrentColorIndex,
+                    MeltStatus = Model.MeltStatus,
+            };
+        }
+
         private void FixedUpdate() {
             if (Model.GameStatus == GameStatus.Gaming) {
                 UpdatePlayer();

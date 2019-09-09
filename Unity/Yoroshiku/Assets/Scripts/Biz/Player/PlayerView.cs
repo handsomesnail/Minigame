@@ -12,8 +12,6 @@ namespace Biz.Player {
 
         public Rigidbody2D Rigidbody;
 
-        public Collider2D Collider;
-
         public GameObject NormalEntity;
 
         public GameObject MeltedEntity;
