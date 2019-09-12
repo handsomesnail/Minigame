@@ -36,6 +36,10 @@ namespace Biz.Gaming {
 
         public Vector2 Offset { get; set; }
 
+        public float LastJumpReqTime { get; set; }
+
+        public float LastMeltReqTime { get; set; }
+
         #endregion
 
     }

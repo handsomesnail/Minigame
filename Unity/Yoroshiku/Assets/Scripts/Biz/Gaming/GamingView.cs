@@ -16,5 +16,7 @@ namespace Biz.Gaming {
 
         public PlayerView PlayerView;
 
+        public PlayerSetting PlayerSetting;
+
     }
 }
