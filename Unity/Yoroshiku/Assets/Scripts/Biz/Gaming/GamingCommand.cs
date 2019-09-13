@@ -14,7 +14,15 @@ namespace Biz.Gaming {
     /// <summary>进入游戏</summary>
     public class EnterCommand : GamingCommand {
         public int MapIndex { get; private set; }
+
+        public bool TryUseTestMap { get; private set; }
+
+        public EnterCommand() {
+            TryUseTestMap = true;
+        }
+
         public EnterCommand(int mapIndex) {
+            this.TryUseTestMap = false;
             this.MapIndex = mapIndex;
         }
     }

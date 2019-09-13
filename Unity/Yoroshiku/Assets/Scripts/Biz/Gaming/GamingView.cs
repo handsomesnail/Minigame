@@ -10,13 +10,13 @@ using ZCore;
 namespace Biz.Gaming {
     public sealed class GamingView : View {
 
-        public MapView MapView;
+        public MapList MapList;
+
+        public PlayerSetting PlayerSetting;
 
         public InputView InputView;
 
         public PlayerView PlayerView;
-
-        public PlayerSetting PlayerSetting;
 
     }
 }
