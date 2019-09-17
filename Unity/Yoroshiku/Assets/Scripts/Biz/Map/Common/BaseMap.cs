@@ -25,16 +25,8 @@ namespace Biz.Map {
 
         }
 
-        [Serializable]
-        public class PlayerConfig {
-            public float moveSpeed = 2f;
-            public float jumpForce = 200f;
-        }
-
         /// <summary>地图数据配置</summary>
         public MapConfig MapConfigData;
-
-        public PlayerConfig PlayerConfigData;
 
         //临时的
         private void Start() {
