@@ -10,8 +10,8 @@ namespace Biz.Map {
     //引入BarrierType作为PlanB
     public enum BarrierType {
         Default = 0, //任何状态下生效
-        Normal, //只在普通状态下生效, 勾选这个主角在普通状态下无法通过
-        Melted, //只在溶入状态下生效, 勾选这个主角在溶入状态下无法通过
+        NormalStatus, //只在普通状态下生效, 勾选这个主角在普通状态下无法通过
+        MeltedStatus, //只在溶入状态下生效, 勾选这个主角在溶入状态下无法通过
     }
 
     [RequireComponent(typeof(Collider2D))]
@@ -21,12 +21,12 @@ namespace Biz.Map {
 
         private void Start() {
             //普通障碍物同时为Ground可以作为跳跃的平台
-            if (Type == BarrierType.Normal || Type == BarrierType.Default) {
+            if (Type == BarrierType.NormalStatus || Type == BarrierType.Default) {
                 gameObject.layer = LayerMask.NameToLayer("Ground");
             }
             //溶入状态下的障碍物只作为普通地图元素
-            else if (Type == BarrierType.Melted) {
-                gameObject.layer = LayerMask.NameToLayer("Map");
+            else if (Type == BarrierType.MeltedStatus) {
+                gameObject.layer = LayerMask.NameToLayer("Barrier");
             }
         }
 
@@ -51,8 +51,8 @@ namespace Biz.Map {
         /// <summary>检查碰撞条件</summary>
         private bool CheckCollision(bool meltStatus) {
             //正常状态碰到溶入障碍 或 溶入状态碰到正常障碍地面 忽略碰撞
-            return !((!meltStatus && Type == BarrierType.Melted) ||
-                (meltStatus && Type == BarrierType.Normal));
+            return !((!meltStatus && Type == BarrierType.MeltedStatus) ||
+                (meltStatus && Type == BarrierType.NormalStatus));
         }
 
     }
