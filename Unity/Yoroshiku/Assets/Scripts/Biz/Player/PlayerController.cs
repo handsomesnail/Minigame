@@ -36,8 +36,8 @@ namespace Biz.Player {
         }
 
         public void OnMeltCommand(MeltCommand cmd) {
-            if (IsMeltAvaliable()) {
-                SetMeltStatus(!Model.MeltStatus);
+            if (IsMeltAvaliable() && !Model.MeltStatus) {
+                SetMeltStatus(true);
             }
             else if (!Model.MeltStatus) {
                 Model.LastMeltReqTime = Time.fixedTime;
@@ -72,6 +72,9 @@ namespace Biz.Player {
         private void UpdatePlayer() {
             PlayerSetting playerSetting = View.PlayerSetting;
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
+            Animator playerAnim = View.PlayerView.PlayerAnim;
+            playerAnim.SetBool("IsMelted", Model.MeltStatus);
+            playerAnim.SetBool("IsGround", IsGroundByCollider());
 
             //溶入请求计时时间内如果可溶入且状态为非溶入 则进行溶入操作
             if (Time.fixedTime - Model.LastMeltReqTime < playerSetting.MeltJudgeDuration && !Model.MeltStatus && IsMeltAvaliable()) {
@@ -128,6 +131,7 @@ namespace Biz.Player {
             rigidbody.gravityScale = gravity / (-1 * Physics2D.gravity.y);
             rigidbody.drag = linearDrag * rigidbody.mass;
             rigidbody.AddForce(moveForceDirection * (moveForce + linearDrag) * rigidbody.mass);
+            playerAnim.SetBool("IsMove", moveForceDirection != Vector2.zero);
 
             //跳跃请求计时时间内如果在地面且状态为非溶入 则进行跳跃操作
             if (Time.fixedTime - Model.LastJumpReqTime < playerSetting.JumpJudgeDuration && !Model.MeltStatus && IsGroundByCollider()) {
