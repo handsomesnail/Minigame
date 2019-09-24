@@ -52,6 +52,10 @@ namespace Biz.Player {
             Model.CurrentStayMeltArea = null;
         }
 
+        public void OnSpringPushForceCommand(SpringPushForceCommand cmd) {
+            View.PlayerView.Rigidbody.AddForce(cmd.Force);
+        }
+
         public PlayerData OnGetPlayerDataCommand(GetPlayerDataCommand cmd) {
             return new PlayerData() {
                 ColorIndex = Model.CurrentColorIndex,
@@ -66,7 +70,6 @@ namespace Biz.Player {
         }
 
         private void UpdatePlayer() {
-            Debug.Log(View.PlayerView.Player.position);
             PlayerSetting playerSetting = View.PlayerSetting;
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
 

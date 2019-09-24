@@ -35,6 +35,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/MeltArea.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/弹簧", false, 3)]
+    public static void CreateSpring() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Spring.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
