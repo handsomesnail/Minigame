@@ -9,7 +9,7 @@ namespace Biz.Map {
 
     //引入BarrierType作为PlanB
     public enum BarrierType {
-        Default = 0, //任何状态下生效
+        Always = 0, //任何状态下生效
         NormalStatus, //只在普通状态下生效, 勾选这个主角在普通状态下无法通过
         MeltedStatus, //只在溶入状态下生效, 勾选这个主角在溶入状态下无法通过
     }
@@ -21,7 +21,7 @@ namespace Biz.Map {
 
         private void Start() {
             //普通障碍物同时为Ground可以作为跳跃的平台
-            if (Type == BarrierType.NormalStatus || Type == BarrierType.Default) {
+            if (Type == BarrierType.NormalStatus || Type == BarrierType.Always) {
                 gameObject.layer = LayerMask.NameToLayer("Ground");
             }
             //溶入状态下的障碍物只作为普通地图元素
