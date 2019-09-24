@@ -36,8 +36,8 @@ namespace Biz.Player {
         }
 
         public void OnMeltCommand(MeltCommand cmd) {
-            if (IsMeltAvaliable()) {
-                SetMeltStatus(!Model.MeltStatus);
+            if (IsMeltAvaliable() && !Model.MeltStatus) {
+                SetMeltStatus(true);
             }
             else if (!Model.MeltStatus) {
                 Model.LastMeltReqTime = Time.fixedTime;
