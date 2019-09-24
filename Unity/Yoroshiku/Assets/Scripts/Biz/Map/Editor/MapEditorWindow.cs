@@ -29,7 +29,6 @@ public class MapEditorWindow : EditorWindow {
         EditorGUILayout.Space();
         UpdateAllEditableMapsName();
         style = new GUIStyle(GUI.skin.label);
-        //Debug.Log("testMap == null:" + mapList.TestMap == null);
         EditorGUILayout.LabelField("开始地图：" + (mapList.TestMap != null ? mapList.TestMap.gameObject.name : "默认"), style);
         EditorGUILayout.Space();
         selectIndex = EditorGUILayout.Popup("EditableMaps", selectIndex, mapsNameArr.ToArray());
@@ -130,7 +129,7 @@ public class MapEditorWindow : EditorWindow {
         EditorSceneManager.OpenScene(scenePath);
         GameObject mapGo = GameObject.FindObjectOfType<BaseMap>().gameObject;
         mapGo.name = mapName;
-        EditorSceneManager.SaveOpenScenes();
+        EditorSceneManager.SaveScene(mapGo.scene, scenePath);
         EditMap(mapName);
     }
 
