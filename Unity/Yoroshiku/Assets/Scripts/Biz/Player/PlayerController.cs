@@ -17,8 +17,8 @@ namespace Biz.Player {
             Model.Offset = Vector2.zero;
             Model.Jump = false;
             Model.CurrentStayMeltArea = null;
-            Model.LastJumpReqTime = 0;
-            Model.LastMeltReqTime = 0;
+            Model.LastJumpReqTime = float.MinValue;
+            Model.LastMeltReqTime = float.MinValue;
         }
 
         public void OnMoveCommand(MoveCommand cmd) {
@@ -36,8 +36,8 @@ namespace Biz.Player {
         }
 
         public void OnMeltCommand(MeltCommand cmd) {
-            if (IsMeltAvaliable()) {
-                SetMeltStatus(!Model.MeltStatus);
+            if (IsMeltAvaliable() && !Model.MeltStatus) {
+                SetMeltStatus(true);
             }
             else if (!Model.MeltStatus) {
                 Model.LastMeltReqTime = Time.fixedTime;
@@ -50,6 +50,10 @@ namespace Biz.Player {
 
         public void OnExitMeltAreaCommand(ExitMeltAreaCommand cmd) {
             Model.CurrentStayMeltArea = null;
+        }
+
+        public void OnSpringPushForceCommand(SpringPushForceCommand cmd) {
+            View.PlayerView.Rigidbody.AddForce(cmd.Force);
         }
 
         public PlayerData OnGetPlayerDataCommand(GetPlayerDataCommand cmd) {
@@ -66,9 +70,11 @@ namespace Biz.Player {
         }
 
         private void UpdatePlayer() {
-
             PlayerSetting playerSetting = View.PlayerSetting;
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
+            Animator playerAnim = View.PlayerView.PlayerAnim;
+            playerAnim.SetBool("IsMelted", Model.MeltStatus);
+            playerAnim.SetBool("IsGround", IsGroundByCollider());
 
             //溶入请求计时时间内如果可溶入且状态为非溶入 则进行溶入操作
             if (Time.fixedTime - Model.LastMeltReqTime < playerSetting.MeltJudgeDuration && !Model.MeltStatus && IsMeltAvaliable()) {
@@ -100,6 +106,7 @@ namespace Biz.Player {
                     moveForce = playerSetting.Air_MoveForce;
                     maxMoveSpeed = playerSetting.Air_MaxMoveSpeed;
                     linearDrag = playerSetting.Air_LinearDrag;
+                    //TODO：有点问题
                     //修正重力加速度抵消空中垂直摩擦力，仅有水平摩擦力生效
                     //目的是让垂直加速度的控制仅受Gravity一个参数影响
                     if (rigidbody.velocity.y > 0) {
@@ -124,6 +131,7 @@ namespace Biz.Player {
             rigidbody.gravityScale = gravity / (-1 * Physics2D.gravity.y);
             rigidbody.drag = linearDrag * rigidbody.mass;
             rigidbody.AddForce(moveForceDirection * (moveForce + linearDrag) * rigidbody.mass);
+            playerAnim.SetBool("IsMove", moveForceDirection != Vector2.zero);
 
             //跳跃请求计时时间内如果在地面且状态为非溶入 则进行跳跃操作
             if (Time.fixedTime - Model.LastJumpReqTime < playerSetting.JumpJudgeDuration && !Model.MeltStatus && IsGroundByCollider()) {
@@ -133,7 +141,7 @@ namespace Biz.Player {
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, playerSetting.JumpInitialSpeed);
                 Model.Jump = false;
                 rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力
-                Model.LastJumpReqTime = 0;
+                Model.LastJumpReqTime = float.MinValue;
             }
 
         }
@@ -176,7 +184,7 @@ namespace Biz.Player {
         /// <summary>设置溶入状态</summary>
         private void SetMeltStatus(bool meltStatus) {
             Model.MeltStatus = meltStatus;
-            Model.LastMeltReqTime = 0;
+            Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
         }

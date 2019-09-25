@@ -35,8 +35,12 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/MeltArea.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/弹簧", false, 3)]
+    public static void CreateSpring() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Spring.prefab");
+    }
 
-    [MenuItem ("GameObject/Yoroshiku/收集品", false, 3)]
+    [MenuItem ("GameObject/Yoroshiku/收集品", false, 4)]
     public static void CreateNewCollectItem () {
         PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/CollectItem.prefab");
     }
@@ -48,6 +52,13 @@ public static class ToolsHelperEditor {
             gameObject.transform.SetParent(Selection.gameObjects[0].transform, false);
         }
         Selection.activeGameObject = gameObject;
+    }
+
+    public static void SetStartupScene(string mapName) {
+        MapList mapList = AssetDatabase.LoadAssetAtPath<MapList>("Assets/Resources/Configs/MapList.asset");
+        string mapPath = "Assets/Prefabs/Maps/" + mapName + ".prefab";
+        GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(mapPath);
+        mapList.TestMap = mapPrefab.GetComponent<BaseMap>();
     }
 
 }

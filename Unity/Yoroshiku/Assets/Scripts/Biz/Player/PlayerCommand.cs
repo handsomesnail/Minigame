@@ -54,4 +54,10 @@ namespace Biz.Player {
 
     public class GetPlayerDataCommand : PlayerCommand { }
 
+    public class SpringPushForceCommand : PlayerCommand {
+        public Vector2 Force { get; private set; }
+        public SpringPushForceCommand(Vector2 force) {
+            this.Force = force;
+        }
+    }
 }

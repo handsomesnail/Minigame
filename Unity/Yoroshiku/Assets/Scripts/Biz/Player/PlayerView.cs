@@ -10,6 +10,8 @@ namespace Biz.Player {
     public class PlayerView {
         public Transform Player;
 
+        public Animator PlayerAnim;
+
         public Rigidbody2D Rigidbody;
 
         public GameObject NormalEntity;

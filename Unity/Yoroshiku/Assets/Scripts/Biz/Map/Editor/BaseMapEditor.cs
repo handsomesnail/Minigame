@@ -24,7 +24,8 @@ public class BaseMapEditor : Editor {
 
     private void SaveMap() {
         BaseMap baseMap = (BaseMap) target;
-        string path = "Assets/Prefabs/Maps/" + baseMap.gameObject.name + ".prefab";
+        string mapName = baseMap.gameObject.name;
+        string path = "Assets/Prefabs/Maps/" + mapName + ".prefab";
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
         if (prefab == null) {
             PrefabUtility.CreatePrefab(path, baseMap.gameObject);
@@ -32,7 +33,10 @@ public class BaseMapEditor : Editor {
         else {
             PrefabUtility.ReplacePrefab(baseMap.gameObject, prefab, ReplacePrefabOptions.ReplaceNameBased);
         }
-        EditorSceneManager.SaveOpenScenes();
+        string sceneName = "Edit" + baseMap.gameObject.name;
+        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
+        EditorSceneManager.SaveScene(baseMap.gameObject.scene, scenePath);
+        ToolsHelperEditor.SetStartupScene(mapName);
     }
 
 }
