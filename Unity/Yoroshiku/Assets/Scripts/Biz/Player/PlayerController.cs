@@ -14,6 +14,7 @@ namespace Biz.Player {
             //设置Player的初始数据
             Model.CurrentColorIndex = 0;
             Model.MeltStatus = false;
+            Model.AttachedObject = null;
             Model.Offset = Vector2.zero;
             Model.Jump = false;
             Model.CurrentStayMeltArea = null;
@@ -125,6 +126,11 @@ namespace Biz.Player {
                 linearDrag = playerSetting.Melted_LinearDrag;
                 gravity = 0;
                 moveForceDirection = GetValidInput(Model.Offset, rigidbody.velocity, new Vector2(maxMoveSpeed, maxMoveSpeed));
+                //依附处理
+                if (Model.AttachedObject != null) {
+                    View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
+                    Model.AttachedObject.OnPlayerMove(moveForceDirection);
+                }
             }
             #endregion
 
@@ -187,6 +193,13 @@ namespace Biz.Player {
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
+            //依附处理
+            if (meltStatus) {
+                Model.AttachedObject = Model.CurrentStayMeltArea.GetComponentInParent<IAttachable>();
+            }
+            else {
+                Model.AttachedObject = null;
+            }
         }
 
     }

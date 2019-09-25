@@ -11,6 +11,8 @@ namespace Biz.Player {
 
         public GameObject View;
 
+        public Transform PlayerTransform;
+
         public Transform Player;
 
         public Animator PlayerAnim;

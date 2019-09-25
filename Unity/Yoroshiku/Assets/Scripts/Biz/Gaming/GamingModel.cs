@@ -34,6 +34,8 @@ namespace Biz.Gaming {
 
         public MeltArea CurrentStayMeltArea { get; set; }
 
+        public IAttachable AttachedObject { get; set; }
+
         public bool Jump { get; set; }
 
         public Vector2 Offset { get; set; }

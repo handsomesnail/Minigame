@@ -40,6 +40,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Spring.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/钟摆", false, 4)]
+    public static void CreateNewPendulum() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Pendulum.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
