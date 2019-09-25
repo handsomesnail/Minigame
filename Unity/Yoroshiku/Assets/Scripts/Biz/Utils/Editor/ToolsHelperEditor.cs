@@ -49,4 +49,11 @@ public static class ToolsHelperEditor {
         Selection.activeGameObject = gameObject;
     }
 
+    public static void SetStartupScene(string mapName) {
+        MapList mapList = AssetDatabase.LoadAssetAtPath<MapList>("Assets/Resources/Configs/MapList.asset");
+        string mapPath = "Assets/Prefabs/Maps/" + mapName + ".prefab";
+        GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(mapPath);
+        mapList.TestMap = mapPrefab.GetComponent<BaseMap>();
+    }
+
 }

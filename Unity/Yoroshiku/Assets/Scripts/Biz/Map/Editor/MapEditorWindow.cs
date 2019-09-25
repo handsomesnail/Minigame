@@ -37,7 +37,7 @@ public class MapEditorWindow : EditorWindow {
             EditMap(mapsNameArr[selectIndex]);
         }
         if (GUILayout.Button("设为开始地图")) {
-            SetStartupScene(mapsNameArr[selectIndex]);
+            ToolsHelperEditor.SetStartupScene(mapsNameArr[selectIndex]);
         }
         if (GUILayout.Button("删除")) {
             if (EditorUtility.DisplayDialog("防手抖", "注意要删除的地图名为\"" + mapsNameArr[selectIndex] + "\"", "确定删除", "取消")) {
@@ -131,12 +131,6 @@ public class MapEditorWindow : EditorWindow {
         mapGo.name = mapName;
         EditorSceneManager.SaveScene(mapGo.scene, scenePath);
         EditMap(mapName);
-    }
-
-    private void SetStartupScene(string mapName) {
-        string mapPath = "Assets/Prefabs/Maps/" + mapName + ".prefab";
-        GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(mapPath);
-        mapList.TestMap = mapPrefab.GetComponent<BaseMap>();
     }
 
 }
