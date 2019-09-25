@@ -1,18 +1,9 @@
 ﻿using System;
 using ZCore;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Biz.Storage {
-
-    [Serializable]
-    public class StoragePoint {
-        public int Chapter;
-        public int Point;
-
-        public override string ToString () {
-            return String.Format ("Chapter:{0}, Point:{1}", Chapter, Point);
-        }
-        // other
-    }
 
     public class StorageCommand : Command {
         public override Type GetController () {
@@ -26,10 +17,13 @@ namespace Biz.Storage {
             this.StoragePoint = point;
         }
 
-        public SaveStorageCommand (int chapter, int point) {
-            StoragePoint tmp = new StoragePoint ();
-            tmp.Chapter = chapter;
-            tmp.Point = point;
+        public SaveStorageCommand (int chapter, int point, params int[] items) {
+            StoragePoint tmp = new StoragePoint {
+                Chapter = chapter,
+                Point = point,
+                Items = new int [items.Length]
+            };
+            items.CopyTo (tmp.Items, 0);
             this.StoragePoint = tmp;
         }
     }
