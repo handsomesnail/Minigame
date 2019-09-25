@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ZCore;
+using UnityEngine.UI;
 using System.Collections;
 namespace Biz.Item {
 
@@ -10,7 +11,7 @@ namespace Biz.Item {
     [RequireComponent (typeof (Collider2D))]
     public class Item : CallerBehaviour {
 
-        private GameObject ItemUI;
+        public static GameObject ItemUI;
 
         /// <summary>
         /// 收集时显示的文本
@@ -34,7 +35,8 @@ namespace Biz.Item {
 
         void Start () {
             Debug.Log ("enter Start");
-            StartCoroutine (AutoCollisionEntey());
+            // TODO
+            // 查看当前存档中该收集品是否已收集
         }
 
         private void OnCollisionEnter2D (Collision2D collision) {
@@ -50,21 +52,20 @@ namespace Biz.Item {
         }
 
         private void OnTriggerEnter2D (Collider2D collision) {
-
-        }
-
-        private IEnumerator AutoCollisionEntey () {
-            Debug.Log ("enter AutoCollisionEntey");
-            yield return new WaitForSeconds (2);
-            Debug.Log ("AutoCollisionEntey");
-            OnCollisionEnter2D (null);
+            Debug.Log ("OnCollisionEnter2D");
+            if (Animation != null) {
+                Animation.Play ();
+            }
+            if (Audio != null) {
+                Audio.Play ();
+            }
+            InstantiateItemUI ();
+            StartCoroutine (AutoDestroy ());
         }
 
         private IEnumerator AutoDestroy () {
-            Debug.Log ("Enter AutoDestroy");
-            yield return new WaitForSeconds (Duration / 1000.0f);
-            yield return new WaitForSeconds (5);
-            Debug.Log ("AutoDestroy");
+            float d = Duration == 0 ? 3 : Duration / 1000.0f;
+            yield return new WaitForSeconds (d);
             Destroy (gameObject);
             DestroyItemUI ();
         }
@@ -78,9 +79,11 @@ namespace Biz.Item {
             ItemUI = Instantiate (prefab);
             
         }
+
         private void DestroyItemUI () {
             Destroy (ItemUI);
             ItemUI = null;
         }
+
     }
 }

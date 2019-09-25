@@ -6,7 +6,7 @@ using Biz.Map;
 using Biz.Player;
 using UnityEngine;
 using ZCore;
-
+using Biz.Item;
 namespace Biz.Gaming {
     public sealed class GamingView : View {
 
@@ -18,5 +18,6 @@ namespace Biz.Gaming {
 
         public PlayerView PlayerView;
 
+        public CollectItemList CollectItemList;
     }
 }

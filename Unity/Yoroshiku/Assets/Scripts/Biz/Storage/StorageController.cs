@@ -27,7 +27,7 @@ namespace Biz.Storage {
             }
         }
 
-        public void OnLoadStorageCommand (LoadStorageCommand cmd) {
+        public StoragePoint OnLoadStorageCommand (LoadStorageCommand cmd) {
             Debug.Log ("Load Storage");
             using (FileStream fs = new FileStream (GetStoragePointFilename (), FileMode.Open, FileAccess.Read)) {
                 UTF8Encoding encode = new UTF8Encoding ();
@@ -36,6 +36,8 @@ namespace Biz.Storage {
                 string json = encode.GetString (bs);
                 StoragePoint point = JsonUtility.FromJson<StoragePoint> (encode.GetString (bs));
                 Debug.Log ("Load Storage Success: " + point.ToString ());
+                if (point.Items == null) point.Items = new string [0];
+                return point;
             }
         }
     }

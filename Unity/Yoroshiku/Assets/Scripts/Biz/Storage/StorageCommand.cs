@@ -21,7 +21,7 @@ namespace Biz.Storage {
             StoragePoint tmp = new StoragePoint {
                 Chapter = chapter,
                 Point = point,
-                Items = new int [items.Length]
+                Items = new String [items.Length]
             };
             items.CopyTo (tmp.Items, 0);
             this.StoragePoint = tmp;
