@@ -17,17 +17,6 @@ namespace Biz.Map {
         /// <summary>出生点</summary>
         public Transform BornPoint;
 
-        [Serializable]
-        public class MapConfig {
-
-            /// <summary>本关可选颜色(初始颜色为Index0)</summary>
-            public Color[] AvailableColors;
-
-        }
-
-        /// <summary>地图数据配置</summary>
-        public MapConfig MapConfigData;
-
         //临时的
         private void Start() {
             SplatterRenderer.sortingLayerName = "Splatter";
