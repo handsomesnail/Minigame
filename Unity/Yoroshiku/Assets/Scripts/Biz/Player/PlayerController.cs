@@ -62,6 +62,10 @@ namespace Biz.Player {
             };
         }
 
+        public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
+            Call(new Biz.Player.InitCommand());
+        }
+
         private void FixedUpdate() {
             if (Model.GameStatus == GameStatus.Gaming) {
                 UpdatePlayer();
