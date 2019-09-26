@@ -40,9 +40,9 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Spring.prefab");
     }
 
-    [MenuItem ("GameObject/Yoroshiku/收集品", false, 4)]
-    public static void CreateNewCollectItem () {
-        PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/CollectItem.prefab");
+    [MenuItem("GameObject/Yoroshiku/钟摆", false, 4)]
+    public static void CreateNewPendulum() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Pendulum.prefab");
     }
 
     private static void PlaceYoroshikuElement(string prefabPath) {

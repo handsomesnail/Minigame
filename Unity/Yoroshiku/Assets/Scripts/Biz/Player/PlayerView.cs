@@ -8,6 +8,11 @@ namespace Biz.Player {
 
     [Serializable]
     public class PlayerView {
+
+        public GameObject View;
+
+        public Transform PlayerTransform;
+
         public Transform Player;
 
         public Animator PlayerAnim;
