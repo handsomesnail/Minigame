@@ -60,4 +60,8 @@ namespace Biz.Player {
             this.Force = force;
         }
     }
+
+    /// <summary>死亡区域触发</summary>
+    public class DeadAreaTriggerCommand : PlayerCommand { }
+
 }

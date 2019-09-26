@@ -45,6 +45,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Pendulum.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/死亡区域", false, 5)]
+    public static void CreateNewDeadArea() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/DeadArea.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
