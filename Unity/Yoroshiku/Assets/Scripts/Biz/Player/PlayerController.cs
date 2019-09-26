@@ -16,7 +16,7 @@ namespace Biz.Player {
             Model.AttachedObject = null;
             Model.Offset = Vector2.zero;
             Model.Jump = false;
-            Model.CurrentStayMeltArea = null;
+            Model.CurrentStayMeltAreas = new List<MeltArea>();
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
         }
@@ -45,11 +45,11 @@ namespace Biz.Player {
         }
 
         public void OnEnterMeltAreaCommand(EnterMeltAreaCommand cmd) {
-            Model.CurrentStayMeltArea = cmd.MeltArea;
+            Model.CurrentStayMeltAreas.Add(cmd.MeltArea);
         }
 
         public void OnExitMeltAreaCommand(ExitMeltAreaCommand cmd) {
-            Model.CurrentStayMeltArea = null;
+            Model.CurrentStayMeltAreas.Remove(cmd.MeltArea);
         }
 
         public void OnSpringPushForceCommand(SpringPushForceCommand cmd) {
@@ -177,7 +177,7 @@ namespace Biz.Player {
 
         /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
         private bool IsMeltAvaliable() {
-            return Model.CurrentStayMeltArea != null;
+            return Model.CurrentStayMeltAreas.Count != 0;
         }
 
         [Obsolete("IsGroundByCollider判断更精确")]
@@ -198,7 +198,12 @@ namespace Biz.Player {
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
             //依附处理
             if (meltStatus) {
-                Model.AttachedObject = Model.CurrentStayMeltArea.GetComponentInParent<IAttachable>();
+                foreach (MeltArea meltArea in Model.CurrentStayMeltAreas) {
+                    IAttachable attachedObject = meltArea.GetComponentInParent<IAttachable>();
+                    if (attachedObject != null) {
+                        Model.AttachedObject = attachedObject;
+                    }
+                }
             }
             else {
                 Model.AttachedObject = null;
