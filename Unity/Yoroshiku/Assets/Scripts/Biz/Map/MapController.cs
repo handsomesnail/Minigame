@@ -12,10 +12,11 @@ namespace Biz.Map {
         /// <summary>加载地图</summary>
         public void OnLoadCommand(LoadCommand cmd) {
             BaseMap mapPrefab = null;
-            if (Model.TryUseTestMap) {
-                mapPrefab = View.MapList.TestMap;
+            MapList mapList = Resources.Load<MapList>("Configs/MapList");
+            if (!string.IsNullOrEmpty(Main.DebugMapName) && Main.DebugMapName == mapList.TestMap.gameObject.name) {
+                mapPrefab = mapList.TestMap.gameObject.GetComponent<BaseMap>();
             }
-            if (mapPrefab == null) {
+            else {
                 mapPrefab = View.MapList.Maps[Model.MapIndex];
             }
             Model.Map = GameObject.Instantiate(mapPrefab.gameObject, View.transform, true).GetComponent<BaseMap>();

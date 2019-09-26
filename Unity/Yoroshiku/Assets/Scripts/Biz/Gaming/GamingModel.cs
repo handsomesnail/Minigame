@@ -19,8 +19,6 @@ namespace Biz.Gaming {
 
         #endregion
 
-        public bool TryUseTestMap { get; set; }
-
         #region  Runtime Data
 
         /// <summary>当前游戏状态</summary>

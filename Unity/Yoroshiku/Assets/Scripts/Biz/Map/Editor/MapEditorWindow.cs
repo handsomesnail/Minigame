@@ -29,15 +29,11 @@ public class MapEditorWindow : EditorWindow {
         EditorGUILayout.Space();
         UpdateAllEditableMapsName();
         style = new GUIStyle(GUI.skin.label);
-        EditorGUILayout.LabelField("开始地图：" + (mapList.TestMap != null ? mapList.TestMap.gameObject.name : "默认"), style);
         EditorGUILayout.Space();
         selectIndex = EditorGUILayout.Popup("EditableMaps", selectIndex, mapsNameArr.ToArray());
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("编辑")) {
             EditMap(mapsNameArr[selectIndex]);
-        }
-        if (GUILayout.Button("设为开始地图")) {
-            ToolsHelperEditor.SetStartupScene(mapsNameArr[selectIndex]);
         }
         if (GUILayout.Button("删除")) {
             if (EditorUtility.DisplayDialog("防手抖", "注意要删除的地图名为\"" + mapsNameArr[selectIndex] + "\"", "确定删除", "取消")) {
@@ -96,6 +92,7 @@ public class MapEditorWindow : EditorWindow {
         }
         Selection.activeGameObject = mapGo;
         SetCurrentSceneIndex();
+        ToolsHelperEditor.SetStartupScene(mapName);
     }
 
     private void DeleteMap(string mapName) {
