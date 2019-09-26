@@ -10,7 +10,9 @@ namespace Biz.Input {
 
     public sealed class InputController : Controller<GamingModel, GamingView> {
         public void OnInitCommand(InitCommand cmd) {
-            //根据Model.Map.AvailableColors显示颜色
+            View.InputView.Joystick.onMove.AddListener(OnJoyStickMove);
+            View.InputView.JumpBtn.onClick.AddListener(OnClickJumpBtn);
+            View.InputView.MeltBtn.onClick.AddListener(OnClickMeltBtn);
         }
 
         //Editor输入
@@ -31,7 +33,17 @@ namespace Biz.Input {
             Call(new MoveCommand(offset));
         }
 
-        //TODO: UI输入
+        //UI输入
+        private void OnJoyStickMove(Vector2 offset) {
+            Call(new MoveCommand(offset));
+        }
+
+        private void OnClickJumpBtn() {
+            Call(new JumpCommand());
+        }
+        private void OnClickMeltBtn() {
+            Call(new MeltCommand());
+        }
 
     }
 }

@@ -9,6 +9,9 @@ namespace Biz.Input {
 
     [Serializable]
     public class InputView {
+        public ETCJoystick Joystick;
+        public Button MeltBtn;
         public Button JumpBtn;
+        public Button PauseBtn;
     }
 }
