@@ -118,8 +118,11 @@ namespace Biz.Player {
                     }
                 }
                 moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
-                Vector3 playerScale = View.PlayerView.Player.localScale;
-                View.PlayerView.Player.localScale = rigidbody.velocity.x >= 0 ? new Vector3(Math.Abs(playerScale.x), playerScale.y, playerScale.z) : new Vector3(-1 * Math.Abs(playerScale.x), playerScale.y, playerScale.z);
+                //如果有移动力则设置方向
+                if (moveForceDirection.x != 0) {
+                    Vector3 playerScale = View.PlayerView.Player.localScale;
+                    View.PlayerView.Player.localScale = moveForceDirection.x > 0 ? new Vector3(Math.Abs(playerScale.x), playerScale.y, playerScale.z) : new Vector3(-1 * Math.Abs(playerScale.x), playerScale.y, playerScale.z);
+                }
             }
             //溶入状态
             else {
