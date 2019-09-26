@@ -12,7 +12,6 @@ namespace Biz.Player {
         public void OnInitCommand(InitCommand cmd) {
             View.PlayerView.Player.transform.position = Model.Map.BornPoint.position; //设置Player的出生点
             //设置Player的初始数据
-            Model.CurrentColorIndex = 0;
             Model.MeltStatus = false;
             Model.AttachedObject = null;
             Model.Offset = Vector2.zero;
@@ -59,8 +58,7 @@ namespace Biz.Player {
 
         public PlayerData OnGetPlayerDataCommand(GetPlayerDataCommand cmd) {
             return new PlayerData() {
-                ColorIndex = Model.CurrentColorIndex,
-                    MeltStatus = Model.MeltStatus,
+                MeltStatus = Model.MeltStatus,
             };
         }
 
@@ -177,9 +175,9 @@ namespace Biz.Player {
             return new Vector2(GetValidInput(input.x, velocity.x, maxMoveSpeed.x), GetValidInput(input.y, velocity.y, maxMoveSpeed.y));
         }
 
-        /// <summary>当前和MeltArea相交且颜色对应正确</summary>
+        /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
         private bool IsMeltAvaliable() {
-            return Model.CurrentStayMeltArea != null && Model.CurrentStayMeltArea.ColorIndex == Model.CurrentColorIndex;
+            return Model.CurrentStayMeltArea != null;
         }
 
         [Obsolete("IsGroundByCollider判断更精确")]

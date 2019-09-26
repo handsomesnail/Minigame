@@ -24,9 +24,6 @@ namespace Biz.Gaming {
         /// <summary>当前游戏状态</summary>
         public GameStatus GameStatus { get; set; }
 
-        /// <summary>当前所选颜色</summary>
-        public int CurrentColorIndex { get; set; }
-
         /// <summary>当前的溶入状态</summary>
         public bool MeltStatus { get; set; }
 
