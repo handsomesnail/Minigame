@@ -11,8 +11,8 @@ namespace Biz.Input {
     public sealed class InputController : Controller<GamingModel, GamingView> {
         public void OnInitCommand(InitCommand cmd) {
             View.InputView.Joystick.onMove.AddListener(OnJoyStickMove);
-            View.InputView.JumpBtn.onClick.AddListener(OnClickJumpBtn);
-            View.InputView.MeltBtn.onClick.AddListener(OnClickMeltBtn);
+            View.InputView.JumpBtn.onDown.AddListener(OnClickDownJumpBtn);
+            View.InputView.MeltBtn.onDown.AddListener(OnClickDownMeltBtn);
         }
 
         //Editor输入
@@ -38,10 +38,10 @@ namespace Biz.Input {
             Call(new MoveCommand(offset));
         }
 
-        private void OnClickJumpBtn() {
+        private void OnClickDownJumpBtn() {
             Call(new JumpCommand());
         }
-        private void OnClickMeltBtn() {
+        private void OnClickDownMeltBtn() {
             Call(new MeltCommand());
         }
 
