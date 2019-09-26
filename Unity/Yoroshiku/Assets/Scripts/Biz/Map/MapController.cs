@@ -21,8 +21,6 @@ namespace Biz.Map {
             }
             Model.Map = GameObject.Instantiate(mapPrefab.gameObject, View.transform, true).GetComponent<BaseMap>();
             Model.Map.VirtualCamera.Follow = View.PlayerView.Player;
-            Model.Map.SplatterRenderer.sortingLayerName = "Splatter";
-            Model.Map.SplatterRenderer.sortingOrder = 0;
         }
 
     }
