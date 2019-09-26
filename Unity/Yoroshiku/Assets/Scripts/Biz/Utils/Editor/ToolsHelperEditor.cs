@@ -30,6 +30,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Barrier.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/障碍物(多边形)", false, 1)]
+    public static void CreateNewPolygonBarrier() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PolygonBarrier.prefab");
+    }
+
     [MenuItem("GameObject/Yoroshiku/溶入区域", false, 2)]
     public static void CreateNewMeltArea() {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/MeltArea.prefab");
