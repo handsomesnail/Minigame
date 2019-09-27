@@ -55,6 +55,12 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/DeadArea.prefab");
     }
 
+
+    [MenuItem ("GameObject/Yoroshiku/存档点", false, 6)]
+    public static void CreateNewStorage () {
+        PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/Storage.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
