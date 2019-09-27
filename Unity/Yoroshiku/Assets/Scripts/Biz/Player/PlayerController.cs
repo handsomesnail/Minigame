@@ -144,7 +144,8 @@ namespace Biz.Player {
                 }
                 //溶入状态下如果在MeltInDuration后的一帧进行检查 若通过推力仍没有相交(可能受输入的影响) 自动溶出
                 float meltProcess = Time.fixedTime - Model.LastMeltTime;
-                if (Model.MeltStatus && meltProcess >= playerSetting.MeltInDuration && meltProcess < playerSetting.MeltInDuration + Time.fixedDeltaTime) {
+                //+-0.5帧长 保证仅一次判定
+                if (Model.MeltStatus && meltProcess >= playerSetting.MeltInDuration - 0.5f * Time.fixedDeltaTime && meltProcess < playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
                     if (!CheckMeltStatus()) {
                         Debug.Log("溶入失败");
                         Model.CurrentStayMeltAreas.RemoveAt(Model.CurrentStayMeltAreas.Count - 1);
@@ -207,7 +208,8 @@ namespace Biz.Player {
 
         /// <summary>当前是否在地面</summary>
         private bool IsGroundByCollider() {
-            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
+                View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"));
         }
 
         //只有在溶入过程结束后还没进入区域的情况不push
@@ -236,9 +238,10 @@ namespace Biz.Player {
             if (push) {
                 if (meltStatus) {
                     ColliderDistance2D distance2D = Physics2D.Distance(Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
-                    Vector2 pushForce = GetPushInForce(distance2D.normal * distance2D.distance * 1.5f, View.PlayerSetting.MeltInDuration);
+                    Debug.Log(distance2D.normal * distance2D.distance);
+                    Vector2 v0 = GetPushInForce(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
                     //View.PlayerView.Rigidbody.AddForce(pushForce);
-                    View.PlayerView.Rigidbody.velocity = pushForce;
+                    View.PlayerView.Rigidbody.velocity = 1.8f * v0;
                 }
                 else {
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
@@ -248,19 +251,22 @@ namespace Biz.Player {
             }
         }
 
+        //以下注释废弃
         //x = v0*t + 1/2*a*t^2
         //x为二者距离distance、v0为一帧update内所加速到的速度
         //a为溶入状态下的阻力(-f)
         //t为指定的溶入(出)时间
         /// <summary>获取溶入推力(推力制造的加速度在一个物理帧内提供的速度增量和Player原速度矢量相加后，可在duration后走过distance)</summary>
         private Vector2 GetPushInForce(Vector2 distance, float duration) {
-            Debug.Log("Distance:" + distance);
             Vector2 v0Dir = distance.normalized;
             PlayerSetting playerSetting = View.PlayerSetting;
             Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
             float mass = rigidbody.mass;
             float v0Mag = (distance.magnitude + 0.5f * playerSetting.Melted_LinearDrag * duration * duration) / duration;
             Vector2 v0 = v0Dir * v0Mag;
+
+            return distance / duration;
+
             // Vector2 deltaV = v0 - rigidbody.velocity;
             // Vector2 ResultantForce = deltaV / Time.fixedDeltaTime / mass;
             // Debug.Log("合力:" + ResultantForce);
@@ -275,6 +281,7 @@ namespace Biz.Player {
 
             // Debug.Log("溶入推力:" + pushForce);
             // return pushForce;
+            Debug.Log("设置初速度：" + v0);
             return v0;
         }
 
@@ -293,7 +300,7 @@ namespace Biz.Player {
                 Debug.Log("刚好相交");
                 status = true;
             }
-            else if (meltCollider.bounds.Contains(View.PlayerView.Rigidbody.position)) {
+            else if (meltCollider.OverlapPoint(View.PlayerView.Rigidbody.position)) {
                 Debug.Log("进入内部");
                 status = true;
             }
