@@ -1,57 +1,38 @@
 ﻿using Biz.Gaming;
 
 using UnityEngine;
-
+using Biz.Storage;
 using ZCore;
 namespace Biz.Start {
-    public class StartController : Controller<GamingModel, GamingView> {
+    public class StartController : Controller<StartModel, StartView> {
 
-        private static GameObject StartUI;
+        public void OnStartCommand (StartCommand cmd) {
+            Debug.Log ("OnIndexCommand");
+            View.StartButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new EnterCommand ());
+            });
 
-        private void Start () {
-            if (gameObject.name == "StartUI") {
-                StartUI = gameObject;
-                StartUI.SetActive (false);
-            }
-        }
+            View.ContinueButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new EnterCommand ());
+                StoragePoint storage = Post<LoadStorageCommand, StoragePoint> (new LoadStorageCommand());
+                Call (new EnterCommand (storage.Chapter));
 
-        public void OnIndexCommand (IndexCommand cmd) {
-            //if (StartUI == null) {
-            //    GameObject Prefab = Resources.Load<GameObject> ("UI/Start");
-            //    if (Prefab == null) {
-            //        Debug.LogError ("Prefab StartUI cannot be null");
-            //        return;
-            //    }
-            //    StartUI = Instantiate (Prefab, new Vector3 (0, 0, 0), Quaternion.identity);
-            //}
-            StartUI.SetActive (true);
-        }
+            });
 
-        public void OnStartClick () {
-            StartUI.SetActive (false);
-            Call (new EnterCommand ());
-        }
+            View.HelpButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new Biz.Help.HelpCommand ());
+            });
 
-        public void OnContinueClick () {
-            GetComponent<Canvas> ().enabled = false;
-        }
+            View.ExitBUtton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call(new Biz.Pause.PauseCommand());
+                //Application.Quit ();
+            });
+            Debug.Log ("OnIndexCommand-");
 
-        public void OnHelpClick () {
-            StartUI.SetActive (false);
-            Call (new Biz.Help.HelpCommand ());
-            //SetActive (false);
-            //GameObject Prefab = Resources.Load<GameObject> ("UI/CollectItem");
-            //if (Prefab == null) {
-            //    Debug.LogError ("Prefab CollectItem cannot be null");
-            //    return;
-            //}
-            //GameObject @object = Instantiate (Prefab, new Vector3 (0, 0, 0), Quaternion.identity);
-        }
-
-        public void OnExitClick () {
-            StartUI.SetActive (false);
-            Call (new Biz.Pause.PauseCommand ());
-            // Application.Quit ();
         }
     }
 }

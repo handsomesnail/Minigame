@@ -25,16 +25,14 @@ public class CollectItemEditor : Editor {
     private void SaveItem () {
         Item item = (Item)target;
         string itemName = item.gameObject.name;
-        string path = "Assets/Prefabs/Maps/" + itemName + ".prefab";
+        string path = "Assets/Prefabs/CollectItems/" + itemName + ".prefab";
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (path);
         if (prefab == null) {
             PrefabUtility.CreatePrefab (path, item.gameObject);
         } else {
             PrefabUtility.ReplacePrefab (item.gameObject, prefab, ReplacePrefabOptions.ReplaceNameBased);
         }
-        string sceneName = "EditCollectItem_" + item.gameObject.name;
-        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
-        EditorSceneManager.SaveScene (item.gameObject.scene, scenePath);
+        EditorSceneManager.SaveScene (item.gameObject.scene, CollectItemEditorWindow.editMapTempletePath);
         ToolsHelperEditor.SetStartupScene (itemName);
     }
 

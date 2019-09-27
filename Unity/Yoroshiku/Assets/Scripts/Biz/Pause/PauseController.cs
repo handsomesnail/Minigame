@@ -5,27 +5,33 @@ using UnityEngine.UI;
 using Biz.Item;
 using Biz.Storage;
 namespace Biz.Pause {
-    public class PauseController : Controller<GamingModel, GamingView> {
-        private static GameObject PauseUI;
+    public class PauseController : Controller<PauseModel, PauseView> {
 
-        public CollectItemList CollectItemList;
+        public void OnPauseCommand (PauseCommand cmd) {
+            Debug.Log ("OnPauseCommand");
+            View.ContinueButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new Biz.Gaming.ResumeCommand ());
+            });
 
-        private void Start () {
-            if (gameObject.name == "PauseUI") {
-                PauseUI = gameObject;
-                PauseUI.SetActive (true);
-            }
-        }
+            View.RestartButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new Biz.Gaming.ExitCommand ());
+                Call (new Biz.Gaming.EnterCommand ());
+            });
 
-        private void Awake () {
-            if (gameObject.name != "PauseUI") return;
+            View.HomeButton.onClick.AddListener (delegate {
+                View.Destroy ();
+                Call (new Biz.Gaming.ExitCommand ());
+                Call (new Biz.Start.StartCommand ());
+            });
 
-            StoragePoint storage = Post< LoadStorageCommand, StoragePoint> (new LoadStorageCommand());
+            StoragePoint storage = Post<LoadStorageCommand, StoragePoint> (new LoadStorageCommand ());
             Debug.Log (storage.ToString ());
             // Get Items Container
-            GameObject ItemContainer = GameObject.Find ("PauseUI/PauseCanvas/Items");
-            CollectItemList list = View.CollectItemList;
-            Debug.Log (list.ToString());
+            GridLayoutGroup ItemContainer = View.ItemContainer;
+            CollectItemList list = View.ItemList;
+            Debug.Log (list.ToString ());
             list.Items.ForEach ((obj) => Debug.Log (obj.name));
 
 
@@ -39,6 +45,7 @@ namespace Biz.Pause {
 
             // Create Collected Items
             string [] names = storage.Items;
+            names = new string [] { "CollectItem", "CollectItem" };
             foreach (string name_ in names) {
                 // Find Source Item
                 Item.Item src = list.Items.Find ((Item.Item obj) => name_ == obj.name);
@@ -47,38 +54,12 @@ namespace Biz.Pause {
                 GameObject i = Instantiate (prefab, ItemContainer.transform);
                 i.transform.localScale = new Vector3 (1, 1, 1);
                 i.transform.localPosition = new Vector3 (0, 0, 0);
-                i.GetComponent<Button> ().GetComponent<Image> ().sprite = src.gameObject.GetComponent<SpriteRenderer> ().sprite;
+                Sprite sprite = src.Sprite ?? src.gameObject.GetComponent<SpriteRenderer> ().sprite;
+                i.GetComponent<Button> ().GetComponent<Image> ().sprite = sprite;
                 i.GetComponent<Button> ().onClick.AddListener (delegate {
-                    Text text = GameObject.Find ("PauseUI/PauseCanvas/ItemText").GetComponent<Text> ();
-                    text.text = src.Text;
+                    View.ItemText.text = src.Text;
                 });
             }
-        }
-
-        public void OnPauseCommand (PauseCommand cmd) {
-            PauseUI.SetActive (true);
-        }
-
-        public void OnContinueClick () {
-            PauseUI.SetActive (false);
-            // TODO
-        }
-
-        public void OnRestartClick () {
-            PauseUI.SetActive (false);
-            Call (new Biz.Gaming.EnterCommand ());
-            // TODO
-        }
-
-        public void OnHomeClick () {
-            PauseUI.SetActive (false);
-            Call (new Biz.Start.IndexCommand ());
-        }
-
-        public void OnItemClick () {
-            Debug.Log ("OnItemClick");
-            Text text = GameObject.Find ("PauseUI/PauseCanvas/ItemText").GetComponent<Text> ();
-            text.text = "12414";
         }
     }
 

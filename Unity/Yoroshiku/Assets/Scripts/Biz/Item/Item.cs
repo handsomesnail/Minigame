@@ -2,6 +2,8 @@
 using ZCore;
 using UnityEngine.UI;
 using System.Collections;
+using System.Threading;
+
 namespace Biz.Item {
 
 
@@ -11,8 +13,11 @@ namespace Biz.Item {
     [RequireComponent (typeof (Collider2D))]
     public class Item : CallerBehaviour {
 
-        public static GameObject ItemUI;
+        private volatile bool TextInactive = false;
 
+        private volatile bool TriggerInactive = false;
+
+        public string ItemName;
         /// <summary>
         /// 收集时显示的文本
         /// </summary>
@@ -24,65 +29,58 @@ namespace Biz.Item {
         public uint Duration;
 
         /// <summary>
-        /// 收集时播放的动画
+        /// 暂停页显示的Sprite, 未设置则显示关卡内Sprite
         /// </summary>
-        public Animation Animation;
+        public Sprite Sprite;
 
         /// <summary>
-        /// 收集时播放的音频
+        /// 销毁时的已该节点为根进行销毁
         /// </summary>
-        public AudioSource Audio;
+        public GameObject ItemRoot;
+
+        public GameObject CanvasRoot;
+
+        public Text TextDisplayer;
 
         void Start () {
             Debug.Log ("enter Start");
-            // TODO
+            TextDisplayer.text = Text;
+            Duration = Duration == 0 ? 3000 : Duration;
+            CanvasRoot.SetActive (false);
             // 查看当前存档中该收集品是否已收集
         }
 
-        private void OnCollisionEnter2D (Collision2D collision) {
-            Debug.Log ("OnCollisionEnter2D");
-            if (Animation != null) {
-                Animation.Play ();
-            }
-            if (Audio != null) {
-                Audio.Play ();
-            }
-            InstantiateItemUI ();
-            StartCoroutine (AutoDestroy());
-        }
-
         private void OnTriggerEnter2D (Collider2D collision) {
-            Debug.Log ("OnCollisionEnter2D");
-            if (Animation != null) {
-                Animation.Play ();
+            if (!collision.isTrigger) {
+                Debug.Log ("OnTriggerEnter2D");
+                Call (new CollectCommand (this));
+                StartCoroutine (DisplayText ());
+                StartCoroutine (PlayAnimation ());
             }
-            if (Audio != null) {
-                Audio.Play ();
-            }
-            InstantiateItemUI ();
-            StartCoroutine (AutoDestroy ());
         }
 
-        private IEnumerator AutoDestroy () {
-            float d = Duration == 0 ? 3 : Duration / 1000.0f;
-            yield return new WaitForSeconds (d);
-            Destroy (gameObject);
-            DestroyItemUI ();
-        }
-
-        private void InstantiateItemUI() {
-            GameObject prefab = Resources.Load<GameObject> ("UI/Item");
-            if(prefab == null) {
-                Debug.LogError ("Prefab UI/Item is null");
-                return;
+        private IEnumerator DisplayText () {
+            CanvasRoot.SetActive (true);
+            yield return new WaitForSeconds (Duration / 1000.0f);
+            CanvasRoot.SetActive (false);
+            if (TriggerInactive) {
+                Destroy (ItemRoot);
+            } else {
+                TextInactive = true;
             }
-            ItemUI = Instantiate (prefab);
-            
         }
 
-        private void DestroyItemUI () {
-            Destroy (ItemUI);
-            ItemUI = null;
+        private IEnumerator PlayAnimation () {
+            Animation ani = GetComponent<Animation> ();
+            ani.Play ();
+            yield return new WaitForSeconds (ani.clip == null ? 0 : ani.clip.length);
+
+            GetComponent<SpriteRenderer> ().sprite = null;
+            if (TextInactive) {
+                Destroy (ItemRoot);
+            } else {
+                TriggerInactive = true;
+            }
         }
 
     }

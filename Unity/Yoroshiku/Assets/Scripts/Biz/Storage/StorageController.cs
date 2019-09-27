@@ -18,6 +18,10 @@ namespace Biz.Storage {
         }
 
         public void OnSaveStorageCommand (SaveStorageCommand cmd) {
+            // List collected items
+            string [] items = Post<Biz.Item.ListCollectedCommand, string []> (new Biz.Item.ListCollectedCommand ());
+            cmd.StoragePoint.Items = items;
+
             string json = JsonUtility.ToJson (cmd.StoragePoint);
             Debug.Log ("Save Storage: " + json);
             using (FileStream fs = new FileStream (GetStoragePointFilename (), FileMode.Create, FileAccess.Write)) {
@@ -27,6 +31,11 @@ namespace Biz.Storage {
             }
         }
 
+        /// <summary>
+        /// On load storage command. Check return value.
+        /// </summary>
+        /// <returns>StoragePoint.</returns>
+        /// <param name="cmd">Cmd.</param>
         public StoragePoint OnLoadStorageCommand (LoadStorageCommand cmd) {
             Debug.Log ("Load Storage");
             using (FileStream fs = new FileStream (GetStoragePointFilename (), FileMode.Open, FileAccess.Read)) {

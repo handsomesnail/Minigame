@@ -7,10 +7,5 @@ namespace Biz.Start {
             return typeof (StartController);
         }
     }
-
-    public class IndexCommand : StartCommand {
-
-    }
-
 }
 

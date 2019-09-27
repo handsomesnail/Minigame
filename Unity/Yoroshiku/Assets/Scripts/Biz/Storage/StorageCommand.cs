@@ -1,5 +1,6 @@
 ﻿using System;
 using ZCore;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,13 +18,11 @@ namespace Biz.Storage {
             this.StoragePoint = point;
         }
 
-        public SaveStorageCommand (int chapter, int point, params int[] items) {
+        public SaveStorageCommand (int chapter, Vector3 position) {
             StoragePoint tmp = new StoragePoint {
                 Chapter = chapter,
-                Point = point,
-                Items = new String [items.Length]
+                Postion = position
             };
-            items.CopyTo (tmp.Items, 0);
             this.StoragePoint = tmp;
         }
     }

@@ -14,6 +14,13 @@ namespace Biz.Item {
         public CollectCommand (Item item) {
             this.Item = item;
         }
+    }
+
+    public class ListCollectedCommand : ItemCommand {
+
+    }
+
+    public class InitCommand : ItemCommand {
 
     }
 }
