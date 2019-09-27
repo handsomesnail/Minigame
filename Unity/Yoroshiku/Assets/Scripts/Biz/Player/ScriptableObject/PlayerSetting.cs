@@ -65,5 +65,13 @@ namespace Biz.Player {
         [FieldName("跳跃判定滞后时间(s)")]
         public float JumpJudgeDuration;
 
+        [FieldName("溶入耗时")]
+        public float MeltInDuration;
+
+        //估计没用
+        [Obsolete]
+        [FieldName("溶出耗时")]
+        public float MeltOutDuration;
+
     }
 }

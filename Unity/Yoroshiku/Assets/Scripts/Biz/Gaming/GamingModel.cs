@@ -29,6 +29,8 @@ namespace Biz.Gaming {
 
         public List<MeltArea> CurrentStayMeltAreas { get; set; }
 
+        public MeltArea LastExitMeltArea { get; set; }
+
         public IAttachable AttachedObject { get; set; }
 
         public bool Jump { get; set; }
@@ -37,7 +39,11 @@ namespace Biz.Gaming {
 
         public float LastJumpReqTime { get; set; }
 
+        /// <summary>按下溶入键的时间</summary>
         public float LastMeltReqTime { get; set; }
+
+        /// <summary>切换为溶入状态的时间</summary>
+        public float LastMeltTime { get; set; }
 
         #endregion
 

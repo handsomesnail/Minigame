@@ -15,6 +15,9 @@ namespace Biz.Player {
 
         public Transform Player;
 
+        //用来计算溶入助力的碰撞体
+        public CircleCollider2D CenterCollider;
+
         public Animator PlayerAnim;
 
         public Rigidbody2D Rigidbody;
@@ -26,5 +29,10 @@ namespace Biz.Player {
         public Transform GroundChecker;
 
         public Collider2D GroundCheckCollider;
+
+        public Collider2D MeltCheckCollider;
+
+        public Collider2D UnMeltCheckCollider;
+
     }
 }
