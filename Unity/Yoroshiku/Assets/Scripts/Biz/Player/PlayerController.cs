@@ -12,12 +12,11 @@ namespace Biz.Player {
         public void OnInitCommand(InitCommand cmd) {
             View.PlayerView.Player.transform.position = Model.Map.BornPoint.position; //设置Player的出生点
             //设置Player的初始数据
-            Model.CurrentColorIndex = 0;
             Model.MeltStatus = false;
             Model.AttachedObject = null;
             Model.Offset = Vector2.zero;
             Model.Jump = false;
-            Model.CurrentStayMeltArea = null;
+            Model.CurrentStayMeltAreas = new List<MeltArea>();
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
         }
@@ -46,11 +45,11 @@ namespace Biz.Player {
         }
 
         public void OnEnterMeltAreaCommand(EnterMeltAreaCommand cmd) {
-            Model.CurrentStayMeltArea = cmd.MeltArea;
+            Model.CurrentStayMeltAreas.Add(cmd.MeltArea);
         }
 
         public void OnExitMeltAreaCommand(ExitMeltAreaCommand cmd) {
-            Model.CurrentStayMeltArea = null;
+            Model.CurrentStayMeltAreas.Remove(cmd.MeltArea);
         }
 
         public void OnSpringPushForceCommand(SpringPushForceCommand cmd) {
@@ -59,9 +58,12 @@ namespace Biz.Player {
 
         public PlayerData OnGetPlayerDataCommand(GetPlayerDataCommand cmd) {
             return new PlayerData() {
-                ColorIndex = Model.CurrentColorIndex,
-                    MeltStatus = Model.MeltStatus,
+                MeltStatus = Model.MeltStatus,
             };
+        }
+
+        public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
+            Call(new Biz.Player.InitCommand());
         }
 
         private void FixedUpdate() {
@@ -118,6 +120,11 @@ namespace Biz.Player {
                     }
                 }
                 moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
+                //如果有移动力则设置方向
+                if (moveForceDirection.x != 0) {
+                    Vector3 playerScale = View.PlayerView.Player.localScale;
+                    View.PlayerView.Player.localScale = moveForceDirection.x > 0 ? new Vector3(Math.Abs(playerScale.x), playerScale.y, playerScale.z) : new Vector3(-1 * Math.Abs(playerScale.x), playerScale.y, playerScale.z);
+                }
             }
             //溶入状态
             else {
@@ -172,9 +179,9 @@ namespace Biz.Player {
             return new Vector2(GetValidInput(input.x, velocity.x, maxMoveSpeed.x), GetValidInput(input.y, velocity.y, maxMoveSpeed.y));
         }
 
-        /// <summary>当前和MeltArea相交且颜色对应正确</summary>
+        /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
         private bool IsMeltAvaliable() {
-            return Model.CurrentStayMeltArea != null && Model.CurrentStayMeltArea.ColorIndex == Model.CurrentColorIndex;
+            return Model.CurrentStayMeltAreas.Count != 0;
         }
 
         [Obsolete("IsGroundByCollider判断更精确")]
@@ -195,7 +202,12 @@ namespace Biz.Player {
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
             //依附处理
             if (meltStatus) {
-                Model.AttachedObject = Model.CurrentStayMeltArea.GetComponentInParent<IAttachable>();
+                foreach (MeltArea meltArea in Model.CurrentStayMeltAreas) {
+                    IAttachable attachedObject = meltArea.GetComponentInParent<IAttachable>();
+                    if (attachedObject != null) {
+                        Model.AttachedObject = attachedObject;
+                    }
+                }
             }
             else {
                 Model.AttachedObject = null;

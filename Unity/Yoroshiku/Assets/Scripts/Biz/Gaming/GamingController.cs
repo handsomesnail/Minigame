@@ -11,7 +11,6 @@ namespace Biz.Gaming {
     public sealed class GamingController : Controller<GamingModel, GamingView> {
 
         public void OnEnterCommand(EnterCommand cmd) {
-            Model.TryUseTestMap = cmd.TryUseTestMap;
             Model.MapIndex = cmd.MapIndex;
             Model.GameStatus = GameStatus.Gaming;
             //先加载地图 获取地图数据(必须先执行该Command)

@@ -30,6 +30,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Barrier.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/障碍物(多边形)", false, 1)]
+    public static void CreateNewPolygonBarrier() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PolygonBarrier.prefab");
+    }
+
     [MenuItem("GameObject/Yoroshiku/溶入区域", false, 2)]
     public static void CreateNewMeltArea() {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/MeltArea.prefab");
@@ -43,6 +48,11 @@ public static class ToolsHelperEditor {
     [MenuItem("GameObject/Yoroshiku/钟摆", false, 4)]
     public static void CreateNewPendulum() {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Pendulum.prefab");
+    }
+
+    [MenuItem("GameObject/Yoroshiku/死亡区域", false, 5)]
+    public static void CreateNewDeadArea() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/DeadArea.prefab");
     }
 
     private static void PlaceYoroshikuElement(string prefabPath) {

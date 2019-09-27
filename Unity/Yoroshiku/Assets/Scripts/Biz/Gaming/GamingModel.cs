@@ -19,20 +19,15 @@ namespace Biz.Gaming {
 
         #endregion
 
-        public bool TryUseTestMap { get; set; }
-
         #region  Runtime Data
 
         /// <summary>当前游戏状态</summary>
         public GameStatus GameStatus { get; set; }
 
-        /// <summary>当前所选颜色</summary>
-        public int CurrentColorIndex { get; set; }
-
         /// <summary>当前的溶入状态</summary>
         public bool MeltStatus { get; set; }
 
-        public MeltArea CurrentStayMeltArea { get; set; }
+        public List<MeltArea> CurrentStayMeltAreas { get; set; }
 
         public IAttachable AttachedObject { get; set; }
 

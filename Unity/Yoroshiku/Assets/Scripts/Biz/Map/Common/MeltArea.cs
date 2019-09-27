@@ -9,7 +9,6 @@ namespace Biz.Map {
 
     [RequireComponent(typeof(Collider2D))]
     public class MeltArea : CallerBehaviour {
-        public int ColorIndex;
 
         private void OnTriggerEnter2D(Collider2D collider) {
             if (collider.gameObject.name == "MeltCheckerCollider") {

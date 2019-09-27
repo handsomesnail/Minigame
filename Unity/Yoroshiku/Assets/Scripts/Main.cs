@@ -10,6 +10,9 @@ using ZCore;
 /// <summary>逻辑入口脚本</summary>
 public class Main : CallerBehaviour {
 
+    //[Debug]如果通过ToIndex脚本过来，自动加载ToIndex脚本所在场景的Map
+    public static string DebugMapName = string.Empty;
+
     private void Start() {
         Application.targetFrameRate = 60;
         Screen.sleepTimeout = -1;
