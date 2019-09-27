@@ -29,22 +29,18 @@ public class CollectItemEditorWindow : EditorWindow {
         EditorGUILayout.Space ();
         //UpdateAllEditableMapsName ();
         style = new GUIStyle (GUI.skin.label);
-        //EditorGUILayout.LabelField ("开始地图：" + (mapList.TestMap != null ? mapList.TestMap.gameObject.name : "默认"), style);
-        //EditorGUILayout.Space ();
-        //selectIndex = EditorGUILayout.Popup ("EditableMaps", selectIndex, mapsNameArr.ToArray ());
-        //GUILayout.BeginHorizontal ();
-        //if (GUILayout.Button ("编辑")) {
-        //    EditMap (mapsNameArr [selectIndex]);
-        //}
-        //if (GUILayout.Button ("设为开始地图")) {
-        //    ToolsHelperEditor.SetStartupScene (mapsNameArr [selectIndex]);
-        //}
-        //if (GUILayout.Button ("删除")) {
-        //    if (EditorUtility.DisplayDialog ("防手抖", "注意要删除的地图名为\"" + mapsNameArr [selectIndex] + "\"", "确定删除", "取消")) {
-        //        DeleteMap (mapsNameArr [selectIndex]);
-        //    }
-        //}
-        //GUILayout.EndHorizontal ();
+        EditorGUILayout.Space ();
+        selectIndex = EditorGUILayout.Popup ("EditableItems", selectIndex, mapsNameArr.ToArray ());
+        GUILayout.BeginHorizontal ();
+        if (GUILayout.Button ("编辑")) {
+            EditMap (mapsNameArr [selectIndex]);
+        }
+        if (GUILayout.Button ("删除")) {
+            if (EditorUtility.DisplayDialog ("防手抖", "注意要删除的收集品名为\"" + mapsNameArr [selectIndex] + "\"", "确定删除", "取消")) {
+                DeleteMap (mapsNameArr [selectIndex]);
+            }
+        }
+        GUILayout.EndHorizontal ();
         EditorGUILayout.Space ();
         GUILayout.BeginHorizontal ();
         inputMapName = EditorGUILayout.TextField ("NewCollectItem", inputMapName);
@@ -79,14 +75,12 @@ public class CollectItemEditorWindow : EditorWindow {
     }
 
     private void EditMap (string mapName) {
-        string sceneName = "CollectItem_" + mapName;
-        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
-        if (EditorSceneManager.GetActiveScene ().name != sceneName) {
-            SceneAsset scene = AssetDatabase.LoadAssetAtPath<SceneAsset> (scenePath);
+        if (EditorSceneManager.GetActiveScene ().name != editMapTempletePath) {
+            SceneAsset scene = AssetDatabase.LoadAssetAtPath<SceneAsset> (editMapTempletePath);
             if (scene == null) {
-                EditorUtility.DisplayDialog ("提示", "找不到场景文件" + scenePath, "好的");
+                EditorUtility.DisplayDialog ("提示", "找不到场景文件", "好的");
                 return;
-            } else EditorSceneManager.OpenScene (scenePath);
+            } else EditorSceneManager.OpenScene (editMapTempletePath);
         }
         GameObject mapGo = GameObject.FindObjectOfType<Biz.Item.Item> ()?.gameObject;
         if (mapGo == null) {
@@ -99,25 +93,15 @@ public class CollectItemEditorWindow : EditorWindow {
 
     private void DeleteMap (string mapName) {
         string mapPath = "Assets/Resources/CollectItems/" + mapName + ".prefab";
-        string sceneName = "CollectItem_" + mapName;
-        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
         AssetDatabase.DeleteAsset (mapPath);
-        AssetDatabase.DeleteAsset (scenePath);
         AssetDatabase.Refresh ();
-        selectIndex = 0;
-        if (EditorSceneManager.GetActiveScene ().name == sceneName) {
-            EditorSceneManager.OpenScene (mainScenePath);
-        }
     }
 
     private void CreateNewMap (string mapName) {
         string mapPath = "Assets/Resources/CollectItems/" + mapName + ".prefab";
-        string sceneName = "CollectItem_" + mapName;
-        string scenePath = "Assets/Scenes/" + sceneName + ".unity";
         AssetDatabase.CopyAsset (templetePath, mapPath);
-        AssetDatabase.CopyAsset (editMapTempletePath, scenePath);
         AssetDatabase.Refresh ();
-        EditorSceneManager.OpenScene (scenePath);
+        EditorSceneManager.OpenScene (editMapTempletePath);
 
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (mapPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab (prefab) as GameObject;
@@ -126,8 +110,7 @@ public class CollectItemEditorWindow : EditorWindow {
         }
         Selection.activeGameObject = gameObject;
         gameObject.name = mapName;
-        EditorSceneManager.SaveScene (gameObject.scene, scenePath);
-        EditMap (mapName);
+        EditorSceneManager.SaveScene (gameObject.scene, editMapTempletePath);
     }
 
 }
