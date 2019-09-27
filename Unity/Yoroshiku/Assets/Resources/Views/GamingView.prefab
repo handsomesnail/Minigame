@@ -143,22 +143,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1450359798283430
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4954148129944660}
-  - component: {fileID: 58733637734607468}
-  m_Layer: 10
-  m_Name: CenterCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1465784047860592
 GameObject:
   m_ObjectHideFlags: 1
@@ -282,22 +266,6 @@ GameObject:
   - component: {fileID: 212505494898688164}
   m_Layer: 10
   m_Name: "\u5DE6\u88E4\u817F"
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1663680954851198
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4155438049703494}
-  - component: {fileID: 60352574699775482}
-  m_Layer: 10
-  m_Name: MeltCheckerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,9 +478,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4908371027435992}
-  - component: {fileID: 61096185040231802}
+  - component: {fileID: 61055395175541350}
   m_Layer: 10
-  m_Name: UnMeltCheckerCollider
+  m_Name: MeltCheckerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -567,14 +535,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1007574923424870}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalPosition: {x: 0.38, y: -0.3, z: 0}
+  m_LocalScale: {x: 7.5, y: 7.5, z: 1}
   m_Children:
   - {fileID: 4822948459151424}
   - {fileID: 4659959563184586}
   - {fileID: 4466464062818052}
   - {fileID: 4868086889802200}
-  - {fileID: 4954148129944660}
+  - {fileID: 4908371027435992}
   m_Father: {fileID: 4663390634844906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -604,19 +572,6 @@ Transform:
   - {fileID: 4663390634844906}
   m_Father: {fileID: 4287827678605350}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4155438049703494
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663680954851198}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4466464062818052}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4287827678605350
 Transform:
@@ -657,7 +612,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4868086889802200}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4350454344139858
 Transform:
@@ -697,7 +652,6 @@ Transform:
   m_Children:
   - {fileID: 4977246827079660}
   - {fileID: 4123627780693582}
-  - {fileID: 4155438049703494}
   m_Father: {fileID: 4116674222363154}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -814,7 +768,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4908371027435992}
   - {fileID: 4330151864799740}
   m_Father: {fileID: 4116674222363154}
   m_RootOrder: 3
@@ -839,19 +792,6 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1934814561876226}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4868086889802200}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4954148129944660
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1450359798283430}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -927,51 +867,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &58733637734607468
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1450359798283430}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.001
---- !u!60 &60352574699775482
-PolygonCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1663680954851198}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.079097345, y: 0.1550091}
-      - {x: -0.07257096, y: -0.16359888}
-      - {x: 0.015093184, y: -0.19329673}
-      - {x: 0.09630552, y: -0.15698352}
-      - {x: 0.085944794, y: 0.15776943}
---- !u!61 &61096185040231802
+--- !u!61 &61055395175541350
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -980,10 +876,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: ec36a65aed5144c95aa0bfaeb4859e3e, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.0028340518}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -994,7 +890,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.005, y: 0.005}
+  m_Size: {x: 0.15, y: 0.30303738}
   m_EdgeRadius: 0
 --- !u!61 &61457510349819510
 BoxCollider2D:
@@ -1008,7 +904,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.009999998, y: -0.006191492}
+  m_Offset: {x: 0.01, y: 0.002755165}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1019,7 +915,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1420282, y: 0.30888018}
+  m_Size: {x: 0.1420282, y: 0.31685683}
   m_EdgeRadius: 0
 --- !u!61 &61700612946862092
 BoxCollider2D:
@@ -1033,7 +929,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.010610547, y: 0.076724306}
+  m_Offset: {x: 0.008023553, y: 0.076724306}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1044,7 +940,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.12989482, y: 0.04843332}
+  m_Size: {x: 0.12472084, y: 0.04843332}
   m_EdgeRadius: 0
 --- !u!61 &61780582358692006
 BoxCollider2D:
@@ -1069,7 +965,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.005, y: 0.005}
+  m_Size: {x: 0.02, y: 0.02}
   m_EdgeRadius: 0
 --- !u!95 &95349346261833964
 Animator:
@@ -1142,23 +1038,23 @@ MonoBehaviour:
   onDown:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressed:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressedValue:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onUp:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   axis:
     name: MeltBtn
     autoLinkTagPlayer: 0
@@ -1291,23 +1187,23 @@ MonoBehaviour:
   onDown:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressed:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressedValue:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onUp:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   axis:
     name: JumpBtn
     autoLinkTagPlayer: 0
@@ -1450,15 +1346,12 @@ MonoBehaviour:
     View: {fileID: 1614026575478772}
     PlayerTransform: {fileID: 4663390634844906}
     Player: {fileID: 4116674222363154}
-    CenterCollider: {fileID: 58733637734607468}
     PlayerAnim: {fileID: 95349346261833964}
     Rigidbody: {fileID: 50099434990176190}
     NormalEntity: {fileID: 1590685367911548}
     MeltedEntity: {fileID: 1465784047860592}
     GroundChecker: {fileID: 4123627780693582}
     GroundCheckCollider: {fileID: 61700612946862092}
-    MeltCheckCollider: {fileID: 60352574699775482}
-    UnMeltCheckCollider: {fileID: 61096185040231802}
   CollectItemList: {fileID: 11400000, guid: 72fd1e932ffbb43cb8c1461541e7fea2, type: 2}
 --- !u!114 &114626925585064398
 MonoBehaviour:
@@ -1628,23 +1521,23 @@ MonoBehaviour:
   onDown:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnDownHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressed:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnPressedHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onPressedValue:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCButton+OnPressedValueandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onUp:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCButton+OnUPHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   axis:
     name: PauseBtn
     autoLinkTagPlayer: 0
@@ -1772,7 +1665,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnMoveStartHandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCJoystick+OnMoveStartHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onMove:
     m_PersistentCalls:
@@ -1788,8 +1681,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnMoveHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnMoveHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onMoveSpeed:
     m_PersistentCalls:
       m_Calls:
@@ -1804,7 +1697,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnMoveSpeedHandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCJoystick+OnMoveSpeedHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onMoveEnd:
     m_PersistentCalls:
@@ -1820,8 +1713,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnMoveEndHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnMoveEndHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   onTouchStart:
     m_PersistentCalls:
       m_Calls:
@@ -1836,7 +1729,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnTouchStartHandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCJoystick+OnTouchStartHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onTouchUp:
     m_PersistentCalls:
@@ -1852,8 +1745,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnTouchUpHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnTouchUpHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnDownUp:
     m_PersistentCalls:
       m_Calls:
@@ -1868,8 +1761,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownUpHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownUpHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnDownDown:
     m_PersistentCalls:
       m_Calls:
@@ -1884,8 +1777,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownDownHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownDownHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnDownLeft:
     m_PersistentCalls:
       m_Calls:
@@ -1900,8 +1793,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownLeftHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownLeftHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnDownRight:
     m_PersistentCalls:
       m_Calls:
@@ -1916,7 +1809,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownRightHandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCJoystick+OnDownRightHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   OnPressUp:
     m_PersistentCalls:
@@ -1932,8 +1825,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownUpHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownUpHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnPressDown:
     m_PersistentCalls:
       m_Calls:
@@ -1948,8 +1841,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownDownHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownDownHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnPressLeft:
     m_PersistentCalls:
       m_Calls:
@@ -1964,8 +1857,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownLeftHandler, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: ETCJoystick+OnDownLeftHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   OnPressRight:
     m_PersistentCalls:
       m_Calls:
@@ -1980,7 +1873,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: ETCJoystick+OnDownRightHandler, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: ETCJoystick+OnDownRightHandler, Assembly-CSharp-firstpass, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   joystickType: 1
   allowJoystickOverTouchPad: 0
