@@ -84,6 +84,8 @@ public static class ToolsHelperEditor {
         string mapPath = "Assets/Prefabs/Maps/" + mapName + ".prefab";
         GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(mapPath);
         mapList.TestMap = mapPrefab.GetComponent<BaseMap>();
+        EditorUtility.SetDirty(mapList);
+        AssetDatabase.SaveAssets();
     }
 
 }

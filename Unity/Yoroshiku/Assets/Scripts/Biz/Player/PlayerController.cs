@@ -237,59 +237,30 @@ namespace Biz.Player {
             //溶入和溶出时的推力处理
             if (push) {
                 if (meltStatus) {
-                    ColliderDistance2D distance2D = Physics2D.Distance(Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
-                    Debug.Log(distance2D.normal * distance2D.distance);
-                    Vector2 v0 = GetPushInForce(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
-                    //View.PlayerView.Rigidbody.AddForce(pushForce);
-                    View.PlayerView.Rigidbody.velocity = 1.8f * v0;
+                    //已经相交则不需要推力进入溶入区域
+                    if (!CheckMeltStatus()) {
+                        ColliderDistance2D distance2D = Physics2D.Distance(Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
+                        Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
+                        View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
+                    }
                 }
                 else {
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
-                    View.PlayerView.Rigidbody.AddForce(pushForce);
+                    View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
                 }
             }
         }
 
-        //以下注释废弃
-        //x = v0*t + 1/2*a*t^2
-        //x为二者距离distance、v0为一帧update内所加速到的速度
-        //a为溶入状态下的阻力(-f)
-        //t为指定的溶入(出)时间
-        /// <summary>获取溶入推力(推力制造的加速度在一个物理帧内提供的速度增量和Player原速度矢量相加后，可在duration后走过distance)</summary>
-        private Vector2 GetPushInForce(Vector2 distance, float duration) {
-            Vector2 v0Dir = distance.normalized;
-            PlayerSetting playerSetting = View.PlayerSetting;
-            Rigidbody2D rigidbody = View.PlayerView.Rigidbody;
-            float mass = rigidbody.mass;
-            float v0Mag = (distance.magnitude + 0.5f * playerSetting.Melted_LinearDrag * duration * duration) / duration;
-            Vector2 v0 = v0Dir * v0Mag;
-
+        /// <summary>获取溶入初速度</summary>
+        private Vector2 GetPushInVelocity(Vector2 distance, float duration) {
             return distance / duration;
-
-            // Vector2 deltaV = v0 - rigidbody.velocity;
-            // Vector2 ResultantForce = deltaV / Time.fixedDeltaTime / mass;
-            // Debug.Log("合力:" + ResultantForce);
-            // Vector2 pushForce = Vector2.zero;
-            // //注意考虑重力 摩擦力 支持力
-            // if (IsGroundByCollider()) {
-            //     pushForce = ResultantForce - playerSetting.Melted_LinearDrag * rigidbody.velocity.normalized / mass;
-            // }
-            // else {
-            //     pushForce = ResultantForce - new Vector2(0, -playerSetting.Gravity) / mass - playerSetting.Melted_LinearDrag * rigidbody.velocity.normalized / mass;
-            // }
-
-            // Debug.Log("溶入推力:" + pushForce);
-            // return pushForce;
-            Debug.Log("设置初速度：" + v0);
-            return v0;
         }
 
         /// <summary>获取溶出推力/summary>
         private Vector2 GetPushOutForce(Vector2 direction) {
             Vector2 pushForce = direction * 500;
-            Debug.Log("溶出推力:" + pushForce);
-            return direction * 500;
+            return pushForce;
         }
 
         /// <summary>检查溶入状态(在溶入过程开始后一段时间检查推力是否使其溶入成功) </summary>
