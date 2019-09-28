@@ -14,6 +14,7 @@ namespace Biz.Map {
             BaseMap mapPrefab = null;
             MapList mapList = Resources.Load<MapList>("Configs/MapList");
             if (!string.IsNullOrEmpty(Main.DebugMapName) && Main.DebugMapName == mapList.TestMap.gameObject.name) {
+                Main.DebugMapName = string.Empty;
                 mapPrefab = mapList.TestMap.gameObject.GetComponent<BaseMap>();
             }
             else {

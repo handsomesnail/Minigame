@@ -65,6 +65,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Storage.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/过关点", false, 7)]
+    public static void CreateNewPassPoint() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PassPoint.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
