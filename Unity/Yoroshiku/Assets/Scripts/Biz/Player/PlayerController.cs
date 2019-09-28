@@ -106,7 +106,7 @@ namespace Biz.Player {
                     moveForce = playerSetting.Normal_MoveForce;
                     maxMoveSpeed = playerSetting.Normal_MaxMoveSpeed;
                     linearDrag = playerSetting.Normal_LinearDrag;
-                    gravity = playerSetting.Gravity;
+                    gravity = playerSetting.GroundGravity;
                 }
                 //普通状态在空中
                 else {
@@ -170,7 +170,8 @@ namespace Biz.Player {
             if (Model.Jump) {
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, playerSetting.JumpInitialSpeed);
                 Model.Jump = false;
-                rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力
+                rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力和重力
+                rigidbody.gravityScale = (playerSetting.Gravity + playerSetting.Air_LinearDrag) / (-1 * Physics2D.gravity.y);
                 Model.LastJumpReqTime = float.MinValue;
             }
 
