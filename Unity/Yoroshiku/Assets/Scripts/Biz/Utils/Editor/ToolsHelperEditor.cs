@@ -25,7 +25,7 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Ground.prefab");
     }
 
-    [MenuItem("GameObject/Yoroshiku/障碍物", false, 1)]
+    [MenuItem("GameObject/Yoroshiku/障碍物(四边形)", false, 1)]
     public static void CreateNewBarrier() {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Barrier.prefab");
     }
@@ -33,6 +33,11 @@ public static class ToolsHelperEditor {
     [MenuItem("GameObject/Yoroshiku/障碍物(多边形)", false, 1)]
     public static void CreateNewPolygonBarrier() {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PolygonBarrier.prefab");
+    }
+
+    [MenuItem("GameObject/Yoroshiku/障碍物(边)", false, 1)]
+    public static void CreateNewEdgeBarrier() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/EdgeBarrier.prefab");
     }
 
     [MenuItem("GameObject/Yoroshiku/溶入区域", false, 2)]
@@ -55,10 +60,9 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/DeadArea.prefab");
     }
 
-
-    [MenuItem ("GameObject/Yoroshiku/存档点", false, 6)]
-    public static void CreateNewStorage () {
-        PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/Storage.prefab");
+    [MenuItem("GameObject/Yoroshiku/存档点", false, 6)]
+    public static void CreateNewStorage() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/Storage.prefab");
     }
 
     private static void PlaceYoroshikuElement(string prefabPath) {
