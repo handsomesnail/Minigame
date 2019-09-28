@@ -9,7 +9,7 @@ namespace ZCore {
     /// <summary>模块视图，只包含游戏物体或资源的引用</summary>
     public abstract class View : MonoBehaviour {
         public void Destroy() {
-            DestroyImmediate(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 
