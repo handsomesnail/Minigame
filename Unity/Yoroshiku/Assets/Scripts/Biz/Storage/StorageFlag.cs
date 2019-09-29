@@ -1,31 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 using ZCore;
-using System;
 
 namespace Biz.Storage {
 
-    [RequireComponent (typeof (Collider2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class StorageFlag : CallerBehaviour {
         private bool Invoked;
 
-        public int Chapter;
+        //public int Chapter;
 
         // Use this for initialization
-        void Start () {
-            Debug.Log ("Start");
+        void Start() {
+            Debug.Log("Start");
         }
 
         // Update is called once per frame
-        void Update () {
-        }
+        void Update() { }
 
-        private void OnTriggerEnter2D (Collider2D collision) {
+        private void OnTriggerEnter2D(Collider2D collision) {
             if (Invoked) return;
             Invoked = true;
-            Call (new Biz.Storage.SaveStorageCommand (new StoragePoint (Chapter, transform.position)));
-            Debug.Log ("OnTriggerEnter2D");
-            Debug.Log (DateTime.Now.Millisecond);
+            Call(new Biz.Storage.SaveStorageCommand(new StoragePoint(transform.position)));
+            Debug.Log("OnTriggerEnter2D");
+            Debug.Log(DateTime.Now.Millisecond);
         }
 
     }
