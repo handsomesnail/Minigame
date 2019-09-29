@@ -264,6 +264,7 @@ namespace Biz.Player {
                     }
                 }
                 else {
+                    View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
