@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
 using Biz.Player;
+using Biz.Storage;
 using UnityEngine;
 using ZCore;
 
@@ -24,6 +25,10 @@ namespace Biz.Input {
             //溶入
             if (UnityEngine.Input.GetKeyDown(KeyCode.J)) {
                 Call(new MeltCommand());
+            }
+            if (UnityEngine.Input.GetKeyDown(KeyCode.L)) {
+                StoragePoint point = Post<LoadStorageCommand, StoragePoint>(new LoadStorageCommand());
+                Debug.Log(point.Postion);
             }
         }
 
