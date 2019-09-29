@@ -21,6 +21,7 @@ namespace Biz.Player {
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
             Model.StayedGround = null;
+            Model.LastMeltOutTime = float.MinValue;
         }
 
         public void OnMoveCommand(MoveCommand cmd) {
@@ -135,6 +136,9 @@ namespace Biz.Player {
                     Vector3 playerScale = View.PlayerView.Player.localScale;
                     View.PlayerView.Player.localScale = moveForceDirection.x > 0 ? new Vector3(Math.Abs(playerScale.x), playerScale.y, playerScale.z) : new Vector3(-1 * Math.Abs(playerScale.x), playerScale.y, playerScale.z);
                 }
+                //溶出过程中忽略碰撞体(感觉不行)
+                // float meltOutProcess = Time.fixedTime - Model.LastMeltOutTime;
+                // View.PlayerView.NormalMoveCheckCollider.enabled = meltOutProcess > playerSetting.MeltOutDuration;
             }
             //溶入状态
             else {
@@ -233,6 +237,9 @@ namespace Biz.Player {
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
             if (meltStatus) {
                 Model.LastMeltTime = Time.fixedTime;
+            }
+            else {
+                Model.LastMeltOutTime = Time.fixedTime;
             }
             //依附处理
             if (meltStatus) {
