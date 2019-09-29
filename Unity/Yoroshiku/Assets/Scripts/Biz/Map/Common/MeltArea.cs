@@ -19,7 +19,7 @@ namespace Biz.Map {
 
         }
         private void OnTriggerExit2D(Collider2D collider) {
-            if (collider.gameObject.name == "MeltCheckerCollider") {
+            if (collider.gameObject.name == "UnMeltCheckerCollider" || collider.gameObject.name == "MeltCheckerCollider") {
                 Call(new ExitMeltAreaCommand(this));
             }
         }

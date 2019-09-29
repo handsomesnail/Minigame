@@ -10,9 +10,13 @@ using UnityEngine;
 public class PlayerSettingEditor : Editor {
     public override void OnInspectorGUI() {
         base.DrawDefaultInspector();
-        EditorGUILayout.Space();
         PlayerSetting playerSetting = (PlayerSetting) target;
         GUIStyle style = new GUIStyle(GUI.skin.label);
+        if (GUILayout.Button("保存")) {
+            EditorUtility.SetDirty(playerSetting);
+            AssetDatabase.SaveAssets();
+        }
+        EditorGUILayout.Space();
         style.fontSize = 12;
         GUILayout.Box(GUIContent.none, GUI.skin.box, GUILayout.ExpandWidth(true), GUILayout.Height(1f));
         float Normal_MoveToMaxSpeedDuration = playerSetting.Normal_MaxMoveSpeed / playerSetting.Normal_MoveForce;

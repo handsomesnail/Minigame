@@ -17,6 +17,7 @@ namespace Biz.Player {
             Model.Offset = Vector2.zero;
             Model.Jump = false;
             Model.CurrentStayMeltAreas = new List<MeltArea>();
+            Model.LastExitMeltArea = null;
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
         }
@@ -45,11 +46,14 @@ namespace Biz.Player {
         }
 
         public void OnEnterMeltAreaCommand(EnterMeltAreaCommand cmd) {
+            Debug.Log("EnterMeltArea");
             Model.CurrentStayMeltAreas.Add(cmd.MeltArea);
         }
 
         public void OnExitMeltAreaCommand(ExitMeltAreaCommand cmd) {
+            Debug.Log("ExitMeltArea");
             Model.CurrentStayMeltAreas.Remove(cmd.MeltArea);
+            Model.LastExitMeltArea = cmd.MeltArea;
         }
 
         public void OnSpringPushForceCommand(SpringPushForceCommand cmd) {
@@ -102,7 +106,7 @@ namespace Biz.Player {
                     moveForce = playerSetting.Normal_MoveForce;
                     maxMoveSpeed = playerSetting.Normal_MaxMoveSpeed;
                     linearDrag = playerSetting.Normal_LinearDrag;
-                    gravity = playerSetting.Gravity;
+                    gravity = playerSetting.GroundGravity;
                 }
                 //普通状态在空中
                 else {
@@ -138,6 +142,19 @@ namespace Biz.Player {
                     View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
                     Model.AttachedObject.OnPlayerMove(moveForceDirection);
                 }
+                //溶入状态下如果在MeltInDuration后的一帧进行检查 若通过推力仍没有相交(可能受输入的影响) 自动溶出
+                float meltProcess = Time.fixedTime - Model.LastMeltTime;
+                //+-0.5帧长 保证仅一次判定
+                if (Model.MeltStatus && meltProcess >= playerSetting.MeltInDuration - 0.5f * Time.fixedDeltaTime && meltProcess < playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
+                    if (!CheckMeltStatus()) {
+                        Debug.Log("溶入失败");
+                        Model.CurrentStayMeltAreas.RemoveAt(Model.CurrentStayMeltAreas.Count - 1);
+                        SetMeltStatus(false, false);
+                    }
+                    else {
+                        Debug.Log("溶入成功");
+                    }
+                }
             }
             #endregion
 
@@ -153,7 +170,8 @@ namespace Biz.Player {
             if (Model.Jump) {
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x, playerSetting.JumpInitialSpeed);
                 Model.Jump = false;
-                rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力
+                rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力和重力
+                rigidbody.gravityScale = (playerSetting.Gravity + playerSetting.Air_LinearDrag) / (-1 * Physics2D.gravity.y);
                 Model.LastJumpReqTime = float.MinValue;
             }
 
@@ -191,15 +209,20 @@ namespace Biz.Player {
 
         /// <summary>当前是否在地面</summary>
         private bool IsGroundByCollider() {
-            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
+                View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"));
         }
 
+        //只有在溶入过程结束后还没进入区域的情况不push
         /// <summary>设置溶入状态</summary>
-        private void SetMeltStatus(bool meltStatus) {
+        private void SetMeltStatus(bool meltStatus, bool push = true) {
             Model.MeltStatus = meltStatus;
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
+            if (meltStatus) {
+                Model.LastMeltTime = Time.fixedTime;
+            }
             //依附处理
             if (meltStatus) {
                 foreach (MeltArea meltArea in Model.CurrentStayMeltAreas) {
@@ -212,6 +235,52 @@ namespace Biz.Player {
             else {
                 Model.AttachedObject = null;
             }
+            //溶入和溶出时的推力处理
+            if (push) {
+                if (meltStatus) {
+                    //已经相交则不需要推力进入溶入区域
+                    if (!CheckMeltStatus()) {
+                        ColliderDistance2D distance2D = Physics2D.Distance(Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
+                        Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
+                        View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
+                    }
+                }
+                else {
+                    ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
+                    Vector2 pushForce = GetPushOutForce(distance2D.normal);
+                    View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
+                }
+            }
+        }
+
+        /// <summary>获取溶入初速度</summary>
+        private Vector2 GetPushInVelocity(Vector2 distance, float duration) {
+            return distance / duration;
+        }
+
+        /// <summary>获取溶出推力/summary>
+        private Vector2 GetPushOutForce(Vector2 direction) {
+            Vector2 pushForce = direction * 500;
+            return pushForce;
+        }
+
+        /// <summary>检查溶入状态(在溶入过程开始后一段时间检查推力是否使其溶入成功) </summary>
+        private bool CheckMeltStatus() {
+            bool status = false;
+            Collider2D meltCollider = Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>();
+            if (View.PlayerView.UnMeltCheckCollider.IsTouching(meltCollider)) {
+                Debug.Log("刚好相交");
+                status = true;
+            }
+            else if (meltCollider.OverlapPoint(View.PlayerView.Rigidbody.position)) {
+                Debug.Log("进入内部");
+                status = true;
+            }
+            else {
+                status = false;
+            }
+            Debug.Log("检查溶入状态:" + status);
+            return status;
         }
 
     }

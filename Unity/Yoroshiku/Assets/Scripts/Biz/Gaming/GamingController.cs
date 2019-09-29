@@ -11,14 +11,9 @@ namespace Biz.Gaming {
     public sealed class GamingController : Controller<GamingModel, GamingView> {
 
         public void OnEnterCommand(EnterCommand cmd) {
-            Model.MapIndex = cmd.MapIndex;
-            Model.GameStatus = GameStatus.Gaming;
-            //先加载地图 获取地图数据(必须先执行该Command)
-            Call(new Biz.Map.LoadCommand());
-            //初始化Player
-            Call(new Biz.Player.InitCommand());
-            //初始化UI开始接收输入
-            Call(new Biz.Input.InitCommand());
+            StartCoroutine(CoroutineExtension.Wait(null, () => {
+                EnterMap(cmd.MapIndex);
+            }));
         }
 
         public void OnExitCommand(ExitCommand cmd) {
@@ -32,6 +27,17 @@ namespace Biz.Gaming {
 
         public void OnResumeCommand(ResumeCommand cmd) {
             Model.GameStatus = GameStatus.Gaming;
+        }
+
+        private void EnterMap(int mapIndex) {
+            Model.MapIndex = mapIndex;
+            Model.GameStatus = GameStatus.Gaming;
+            //先加载地图 获取地图数据(必须先执行该Command)
+            Call(new Biz.Map.LoadCommand());
+            //初始化Player
+            Call(new Biz.Player.InitCommand());
+            //初始化UI开始接收输入
+            Call(new Biz.Input.InitCommand());
         }
 
     }

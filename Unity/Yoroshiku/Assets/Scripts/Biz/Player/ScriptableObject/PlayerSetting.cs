@@ -33,6 +33,9 @@ namespace Biz.Player {
         [Tooltip("指水平和竖直合速度的减速度")]
         public float Melted_LinearDrag;
 
+        [FieldName("地面重力")]
+        public float GroundGravity;
+
         [Header("跳跃属性："), Space(10)]
         [FieldName("移动(空中)加速度(m/s^2)")]
         public float Air_MoveForce;
@@ -64,6 +67,18 @@ namespace Biz.Player {
 
         [FieldName("跳跃判定滞后时间(s)")]
         public float JumpJudgeDuration;
+
+        [FieldName("溶入过程时间")]
+        public float MeltInDuration;
+
+        [FieldName("溶出过程时间")]
+        public float MeltOutDuration;
+
+        [FieldName("溶入推力系数")]
+        public float MeltInPushMultiplier;
+
+        [FieldName("溶出推力系数")]
+        public float MeltOutPushMultiplier;
 
     }
 }
