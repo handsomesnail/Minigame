@@ -94,8 +94,9 @@ namespace Biz.Player {
             if (Time.fixedTime - Model.LastMeltReqTime < playerSetting.MeltJudgeDuration && !Model.MeltStatus && IsMeltAvaliable()) {
                 SetMeltStatus(true);
             }
-            //当前是溶入状态且离开了可溶入区域 则进行溶出操作
-            if (Model.MeltStatus && !IsMeltAvaliable()) {
+            //当前是溶入状态且离开了可溶入区域 则进行溶出操作 (该判断在溶入彻底成功之后才开始)
+            if (Model.MeltStatus && !IsMeltAvaliable() && Time.fixedTime - Model.LastMeltTime > playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
+                Debug.Log("离开溶入区域自动溶出");
                 SetMeltStatus(false);
             }
 
@@ -246,6 +247,7 @@ namespace Biz.Player {
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
+            Debug.Log("设置溶入状态:" + meltStatus);
             if (meltStatus) {
                 Model.LastMeltTime = Time.fixedTime;
             }
@@ -276,6 +278,7 @@ namespace Biz.Player {
                 }
                 else {
                     View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
+                    Debug.Log("【SetTrigger : MeltOut】");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
