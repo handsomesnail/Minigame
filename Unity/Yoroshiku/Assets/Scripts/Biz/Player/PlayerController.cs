@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
 using Biz.Map;
+using DG.Tweening;
 using UnityEngine;
 using ZCore;
 
@@ -280,6 +281,10 @@ namespace Biz.Player {
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
                 }
             }
+            //在溶出操作时插值恢复NormalMoveCollider
+            Transform moveTransform = View.PlayerView.NormalMoveCheckCollider.transform;
+            moveTransform.localScale = Vector3.zero;
+            moveTransform.DOScale(new Vector3(1, 1, 1), View.PlayerSetting.MeltOutDuration);
         }
 
         /// <summary>获取溶入初速度</summary>
