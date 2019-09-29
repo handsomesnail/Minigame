@@ -19,6 +19,8 @@ namespace Biz.Map {
 
         public BarrierType Type;
 
+        private Collider2D _Collider;
+
         private void Start() {
             if (Type == BarrierType.Always) {
                 gameObject.layer = LayerMask.NameToLayer("AlwaysBarrier");
@@ -29,34 +31,20 @@ namespace Biz.Map {
             else if (Type == BarrierType.NormalStatus) {
                 gameObject.layer = LayerMask.NameToLayer("Barrier");
             }
+            _Collider = GetComponent<Collider2D>();
         }
 
-        // private void OnCollisionEnter2D(Collision2D collision2D) {
-        //     if (collision2D.collider.gameObject.name == "MoveCheckerCollider") {
-        //         PlayerData playerData = Post<GetPlayerDataCommand, PlayerData>(new GetPlayerDataCommand());
-        //         if (!CheckCollision(playerData.MeltStatus)) {
-        //             Debug.Log("忽略碰撞");
-        //             GetComponent<Collider2D>().isTrigger = true;
-        //         }
-        //     }
-        // }
+        private void OnTriggerEnter2D(Collider2D collider2D) {
+            if (collider2D.gameObject.name == "GroundCheckerCollider") {
+                Call(new SetStayedGroundCommand(_Collider));
+            }
+        }
 
-        // private void OnTriggerEnter2D(Collider2D collider2D) {
-        //     if (collider2D.gameObject.name == "MoveCheckerCollider") {
-        //         PlayerData playerData = Post<GetPlayerDataCommand, PlayerData>(new GetPlayerDataCommand());
-        //         if (CheckCollision(playerData.MeltStatus)) {
-        //             Debug.Log("设置碰撞");
-        //             GetComponent<Collider2D>().isTrigger = false;
-        //         }
-        //     }
-        // }
-
-        // /// <summary>检查碰撞条件</summary>
-        // private bool CheckCollision(bool meltStatus) {
-        //     //正常状态碰到溶入障碍 或 溶入状态碰到正常障碍地面 忽略碰撞
-        //     return !((!meltStatus && Type == BarrierType.MeltedStatus) ||
-        //         (meltStatus && Type == BarrierType.NormalStatus));
-        // }
+        private void OnTriggerStay2D(Collider2D collider2D) {
+            if (collider2D.gameObject.name == "GroundCheckerCollider") {
+                Call(new SetStayedGroundCommand(_Collider));
+            }
+        }
 
     }
 

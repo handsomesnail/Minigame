@@ -20,6 +20,7 @@ namespace Biz.Player {
             Model.LastExitMeltArea = null;
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
+            Model.StayedGround = null;
         }
 
         public void OnMoveCommand(MoveCommand cmd) {
@@ -70,6 +71,10 @@ namespace Biz.Player {
             Call(new Biz.Player.InitCommand());
         }
 
+        public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {
+            Model.StayedGround = cmd.Ground;
+        }
+
         private void FixedUpdate() {
             if (Model.GameStatus == GameStatus.Gaming) {
                 UpdatePlayer();
@@ -107,6 +112,7 @@ namespace Biz.Player {
                     maxMoveSpeed = playerSetting.Normal_MaxMoveSpeed;
                     linearDrag = playerSetting.Normal_LinearDrag;
                     gravity = playerSetting.GroundGravity;
+                    //moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
                 }
                 //普通状态在空中
                 else {
@@ -197,6 +203,11 @@ namespace Biz.Player {
             return new Vector2(GetValidInput(input.x, velocity.x, maxMoveSpeed.x), GetValidInput(input.y, velocity.y, maxMoveSpeed.y));
         }
 
+        /// <summary>获取主角在地面行走的目标方向(人物中心到地面的垂线为法向量) </summary>
+        // private Vector2 GetGroundValidInput(Vector2 ValidInput) {
+        //     Vector2 normalDir = Physics2D.Distance(View.PlayerView.CenterCollider, Model.StayedGround).normal;
+        // }
+
         /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
         private bool IsMeltAvaliable() {
             return Model.CurrentStayMeltAreas.Count != 0;
@@ -261,6 +272,7 @@ namespace Biz.Player {
         /// <summary>获取溶出推力/summary>
         private Vector2 GetPushOutForce(Vector2 direction) {
             Vector2 pushForce = direction * 500;
+            Debug.Log("推力：" + pushForce);
             return pushForce;
         }
 
