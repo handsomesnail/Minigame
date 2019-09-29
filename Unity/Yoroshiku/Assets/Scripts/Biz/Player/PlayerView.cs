@@ -34,5 +34,7 @@ namespace Biz.Player {
 
         public Collider2D UnMeltCheckCollider;
 
+        public Collider2D NormalMoveCheckCollider;
+
     }
 }
