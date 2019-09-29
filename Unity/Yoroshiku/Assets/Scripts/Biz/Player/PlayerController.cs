@@ -211,7 +211,7 @@ namespace Biz.Player {
 
         /// <summary>获取主角在地面行走的有效输入(人物中心到地面的垂线为法向量)【地面】 </summary>
         private Vector2 GetGroundValidInput(Vector2 input, Vector2 velocity, float maxMoveSpeed) {
-            Vector2 normalDir = Physics2D.Distance(View.PlayerView.CenterCollider, Model.StayedGround).normal;
+            Vector2 normalDir = Physics2D.Distance(View.PlayerView.GroundCenterCollider, Model.StayedGround).normal;
             //X正向的垂直向量
             Vector2 xDir = new Vector2(normalDir.y, -(normalDir.x)); //模为1
             Vector2 dirInput = Vector2.Dot(input, xDir) / xDir.magnitude * xDir; //输入在斜坡方向的投影

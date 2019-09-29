@@ -36,5 +36,7 @@ namespace Biz.Player {
 
         public Collider2D NormalMoveCheckCollider;
 
+        public Collider2D GroundCenterCollider;
+
     }
 }
