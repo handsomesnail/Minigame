@@ -7,8 +7,8 @@ namespace Biz.Storage {
 
     [RequireComponent(typeof(Collider2D))]
     public class StorageFlag : CallerBehaviour {
-        private bool Invoked;
-
+        private static readonly TimeSpan Interval = new TimeSpan (0, 0, 2);
+        private DateTime LastInvoked = DateTime.MinValue;
         //public int Chapter;
 
         // Use this for initialization
@@ -19,9 +19,14 @@ namespace Biz.Storage {
         // Update is called once per frame
         void Update() { }
 
+        private void OnCollisionExit2D (Collision2D collision) {
+            Debug.Log (12);
+        }
+
         private void OnTriggerEnter2D(Collider2D collision) {
-            if (Invoked) return;
-            Invoked = true;
+            Debug.Log (11);
+            if ((DateTime.Now - LastInvoked).CompareTo(Interval) < 0) return;
+            LastInvoked = DateTime.Now;
             Call(new Biz.Storage.SaveStorageCommand(new StoragePoint(transform.position)));
             Debug.Log("OnTriggerEnter2D");
             Debug.Log(DateTime.Now.Millisecond);

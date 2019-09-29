@@ -11,7 +11,7 @@ namespace Biz.Storage {
         private const string STORAGE_FILENAME = "/StoragePoint.json";
 
         private string GetStoragePointFilename() {
-            return Application.dataPath + STORAGE_FILENAME;
+            return Application.persistentDataPath + STORAGE_FILENAME;
         }
 
         public void OnSaveStorageCommand(SaveStorageCommand cmd) {
@@ -34,17 +34,21 @@ namespace Biz.Storage {
         /// </summary>
         /// <returns>StoragePoint.</returns>
         /// <param name="cmd">Cmd.</param>
-        public StoragePoint OnLoadStorageCommand(LoadStorageCommand cmd) {
-            Debug.Log("Load Storage");
-            using(FileStream fs = new FileStream(GetStoragePointFilename(), FileMode.Open, FileAccess.Read)) {
-                UTF8Encoding encode = new UTF8Encoding();
-                byte[] bs = new byte[1024];
-                fs.Read(bs, 0, bs.Length);
-                string json = encode.GetString(bs);
-                StoragePoint point = JsonUtility.FromJson<StoragePoint>(encode.GetString(bs));
-                Debug.Log("Load Storage Success: " + point.ToString());
-                if (point.Items == null) point.Items = new string[0];
-                return point;
+        public StoragePoint OnLoadStorageCommand (LoadStorageCommand cmd) {
+            Debug.Log ("Load Storage");
+            try {
+                using (FileStream fs = new FileStream (GetStoragePointFilename (), FileMode.Open, FileAccess.Read)) {
+                    UTF8Encoding encode = new UTF8Encoding ();
+                    byte [] bs = new byte [1024];
+                    fs.Read (bs, 0, bs.Length);
+                    string json = encode.GetString (bs);
+                    StoragePoint point = JsonUtility.FromJson<StoragePoint> (encode.GetString (bs));
+                    Debug.Log ("Load Storage Success: " + point.ToString ());
+                    if (point.Items == null) point.Items = new string [0];
+                    return point;
+                }
+            } catch (FileNotFoundException) {
+                return null;
             }
         }
     }
