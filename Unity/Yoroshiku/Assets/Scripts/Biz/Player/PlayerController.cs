@@ -113,7 +113,7 @@ namespace Biz.Player {
                     maxMoveSpeed = playerSetting.Normal_MaxMoveSpeed;
                     linearDrag = playerSetting.Normal_LinearDrag;
                     gravity = playerSetting.GroundGravity;
-                    //moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
+                    moveForceDirection = GetGroundValidInput(Model.Offset, rigidbody.velocity, maxMoveSpeed);
                 }
                 //普通状态在空中
                 else {
@@ -129,8 +129,8 @@ namespace Biz.Player {
                     else {
                         gravity = playerSetting.Gravity + linearDrag;
                     }
+                    moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
                 }
-                moveForceDirection = new Vector2(GetValidInput(Model.Offset.x, rigidbody.velocity.x, maxMoveSpeed), 0);
                 //如果有移动力则设置方向
                 if (moveForceDirection.x != 0) {
                     Vector3 playerScale = View.PlayerView.Player.localScale;
@@ -187,7 +187,7 @@ namespace Biz.Player {
 
         }
 
-        /// <summary>根据输入、当前速度、最大速度确定有效输入(一维)</summary>
+        /// <summary>根据输入、当前速度、最大速度确定有效输入(一维)【空中】</summary>
         private float GetValidInput(float input, float velocity, float maxMoveSpeed) {
             //如果同向
             if (Math.Sign(input) == Math.Sign(velocity)) {
@@ -202,15 +202,25 @@ namespace Biz.Player {
             else return View.PlayerSetting.InvertDirectionMultiplier * input;
         }
 
-        /// <summary>根据输入、当前速度、最大速度确定有效输入(二维)</summary>
+        /// <summary>根据输入、当前速度、最大速度确定有效输入(二维)【溶入】</summary>
         private Vector2 GetValidInput(Vector2 input, Vector2 velocity, Vector2 maxMoveSpeed) {
             return new Vector2(GetValidInput(input.x, velocity.x, maxMoveSpeed.x), GetValidInput(input.y, velocity.y, maxMoveSpeed.y));
         }
 
-        /// <summary>获取主角在地面行走的目标方向(人物中心到地面的垂线为法向量) </summary>
-        // private Vector2 GetGroundValidInput(Vector2 ValidInput) {
-        //     Vector2 normalDir = Physics2D.Distance(View.PlayerView.CenterCollider, Model.StayedGround).normal;
-        // }
+        /// <summary>获取主角在地面行走的有效输入(人物中心到地面的垂线为法向量)【地面】 </summary>
+        private Vector2 GetGroundValidInput(Vector2 input, Vector2 velocity, float maxMoveSpeed) {
+            Vector2 normalDir = Physics2D.Distance(View.PlayerView.CenterCollider, Model.StayedGround).normal;
+            //X正向的垂直向量
+            Vector2 xDir = new Vector2(normalDir.y, -(normalDir.x)); //模为1
+            Vector2 dirInput = Vector2.Dot(input, xDir) / xDir.magnitude * xDir; //输入在斜坡方向的投影
+            if (Math.Sign(dirInput.x) == Math.Sign(velocity.x)) {
+                if (Math.Abs(velocity.magnitude) > maxMoveSpeed) {
+                    return dirInput * 0;
+                }
+                else return dirInput;
+            }
+            else return View.PlayerSetting.InvertDirectionMultiplier * dirInput;
+        }
 
         /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
         private bool IsMeltAvaliable() {
@@ -280,7 +290,7 @@ namespace Biz.Player {
         /// <summary>获取溶出推力/summary>
         private Vector2 GetPushOutForce(Vector2 direction) {
             Vector2 pushForce = direction * 500;
-            Debug.Log("推力：" + pushForce);
+            //Debug.Log("推力：" + pushForce);
             return pushForce;
         }
 
