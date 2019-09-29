@@ -45,6 +45,9 @@ namespace Biz.Gaming {
         /// <summary>切换为溶入状态的时间</summary>
         public float LastMeltTime { get; set; }
 
+        /// <summary>当前所停留的地面</summary>
+        public Collider2D StayedGround { get; set; }
+
         #endregion
 
     }

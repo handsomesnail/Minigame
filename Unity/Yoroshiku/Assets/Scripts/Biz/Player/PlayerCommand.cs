@@ -64,4 +64,12 @@ namespace Biz.Player {
     /// <summary>死亡区域触发</summary>
     public class DeadAreaTriggerCommand : PlayerCommand { }
 
+    /// <summary>设置当前停留的地面碰撞体(用于计算移动方向)</summary>
+    public class SetStayedGroundCommand : PlayerCommand {
+        public Collider2D Ground;
+        public SetStayedGroundCommand(Collider2D ground) {
+            this.Ground = ground;
+        }
+    }
+
 }
