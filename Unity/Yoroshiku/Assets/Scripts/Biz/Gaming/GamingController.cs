@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Biz.Input;
 using Biz.Map;
 using Biz.Player;
+using Cinemachine;
 using UnityEngine;
 using ZCore;
 
@@ -27,6 +28,13 @@ namespace Biz.Gaming {
 
         public void OnResumeCommand(ResumeCommand cmd) {
             Model.GameStatus = GameStatus.Gaming;
+        }
+
+        public void OnCameraAnimCommand(CameraAnimCommand cmd) {
+            CinemachineVirtualCamera camera = Model.Map.VirtualCamera;
+            Animation animation = camera.GetComponent<Animation>();
+            animation.clip = cmd.Clip;
+            animation.Play();
         }
 
         private void EnterMap(int mapIndex) {
