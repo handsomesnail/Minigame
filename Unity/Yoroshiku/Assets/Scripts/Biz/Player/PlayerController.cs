@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
+using Biz.Loading;
 using Biz.Map;
+using Biz.Storage;
 using DG.Tweening;
 using UnityEngine;
 using ZCore;
@@ -70,7 +72,18 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            Call(new Biz.Player.InitCommand());
+            StoragePoint storagePoint = Post<LoadStorageCommand, StoragePoint>(new LoadStorageCommand());
+            Vector3 returnPos = Vector3.zero;
+            if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
+                returnPos = storagePoint.Postion;
+            }
+            else {
+                returnPos = Model.Map.BornPoint.position;
+            }
+            Call(new TransitCommand(() => {
+                Call(new Biz.Player.InitCommand());
+                View.PlayerView.Player.transform.position = returnPos;
+            }));
         }
 
         public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {
@@ -236,8 +249,9 @@ namespace Biz.Player {
 
         /// <summary>当前是否在地面</summary>
         private bool IsGroundByCollider() {
-            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
-                View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"));
+            return (View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
+                    View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"))) &&
+                Model.StayedGround != null;
         }
 
         //只有在溶入过程结束后还没进入区域的情况不push
