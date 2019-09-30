@@ -35,13 +35,14 @@ namespace Biz.Map {
         }
 
         private void OnTriggerEnter2D(Collider2D collider2D) {
-            if (collider2D.gameObject.name == "GroundCheckerCollider") {
+            //Barrier或者AlwaysBarrier层 且Collider为非Trigger才能被视为Ground
+            if (collider2D.gameObject.name == "GroundCheckerCollider" && _Collider.isTrigger == false) {
                 Call(new SetStayedGroundCommand(_Collider));
             }
         }
 
         private void OnTriggerStay2D(Collider2D collider2D) {
-            if (collider2D.gameObject.name == "GroundCheckerCollider") {
+            if (collider2D.gameObject.name == "GroundCheckerCollider" && _Collider.isTrigger == false) {
                 Call(new SetStayedGroundCommand(_Collider));
             }
         }

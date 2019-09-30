@@ -236,8 +236,9 @@ namespace Biz.Player {
 
         /// <summary>当前是否在地面</summary>
         private bool IsGroundByCollider() {
-            return View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
-                View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"));
+            return (View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("AlwaysBarrier")) ||
+                    View.PlayerView.GroundCheckCollider.IsTouchingLayers(LayerMask.GetMask("Barrier"))) &&
+                Model.StayedGround != null;
         }
 
         //只有在溶入过程结束后还没进入区域的情况不push
