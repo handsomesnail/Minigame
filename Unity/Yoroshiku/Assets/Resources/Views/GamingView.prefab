@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4123627780693582}
-  - component: {fileID: 70348231957410400}
+  - component: {fileID: 70785724098274536}
   m_Layer: 10
   m_Name: GroundCheckerCollider
   m_TagString: Untagged
@@ -363,6 +363,22 @@ GameObject:
   - component: {fileID: 212226135642136632}
   m_Layer: 10
   m_Name: "\u5DE6\u817F1"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1748423674570280
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4933321495876208}
+  - component: {fileID: 58386777728752274}
+  m_Layer: 10
+  m_Name: GroundCenterCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -698,6 +714,7 @@ Transform:
   - {fileID: 4977246827079660}
   - {fileID: 4123627780693582}
   - {fileID: 4687805642794680}
+  - {fileID: 4933321495876208}
   m_Father: {fileID: 4116674222363154}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -858,6 +875,19 @@ Transform:
   m_Father: {fileID: 4868086889802200}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4933321495876208
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748423674570280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4466464062818052}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4977246827079660
 Transform:
   m_ObjectHideFlags: 1
@@ -927,6 +957,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!58 &58386777728752274
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748423674570280}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.005, y: -0.1}
+  serializedVersion: 2
+  m_Radius: 0.004
 --- !u!58 &58761353586267262
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -992,7 +1037,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.02, y: 0.02}
   m_EdgeRadius: 0
---- !u!70 &70348231957410400
+--- !u!70 &70690642082291398
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1904886208120020}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: ec36a65aed5144c95aa0bfaeb4859e3e, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.00514071, y: 0.0048151338}
+  m_Size: {x: 0.1323759, y: 0.23631373}
+  m_Direction: 0
+--- !u!70 &70785724098274536
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1004,23 +1064,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0059720897, y: 0.072813675}
-  m_Size: {x: 0.020783477, y: 0.047688205}
-  m_Direction: 0
---- !u!70 &70690642082291398
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1904886208120020}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.00514071, y: 0.0048151338}
-  m_Size: {x: 0.1323759, y: 0.23631373}
+  m_Offset: {x: 0.0050866944, y: 0.08342235}
+  m_Size: {x: 0.003674404, y: 0.07098494}
   m_Direction: 0
 --- !u!70 &70927467793763372
 CapsuleCollider2D:
@@ -1422,10 +1467,11 @@ MonoBehaviour:
     NormalEntity: {fileID: 1590685367911548}
     MeltedEntity: {fileID: 1465784047860592}
     GroundChecker: {fileID: 4123627780693582}
-    GroundCheckCollider: {fileID: 70348231957410400}
+    GroundCheckCollider: {fileID: 70785724098274536}
     MeltCheckCollider: {fileID: 70927467793763372}
     UnMeltCheckCollider: {fileID: 61055395175541350}
     NormalMoveCheckCollider: {fileID: 70690642082291398}
+    GroundCenterCollider: {fileID: 58386777728752274}
   CollectItemList: {fileID: 11400000, guid: 72fd1e932ffbb43cb8c1461541e7fea2, type: 2}
 --- !u!114 &114626925585064398
 MonoBehaviour:

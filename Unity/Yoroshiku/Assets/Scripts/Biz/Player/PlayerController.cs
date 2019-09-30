@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
 using Biz.Map;
+using DG.Tweening;
 using UnityEngine;
 using ZCore;
 
@@ -93,8 +94,9 @@ namespace Biz.Player {
             if (Time.fixedTime - Model.LastMeltReqTime < playerSetting.MeltJudgeDuration && !Model.MeltStatus && IsMeltAvaliable()) {
                 SetMeltStatus(true);
             }
-            //当前是溶入状态且离开了可溶入区域 则进行溶出操作
-            if (Model.MeltStatus && !IsMeltAvaliable()) {
+            //当前是溶入状态且离开了可溶入区域 则进行溶出操作 (该判断在溶入彻底成功之后才开始)
+            if (Model.MeltStatus && !IsMeltAvaliable() && Time.fixedTime - Model.LastMeltTime > playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
+                Debug.Log("离开溶入区域自动溶出");
                 SetMeltStatus(false);
             }
 
@@ -209,7 +211,7 @@ namespace Biz.Player {
 
         /// <summary>获取主角在地面行走的有效输入(人物中心到地面的垂线为法向量)【地面】 </summary>
         private Vector2 GetGroundValidInput(Vector2 input, Vector2 velocity, float maxMoveSpeed) {
-            Vector2 normalDir = Physics2D.Distance(View.PlayerView.CenterCollider, Model.StayedGround).normal;
+            Vector2 normalDir = Physics2D.Distance(View.PlayerView.GroundCenterCollider, Model.StayedGround).normal;
             //X正向的垂直向量
             Vector2 xDir = new Vector2(normalDir.y, -(normalDir.x)); //模为1
             Vector2 dirInput = Vector2.Dot(input, xDir) / xDir.magnitude * xDir; //输入在斜坡方向的投影
@@ -245,6 +247,7 @@ namespace Biz.Player {
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
+            Debug.Log("设置溶入状态:" + meltStatus);
             if (meltStatus) {
                 Model.LastMeltTime = Time.fixedTime;
             }
@@ -275,11 +278,16 @@ namespace Biz.Player {
                 }
                 else {
                     View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
+                    Debug.Log("【SetTrigger : MeltOut】");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
                 }
             }
+            //在溶出操作时插值恢复NormalMoveCollider
+            Transform moveTransform = View.PlayerView.NormalMoveCheckCollider.transform;
+            moveTransform.localScale = Vector3.zero;
+            moveTransform.DOScale(new Vector3(1, 1, 1), View.PlayerSetting.MeltOutDuration);
         }
 
         /// <summary>获取溶入初速度</summary>
