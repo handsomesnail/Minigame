@@ -34,6 +34,13 @@ namespace Biz.Storage {
 
 
     public class LoadStorageCommand : StorageCommand {
+        public Action<StoragePoint> callback;
 
+        public LoadStorageCommand () {
+        }
+
+        public LoadStorageCommand (Action<StoragePoint> callback) {
+            this.callback = callback;
+        }
     }
 }

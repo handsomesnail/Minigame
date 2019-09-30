@@ -59,6 +59,8 @@ namespace Biz.Gaming {
         /// <summary>该账户当前存档</summary>
         public StoragePoint StoragePoint;
 
+        public string Token;
+
         #endregion
 
     }

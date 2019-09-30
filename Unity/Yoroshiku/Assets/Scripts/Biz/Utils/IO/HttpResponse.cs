@@ -5,7 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 
 public class HttpResponse {
-    public string code;
+    public int code;
     public string msg;
     public object data;
 

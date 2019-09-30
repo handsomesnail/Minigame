@@ -7,18 +7,9 @@ namespace Biz.Start {
     public class StartController : Controller<StartModel, StartView> {
 
         public void OnStartCommand (StartCommand cmd) {
-            Debug.Log ("OnIndexCommand");
             View.StartButton.onClick.AddListener (delegate {
                 View.Destroy ();
                 Call (new EnterCommand ());
-            });
-
-            View.ContinueButton.onClick.AddListener (delegate {
-                View.Destroy ();
-                Call (new EnterCommand ());
-                StoragePoint storage = Post<LoadStorageCommand, StoragePoint> (new LoadStorageCommand());
-                Call (new EnterCommand (storage.Chapter));
-
             });
 
             View.HelpButton.onClick.AddListener (delegate {
@@ -27,11 +18,12 @@ namespace Biz.Start {
             });
 
             View.ExitBUtton.onClick.AddListener (delegate {
-                View.Destroy ();
-                Call(new Biz.Pause.PauseCommand());
+                //View.Destroy ();
+                //Call(new Biz.Pause.PauseCommand());
                 //Application.Quit ();
+                View.Destroy ();
+                Call (new Biz.Account.IndexCommand ());
             });
-            Debug.Log ("OnIndexCommand-");
 
         }
     }
