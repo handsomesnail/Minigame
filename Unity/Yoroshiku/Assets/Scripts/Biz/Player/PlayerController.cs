@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
+using Biz.Loading;
 using Biz.Map;
 using DG.Tweening;
 using UnityEngine;
@@ -70,7 +71,9 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            Call(new Biz.Player.InitCommand());
+            Call(new TransitCommand(() => {
+                Call(new Biz.Player.InitCommand());
+            }));
         }
 
         public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {
