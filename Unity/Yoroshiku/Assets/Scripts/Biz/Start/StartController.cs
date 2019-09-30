@@ -12,14 +12,6 @@ namespace Biz.Start {
                 Call (new EnterCommand ());
             });
 
-            View.ContinueButton.onClick.AddListener (delegate {
-                View.Destroy ();
-                Call (new EnterCommand ());
-                StoragePoint storage = Post<LoadStorageCommand, StoragePoint> (new LoadStorageCommand());
-                Call (new EnterCommand (storage.Chapter));
-
-            });
-
             View.HelpButton.onClick.AddListener (delegate {
                 View.Destroy ();
                 Call (new Biz.Help.HelpCommand ());
@@ -29,6 +21,7 @@ namespace Biz.Start {
                 //View.Destroy ();
                 //Call(new Biz.Pause.PauseCommand());
                 //Application.Quit ();
+                View.Destroy ();
                 Call (new Biz.Account.IndexCommand ());
             });
 

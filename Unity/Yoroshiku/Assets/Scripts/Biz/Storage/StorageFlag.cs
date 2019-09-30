@@ -25,8 +25,6 @@ namespace Biz.Storage {
             if ((DateTime.Now - LastInvoked).CompareTo (Interval) < 0) return;
             LastInvoked = DateTime.Now;
             Call (new SaveStorageCommand (new StoragePoint (transform.position)));
-            Debug.Log ("OnTriggerEnter2D");
-            Debug.Log (DateTime.Now.Millisecond);
         }
 
     }
