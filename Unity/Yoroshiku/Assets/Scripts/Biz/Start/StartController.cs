@@ -7,7 +7,6 @@ namespace Biz.Start {
     public class StartController : Controller<StartModel, StartView> {
 
         public void OnStartCommand (StartCommand cmd) {
-            Debug.Log ("OnIndexCommand");
             View.StartButton.onClick.AddListener (delegate {
                 View.Destroy ();
                 Call (new EnterCommand ());
@@ -27,11 +26,10 @@ namespace Biz.Start {
             });
 
             View.ExitBUtton.onClick.AddListener (delegate {
-                View.Destroy ();
-                Call(new Biz.Pause.PauseCommand());
-                //Application.Quit ();
+                //View.Destroy ();
+                //Call(new Biz.Pause.PauseCommand());
+                Application.Quit ();
             });
-            Debug.Log ("OnIndexCommand-");
 
         }
     }
