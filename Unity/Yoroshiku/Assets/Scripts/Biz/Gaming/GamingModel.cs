@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Biz.Map;
 using Biz.Player;
+using Biz.Storage;
 using UnityEngine;
 using ZCore;
 
@@ -50,6 +51,13 @@ namespace Biz.Gaming {
 
         /// <summary>当前所停留的地面</summary>
         public Collider2D StayedGround { get; set; }
+
+        #endregion
+
+        #region Storage
+
+        /// <summary>该账户当前存档</summary>
+        public StoragePoint StoragePoint;
 
         #endregion
 
