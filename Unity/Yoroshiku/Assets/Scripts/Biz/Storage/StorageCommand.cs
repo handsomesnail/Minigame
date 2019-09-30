@@ -19,11 +19,16 @@ namespace Biz.Storage {
         }
 
         public SaveStorageCommand (int chapter, Vector3 position) {
-            StoragePoint tmp = new StoragePoint {
+            this.StoragePoint = new StoragePoint {
                 Chapter = chapter,
                 Postion = position
             };
-            this.StoragePoint = tmp;
+        }
+
+        public SaveStorageCommand (int passChapter) {
+            this.StoragePoint = new StoragePoint {
+                PassChapter = passChapter
+            };
         }
     }
 

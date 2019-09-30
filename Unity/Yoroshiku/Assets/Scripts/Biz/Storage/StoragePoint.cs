@@ -5,6 +5,7 @@ namespace Biz.Storage {
     [Serializable]
     public class StoragePoint {
         public int Chapter;
+        public int PassChapter;
         public Vector3 Postion;
         public string[] Items;
 
@@ -13,9 +14,14 @@ namespace Biz.Storage {
         public StoragePoint(Vector3 position) {
             Postion = position;
         }
+
         public StoragePoint(int chapter, Vector3 postion) {
             Chapter = chapter;
             Postion = postion;
+        }
+
+        public StoragePoint(int passChapter) {
+            PassChapter = passChapter;
         }
 
         public override string ToString() {
