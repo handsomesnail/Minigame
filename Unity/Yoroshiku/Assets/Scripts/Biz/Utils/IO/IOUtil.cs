@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine.Networking;
 
 namespace Biz.Utils.IO {
@@ -72,6 +73,35 @@ namespace Biz.Utils.IO {
                 fileMD5 += Convert.ToString(b, 16);
             }
             completeCallback.CheckedInvoke(fileMD5);
+        }
+
+        /// <summary>Get请求 </summary>
+        public static IEnumerator Get(string url, Action<HttpResponse> completeCallback, Action<float> progressCallback = null) {
+            UnityWebRequest request = UnityWebRequest.Get(url);
+            yield return Request(request, completeCallback, progressCallback);
+        }
+
+        /// <summary>Post请求</summary>
+        public static IEnumerator Post(string url, Dictionary<string, string> formFields, Action<HttpResponse> completeCallback, Action<float> progressCallback = null) {
+            UnityWebRequest request = UnityWebRequest.Post(url, formFields);
+            yield return Request(request, completeCallback, progressCallback);
+        }
+
+        private static IEnumerator Request(UnityWebRequest request, Action<HttpResponse> completeCallback, Action<float> progressCallback) {
+            request.SendWebRequest();
+            while (!request.isDone) {
+                progressCallback?.Invoke(request.downloadProgress);
+                yield return null;
+            }
+            progressCallback?.Invoke(1.0f);
+            if (request.isHttpError || request.isNetworkError) {
+                //UI提示联网失败
+            }
+            else {
+                string data = System.Text.Encoding.UTF8.GetString(request.downloadHandler.data);
+                HttpResponse response = JsonConvert.DeserializeObject<HttpResponse>(data);
+                completeCallback.CheckedInvoke(response);
+            }
         }
 
     }
