@@ -11,7 +11,11 @@ namespace Biz.Storage {
         private const string STORAGE_FILENAME = "/StoragePoint.json";
 
         private string GetStoragePointFilename() {
+#if UNITY_EDITOR
             return Application.dataPath + STORAGE_FILENAME;
+#else
+            return Application.persistentDataPath + STORAGE_FILENAME;
+#endif
         }
 
         public void OnSaveStorageCommand(SaveStorageCommand cmd) {
