@@ -10,21 +10,13 @@ using ZCore;
 namespace Biz.Storage {
 
     public class StorageController : Controller<GamingModel, GamingView> {
-
-        private const string STORAGE_FILENAME = "/StoragePoint.json";
-
+    
         private const string BASE_URL = "http://localhost:8080";
 
-
-        private string GetStoragePointFilename () {
-#if UNITY_EDITOR
-            return Application.dataPath + STORAGE_FILENAME;
-#else
-            return Application.persistentDataPath + STORAGE_FILENAME;
-#endif
-        }
-
         public void OnSaveStorageCommand (SaveStorageCommand cmd) {
+            if (Model.StoragePoint == null) {
+                Model.StoragePoint = new StoragePoint ();
+            }
             // 修改本地存档
             if (cmd.StoragePoint.PassChapter > Model.StoragePoint.PassChapter) {
                 Model.StoragePoint.PassChapter = cmd.StoragePoint.PassChapter;
@@ -35,6 +27,11 @@ namespace Biz.Storage {
             // 收集品收集后在经过过关点或存档点时进行存档
             Model.StoragePoint.Items = Post<Biz.Item.ListCollectedCommand, string []> (new Biz.Item.ListCollectedCommand ());
 
+            if(string.IsNullOrWhiteSpace(Model.Token)) {
+                return;
+            }
+
+            Debug.Log ("save storage to server.");
             Dictionary<string, string> form = new Dictionary<string, string> {
                 { "token", Model.Token },
                 { "storage", JsonUtility.ToJson (Model.StoragePoint) }
@@ -59,37 +56,31 @@ namespace Biz.Storage {
         /// </summary>
         /// <returns>StoragePoint.</returns>
         /// <param name="cmd">Cmd.</param>
-        public StoragePoint OnLoadStorageCommand (LoadStorageCommand cmd) {
+        public void OnLoadStorageCommand (LoadStorageCommand cmd) {
+            Debug.Log ("load storage form server.");
             StoragePoint storagePoint = null;
-            CountdownEvent countdown = new CountdownEvent (1);
-            try {
-                Dictionary<string, string> form = new Dictionary<string, string> {
+            Dictionary<string, string> form = new Dictionary<string, string> {
                     { "token", Model.Token },
                 };
-                StartCoroutine (
-                    IOUtil.Post (
-                    BASE_URL + "/storage/load",
-                    form,
-                    (HttpResponse obj) => {
-                        if (obj.code != 0) {
-                            return;
-                        }
-                        if (obj.data != null && !string.IsNullOrWhiteSpace (obj.data.ToString ())) {
-                            storagePoint = JsonUtility.FromJson<StoragePoint> (obj.data.ToString ());
-                            Call (new Biz.Item.InitCommand (storagePoint.Items));
-                        }
-                    },
-                    (float obj) => {
-                        // ignore
-                    })
-                );
-                countdown.Wait (1000);
-                return storagePoint;
-            } catch {
-                return null;
-            } finally {
-                countdown.Dispose ();
-            }
+            StartCoroutine (
+                IOUtil.Post (
+                BASE_URL + "/storage/load",
+                form,
+                (HttpResponse obj) => {
+                    if (obj.code != 0) {
+                        return;
+                    }
+                    if (obj.data != null && !string.IsNullOrWhiteSpace (obj.data.ToString ())) {
+                        storagePoint = JsonUtility.FromJson<StoragePoint> (obj.data.ToString ());
+                        // todo  call before enter chapter Call (new Biz.Item.InitCommand (storagePoint.Items));
+                    }
+                    cmd.callback?.Invoke (storagePoint);
+                    Model.StoragePoint = storagePoint;
+                },
+                (float obj) => {
+                    // ignore
+                })
+            );
         }
     }
 

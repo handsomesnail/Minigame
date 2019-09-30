@@ -13,7 +13,14 @@ namespace Biz.Player {
     public sealed class PlayerController : Controller<GamingModel, GamingView> {
 
         public void OnInitCommand(InitCommand cmd) {
-            View.PlayerView.Player.transform.position = Model.Map.BornPoint.position; //设置Player的出生点
+            StoragePoint storagePoint = Model.StoragePoint;
+            Vector3 returnPos = Vector3.zero;
+            if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
+                returnPos = storagePoint.Postion;
+            } else {
+                returnPos = Model.Map.BornPoint.position;
+            }
+            View.PlayerView.Player.transform.position = returnPos; //设置Player的出生点
             //设置Player的初始数据
             Model.MeltStatus = false;
             Model.AttachedObject = null;
@@ -72,7 +79,7 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            StoragePoint storagePoint = Post<LoadStorageCommand, StoragePoint>(new LoadStorageCommand());
+            StoragePoint storagePoint = Model.StoragePoint;
             Vector3 returnPos = Vector3.zero;
             if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
                 returnPos = storagePoint.Postion;

@@ -63,6 +63,7 @@ namespace Biz.Account {
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Start.StartCommand ());
+                        Call (new Biz.Storage.LoadStorageCommand ());
                     },
                     (float obj) => {
                         // ignore
@@ -95,6 +96,7 @@ namespace Biz.Account {
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Start.StartCommand ());
+                        Call (new Biz.Storage.LoadStorageCommand ());
                     },
                     (float obj) => {
                         // ignore

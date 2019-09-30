@@ -28,7 +28,8 @@ namespace Biz.Start {
             View.ExitBUtton.onClick.AddListener (delegate {
                 //View.Destroy ();
                 //Call(new Biz.Pause.PauseCommand());
-                Application.Quit ();
+                //Application.Quit ();
+                Call (new Biz.Account.IndexCommand ());
             });
 
         }
