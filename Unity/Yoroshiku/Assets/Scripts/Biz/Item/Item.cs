@@ -43,11 +43,18 @@ namespace Biz.Item {
         public Text TextDisplayer;
 
         void Start () {
-            Debug.Log ("enter Start");
+            // 查看当前存档中该收集品是否已收集
+            string [] collected = Post<ListCollectedCommand, string []> (new ListCollectedCommand ());
+            foreach (var item in collected) {
+                if(ItemName == item) {
+                    Destroy (this);
+                    return;
+                }
+            }
+
             TextDisplayer.text = Text;
             Duration = Duration == 0 ? 3000 : Duration;
             CanvasRoot.SetActive (false);
-            // 查看当前存档中该收集品是否已收集
         }
 
         private void OnTriggerEnter2D (Collider2D collision) {
