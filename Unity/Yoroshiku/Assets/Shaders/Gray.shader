@@ -53,6 +53,7 @@
                     discard;
                 }
                 float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
+				gray *= col.a; //大雾
     			return fixed4(gray,gray,gray,col.a);
             }
             ENDCG
