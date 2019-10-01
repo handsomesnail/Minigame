@@ -25,6 +25,14 @@ namespace Biz.Account {
                 SwitchFunc (View.LoginRoot);
             });
 
+            View.Guest.onClick.AddListener (delegate {
+                Model.IsGuest = true;
+                View.Destroy ();
+                Call (new Biz.Storage.LoadStorageCommand ());
+                Call (new Biz.Start.StartCommand ());
+            });
+
+
             View.RegisterBack.onClick.AddListener (delegate {
                 SwitchFunc (View.IndexRoot);
             });
@@ -35,15 +43,18 @@ namespace Biz.Account {
 
             View.RegisterButton.onClick.AddListener (delegate {
                 if (string.IsNullOrWhiteSpace (View.RegisterUsername.text)) {
-
+                    ShowTip ("请输入用户名");
+                    return;
                 }
 
                 if (string.IsNullOrWhiteSpace (View.RegisterPassword.text)) {
-
+                    ShowTip ("请输入密码");
+                    return;
                 }
 
                 if (View.RegisterRepeatPassword.text != View.RegisterPassword.text) {
-
+                    ShowTip ("两次密码不一致");
+                    return;
                 }
 
                 Dictionary<string, string> form = new Dictionary<string, string> {
@@ -60,6 +71,7 @@ namespace Biz.Account {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Storage.LoadStorageCommand ());
@@ -93,6 +105,7 @@ namespace Biz.Account {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Storage.LoadStorageCommand ());
