@@ -8,10 +8,5 @@ namespace Biz.Pause {
         public Button ContinueButton;
         public Button RestartButton;
         public Button HomeButton;
-
-        public Text ItemText;
-        public GridLayoutGroup ItemContainer;
-
-        public CollectItemList ItemList;
     }
 }

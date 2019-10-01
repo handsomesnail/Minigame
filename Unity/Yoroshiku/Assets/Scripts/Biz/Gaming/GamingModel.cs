@@ -61,6 +61,8 @@ namespace Biz.Gaming {
 
         public string Token;
 
+        public bool IsGuest;
+
         #endregion
 
     }
