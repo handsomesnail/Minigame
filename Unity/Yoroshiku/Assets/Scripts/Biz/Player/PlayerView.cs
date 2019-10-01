@@ -15,6 +15,8 @@ namespace Biz.Player {
 
         public Transform Player;
 
+        public SpriteRenderer PlayerRenderer;
+
         //用来计算溶入助力的碰撞体
         public CircleCollider2D CenterCollider;
 
