@@ -17,10 +17,12 @@ namespace Biz.Player {
             Vector3 returnPos = Vector3.zero;
             if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
                 returnPos = storagePoint.Postion;
-            } else {
+            }
+            else {
                 returnPos = Model.Map.BornPoint.position;
             }
             View.PlayerView.Player.transform.position = returnPos; //设置Player的出生点
+            View.PlayerView.PlayerRenderer.color = Model.Map.PlayerColor;
             //设置Player的初始数据
             Model.MeltStatus = false;
             Model.AttachedObject = null;
