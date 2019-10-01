@@ -1,4 +1,4 @@
-﻿Shader "Yoroshiku/Gray"
+﻿Shader "Yoroshiku/AdditiveGray"
 {
     Properties
     {
@@ -32,11 +32,11 @@
         	CGPROGRAM
             #pragma vertex SpriteVert
             #pragma fragment frag
-            #pragma target 2.0
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ PIXELSNAP_ON
-            #pragma multi_compile _ ETC1_EXTERNAL_ALPHA
+            // make fog work
+            #pragma multi_compile_fog
+
             #include "UnitySprites.cginc"
+            //#include "UnityCG.cginc"
 
             struct appdata
             {
@@ -45,15 +45,43 @@
                 fixed4 color : COLOR;
             };
 
+            // struct v2f
+            // {
+            //     float2 uv : TEXCOORD0;
+            //     float4 vertex : SV_POSITION;
+            //     fixed4 color : COLOR;
+            // };
+
+            //sampler2D _MainTex;       
+            //fixed4 _Color;   
+
+            //sampler2D _MainTex;
+            //float4 _MainTex_ST;
+
+            // v2f vert (appdata v)
+            // {
+            //     v2f o;
+            //     o.vertex = UnityObjectToClipPos(v.vertex);
+            //     o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+            //     UNITY_TRANSFER_FOG(o,o.vertex);
+            //     o.color = v.color;
+            //     return o;
+            // }
+
             fixed4 frag (appdata i) : SV_Target
             {
+                
+                // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-				if(col.a == 0.0)
-				{
+                if(col.a == 0.0){
                     discard;
                 }
+                //-----------add-------------
+                // gray
                 float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
-    			return fixed4(gray,gray,gray,col.a);
+                col.rgb = float3(gray, gray, gray);
+                //---------------------------
+                return col;
             }
             ENDCG
         }
