@@ -7,6 +7,7 @@ namespace Biz.Account {
         public GameObject IndexRoot;
         public Button ToRegister;
         public Button ToLogin;
+        public Button Guest;
 
         public GameObject RegisterRoot;
         public InputField RegisterUsername;

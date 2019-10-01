@@ -8,8 +8,6 @@ using Biz.Gaming;
 
 namespace Biz.Account {
     public class AccountController : Controller<GamingModel, AccountView> {
-        private const string BASE_URL = "http://localhost:8080";
-
         public void OnIndexCommand (IndexCommand cmd) {
             View.TipPanel.SetActive (false);
             SwitchFunc (View.IndexRoot);
@@ -25,6 +23,14 @@ namespace Biz.Account {
                 SwitchFunc (View.LoginRoot);
             });
 
+            View.Guest.onClick.AddListener (delegate {
+                Model.IsGuest = true;
+                View.Destroy ();
+                Call (new Biz.Storage.LoadStorageCommand ());
+                Call (new Biz.Start.StartCommand ());
+            });
+
+
             View.RegisterBack.onClick.AddListener (delegate {
                 SwitchFunc (View.IndexRoot);
             });
@@ -35,15 +41,18 @@ namespace Biz.Account {
 
             View.RegisterButton.onClick.AddListener (delegate {
                 if (string.IsNullOrWhiteSpace (View.RegisterUsername.text)) {
-
+                    ShowTip ("请输入用户名");
+                    return;
                 }
 
                 if (string.IsNullOrWhiteSpace (View.RegisterPassword.text)) {
-
+                    ShowTip ("请输入密码");
+                    return;
                 }
 
                 if (View.RegisterRepeatPassword.text != View.RegisterPassword.text) {
-
+                    ShowTip ("两次密码不一致");
+                    return;
                 }
 
                 Dictionary<string, string> form = new Dictionary<string, string> {
@@ -53,13 +62,14 @@ namespace Biz.Account {
 
                 StartCoroutine (
                     IOUtil.Post (
-                    BASE_URL + "/account/register",
+                    IOUtil.GetFullUrl ("/account/register"),
                     form,
                     (HttpResponse obj) => {
                         if (obj.code != 0) {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Storage.LoadStorageCommand ());
@@ -86,13 +96,14 @@ namespace Biz.Account {
 
                 StartCoroutine (
                     IOUtil.Post (
-                    BASE_URL + "/account/login",
+                    IOUtil.GetFullUrl ("/account/login"),
                     form,
                     (HttpResponse obj) => {
                         if (obj.code != 0) {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
                         Call (new Biz.Storage.LoadStorageCommand ());
