@@ -1,9 +1,11 @@
-﻿Shader "Yoroshiku/Gray"
+﻿//仅限MainTex的颜色区分不大都为一个色系
+Shader "Yoroshiku/ConvertColor"
 {
     Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        _Color ("Tint", Color) = (1,1,1,1)
+        _TColor ("Templete", Color) = (1,1,1,1) 
+		_AColor ("Additive", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1,1,1,1)
         [HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
@@ -45,6 +47,9 @@
                 fixed4 color : COLOR;
             };
 
+            fixed4 _TColor;
+            fixed4 _AColor;
+
             fixed4 frag (appdata i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
@@ -52,9 +57,9 @@
 				{
                     discard;
                 }
-                float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
-				gray *= col.a; //大雾
-    			return fixed4(gray,gray,gray,col.a);
+                float gray = col.r/_TColor.r * 0.333 + col.g/_TColor.g * 0.333 + col.b/_TColor.b * 0.333;
+                gray *= col.a;
+    			return fixed4(gray*_AColor.r, gray*_AColor.g ,gray*_AColor.b, col.a); 
             }
             ENDCG
         }
