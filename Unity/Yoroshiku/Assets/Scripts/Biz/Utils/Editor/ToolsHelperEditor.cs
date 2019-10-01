@@ -70,6 +70,16 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PassPoint.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/剧情&引导", false, 8)]
+    public static void CreateNewGuideTrigger() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/GuideTrigger.prefab");
+    }
+
+    [MenuItem("GameObject/Yoroshiku/动画触发区域", false, 9)]
+    public static void CreateNewAnimTrigger() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/AnimTrigger.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;

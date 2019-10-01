@@ -33,4 +33,12 @@ namespace Biz.Gaming {
     /// <summary>恢复</summary>
     public class ResumeCommand : GamingCommand { }
 
+    /// <summary>播放相机动画</summary>
+    public class CameraAnimCommand : GamingCommand {
+        public AnimationClip Clip { get; private set; }
+        public CameraAnimCommand(AnimationClip clip) {
+            this.Clip = clip;
+        }
+    }
+
 }
