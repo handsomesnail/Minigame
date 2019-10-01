@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using Biz.Gaming;
 using Biz.Utils.IO;
 using UnityEngine;
@@ -10,8 +9,6 @@ using ZCore;
 namespace Biz.Storage {
 
     public class StorageController : Controller<GamingModel, GamingView> {
-
-        private const string BASE_URL = "http://localhost:8080";
 
         private const string STORAGE_FILENAME = "/StoragePoint.json";
 
@@ -58,7 +55,7 @@ namespace Biz.Storage {
             };
             StartCoroutine (
                 IOUtil.Post (
-                BASE_URL + "/storage/save",
+                    IOUtil.GetFullUrl ("/storage/save"),
                 form,
                 (HttpResponse obj) => {
                     if (obj.code != 0) {
@@ -109,7 +106,7 @@ namespace Biz.Storage {
             };
             StartCoroutine (
                 IOUtil.Post (
-                BASE_URL + "/storage/load",
+                IOUtil.GetFullUrl ("/storage/load"),
                 form,
                 (HttpResponse obj) => {
                     if (obj.code != 0) {

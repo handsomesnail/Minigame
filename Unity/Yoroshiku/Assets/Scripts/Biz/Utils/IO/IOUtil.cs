@@ -103,6 +103,14 @@ namespace Biz.Utils.IO {
                 completeCallback.CheckedInvoke(response);
             }
         }
+        /// <summary>获取完整请求路径，添加host </summary>
+        public static string GetFullUrl(string path) {
+#if UNITY_EDITOR
+            return "http://49.235.98.96:8080" + path;
+#else
+            return "http://49.235.98.96:8080" + path;
+#endif
+        }
 
     }
 

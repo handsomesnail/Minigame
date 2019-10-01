@@ -8,8 +8,6 @@ using Biz.Gaming;
 
 namespace Biz.Account {
     public class AccountController : Controller<GamingModel, AccountView> {
-        private const string BASE_URL = "http://localhost:8080";
-
         public void OnIndexCommand (IndexCommand cmd) {
             View.TipPanel.SetActive (false);
             SwitchFunc (View.IndexRoot);
@@ -64,7 +62,7 @@ namespace Biz.Account {
 
                 StartCoroutine (
                     IOUtil.Post (
-                    BASE_URL + "/account/register",
+                    IOUtil.GetFullUrl ("/account/register"),
                     form,
                     (HttpResponse obj) => {
                         if (obj.code != 0) {
@@ -98,7 +96,7 @@ namespace Biz.Account {
 
                 StartCoroutine (
                     IOUtil.Post (
-                    BASE_URL + "/account/login",
+                    IOUtil.GetFullUrl ("/account/login"),
                     form,
                     (HttpResponse obj) => {
                         if (obj.code != 0) {
