@@ -29,11 +29,6 @@ namespace Biz.Item {
         public uint Duration;
 
         /// <summary>
-        /// 暂停页显示的Sprite, 未设置则显示关卡内Sprite
-        /// </summary>
-        public Sprite Sprite;
-
-        /// <summary>
         /// 销毁时的已该节点为根进行销毁
         /// </summary>
         public GameObject ItemRoot;
@@ -47,7 +42,7 @@ namespace Biz.Item {
             string [] collected = Post<ListCollectedCommand, string []> (new ListCollectedCommand ());
             foreach (var item in collected) {
                 if(ItemName == item) {
-                    Destroy (this);
+                    Destroy (ItemRoot);
                     return;
                 }
             }
