@@ -186,7 +186,7 @@ namespace Biz.Player {
                     if (Model.CurrentStayMeltAreas.Count == 0 || !CheckMeltStatus(Model.CurrentStayMeltAreas.First.Value)) {
                         Debug.Log("溶入失败");
                         //Model.CurrentStayMeltAreas.RemoveFirst();;
-                        SetMeltStatus(false, false);
+                        SetMeltStatus(false);
                     }
                     else {
                         Debug.Log("溶入成功");
@@ -268,7 +268,7 @@ namespace Biz.Player {
 
         //只有在溶入过程结束后还没进入区域的情况不push
         /// <summary>设置溶入状态</summary>
-        private void SetMeltStatus(bool meltStatus, bool push = true) {
+        private void SetMeltStatus(bool meltStatus) {
             Model.MeltStatus = meltStatus;
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
@@ -293,17 +293,20 @@ namespace Biz.Player {
                 Model.AttachedObject = null;
             }
             //溶入和溶出时的推力处理
-            if (push) {
-                if (meltStatus) {
-                    MeltArea targetMeltArea = Model.CurrentStayMeltAreas.First.Value;
-                    //已经相交则不需要推力进入溶入区域
-                    if (!CheckMeltStatus(targetMeltArea)) {
-                        ColliderDistance2D distance2D = Physics2D.Distance(targetMeltArea.GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
-                        Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
-                        View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
-                    }
+            if (meltStatus) {
+                MeltArea targetMeltArea = Model.CurrentStayMeltAreas.First.Value;
+                //已经相交则不需要推力进入溶入区域
+                if (!CheckMeltStatus(targetMeltArea)) {
+                    ColliderDistance2D distance2D = Physics2D.Distance(targetMeltArea.GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
+                    Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
+                    View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
                 }
-                else {
+            }
+            else {
+                AnimatorStateInfo stateInfo = View.PlayerView.PlayerAnim.GetCurrentAnimatorStateInfo(0);
+                //只有在Melted.Idle状态下才推出
+                if (stateInfo.fullPathHash == Animator.StringToHash("Base Layer.Melted.Idle")) {
+                    Debug.Log("推力推出");
                     View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
