@@ -294,6 +294,7 @@ namespace Biz.Player {
                     IAttachable attachedObject = meltArea.GetComponentInParent<IAttachable>();
                     if (attachedObject != null) {
                         Model.AttachedObject = attachedObject;
+                        Model.AttachedObject.OnStartAttached();
                     }
                 }
             }
