@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Biz.Player;
 using Cinemachine;
 using UnityEngine;
 using ZCore;
@@ -16,6 +17,9 @@ namespace Biz.Map {
 
         /// <summary>主角附加颜色(场景色调)</summary>
         public Color PlayerColor = Color.white;
+
+        /// <summary>当前地图人物设置</summary>
+        public PlayerSetting ApplyPlayerSetting;
 
     }
 }
