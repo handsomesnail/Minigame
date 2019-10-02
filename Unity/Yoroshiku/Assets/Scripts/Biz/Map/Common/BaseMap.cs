@@ -14,5 +14,8 @@ namespace Biz.Map {
         /// <summary>出生点</summary>
         public Transform BornPoint;
 
+        /// <summary>主角附加颜色(场景色调)</summary>
+        public Color PlayerColor = Color.white;
+
     }
 }
