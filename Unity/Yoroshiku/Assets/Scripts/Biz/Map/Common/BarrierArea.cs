@@ -47,6 +47,12 @@ namespace Biz.Map {
             }
         }
 
+        private void OnTriggerExit2D(Collider2D collider2D) {
+            if (collider2D.gameObject.name == "GroundCheckerCollider" && _Collider.isTrigger == false) {
+                Call(new SetStayedGroundCommand(null));
+            }
+        }
+
     }
 
 }
