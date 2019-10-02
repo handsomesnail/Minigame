@@ -307,7 +307,7 @@ namespace Biz.Player {
                 //只有在Melted.Idle状态下才推出
                 if (stateInfo.fullPathHash == Animator.StringToHash("Base Layer.Melted.Idle")) {
                     Debug.Log("推力推出");
-                    View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
+                    //View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
