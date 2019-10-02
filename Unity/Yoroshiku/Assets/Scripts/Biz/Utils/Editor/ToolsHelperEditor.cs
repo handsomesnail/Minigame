@@ -80,9 +80,14 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/AnimTrigger.prefab");
     }
 
-    [MenuItem ("GameObject/Yoroshiku/收集品", false, 10)]
-    public static void CreateNewCollectItem () {
-        PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/CollectItem.prefab");
+    [MenuItem("GameObject/Yoroshiku/收集品", false, 10)]
+    public static void CreateNewCollectItem() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/CollectItem.prefab");
+    }
+
+    [MenuItem("GameObject/Yoroshiku/音效触发区域", false, 11)]
+    public static void CreateNewAudioTrigger() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/AudioTrigger.prefab");
     }
 
     private static void PlaceYoroshikuElement(string prefabPath) {
