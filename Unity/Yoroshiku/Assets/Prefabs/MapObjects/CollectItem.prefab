@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 111863697306113722}
   - component: {fileID: 82722295107935036}
   - component: {fileID: 61765379983470962}
-  m_Layer: 14
+  m_Layer: 19
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4959161140437122}
-  m_Layer: 14
+  m_Layer: 19
   m_Name: CollectItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1791543993245704}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -93.2, y: -15.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4959161140437122}
@@ -211,7 +211,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1829959267252006}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4059437166401434}
@@ -271,14 +271,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.6268657, y: 0.6268657}
-    newSize: {x: 5.65, y: 2.72}
+    oldSize: {x: 1.34, y: 1.37}
+    newSize: {x: 1.34, y: 1.37}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62, y: 0.6268657}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!81 &81270387471321062
 AudioListener:
@@ -297,7 +297,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u963F\u65AF\u987F"
+  m_Text: 
 --- !u!114 &114741652202677404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -442,7 +442,6 @@ MonoBehaviour:
   ItemName: CollectItem
   Text: "\u6D4B\u8BD5\u6587\u672C"
   Duration: 3000
-  Sprite: {fileID: 0}
   ItemRoot: {fileID: 1829959267252006}
   CanvasRoot: {fileID: 1307645144737092}
   TextDisplayer: {fileID: 114167768836806090}
@@ -578,15 +577,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6086b492cf4854abaaf6c0f178f47d7c, type: 3}
+  m_SortingLayerID: 746357535
+  m_SortingLayer: 2
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 21300000, guid: 395769ad5fb9f4ccfae2973c9ac98561, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.65, y: 2.72}
+  m_Size: {x: 1.34, y: 1.37}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

@@ -80,6 +80,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/AnimTrigger.prefab");
     }
 
+    [MenuItem ("GameObject/Yoroshiku/收集品", false, 10)]
+    public static void CreateNewCollectItem () {
+        PlaceYoroshikuElement ("Assets/Prefabs/MapObjects/CollectItem.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
