@@ -22,6 +22,9 @@ namespace Biz.Map {
             }
             Model.Map = GameObject.Instantiate(mapPrefab.gameObject, View.transform, true).GetComponent<BaseMap>();
             Model.Map.VirtualCamera.Follow = View.PlayerView.Player;
+            if (Model.Map.ApplyPlayerSetting != null) {
+                View.PlayerSetting = Model.Map.ApplyPlayerSetting;
+            }
         }
 
     }
