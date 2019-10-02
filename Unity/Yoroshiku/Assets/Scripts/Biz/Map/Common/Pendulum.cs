@@ -39,5 +39,7 @@ namespace Biz.Map {
             Shaker.AddForce(moveForce * MoveForceMultiplier);
         }
 
+        public virtual void OnStartAttached() { }
+
     }
 }

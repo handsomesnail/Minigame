@@ -12,5 +12,8 @@ namespace Biz.Map {
         /// <summary>移动时每帧调用</summary>
         void OnPlayerMove(Vector2 moveForce);
 
+        /// <summary>依附瞬间时调用</summary>
+        void OnStartAttached();
+
     }
 }
