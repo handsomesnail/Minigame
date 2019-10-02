@@ -28,7 +28,7 @@ namespace Biz.Gaming {
         /// <summary>当前的溶入状态</summary>
         public bool MeltStatus { get; set; }
 
-        public List<MeltArea> CurrentStayMeltAreas { get; set; }
+        public LinkedList<MeltArea> CurrentStayMeltAreas { get; set; }
 
         public MeltArea LastExitMeltArea { get; set; }
 

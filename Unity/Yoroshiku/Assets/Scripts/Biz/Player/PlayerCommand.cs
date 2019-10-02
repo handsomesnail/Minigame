@@ -52,6 +52,14 @@ namespace Biz.Player {
         }
     }
 
+    /// <summary>设置(如果)触发溶出时的区域(保留溶出前的MeltArea用于计算溶出推力方向)</summary>
+    public class MeltOutCommand : PlayerCommand {
+        public MeltArea MeltArea { get; private set; }
+        public MeltOutCommand(MeltArea meltArea) {
+            this.MeltArea = meltArea;
+        }
+    }
+
     public class GetPlayerDataCommand : PlayerCommand { }
 
     public class SpringPushForceCommand : PlayerCommand {
