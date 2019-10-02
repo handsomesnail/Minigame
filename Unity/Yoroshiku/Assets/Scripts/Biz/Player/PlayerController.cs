@@ -210,6 +210,7 @@ namespace Biz.Player {
                 rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力和重力
                 rigidbody.gravityScale = (playerSetting.Gravity + playerSetting.Air_LinearDrag) / (-1 * Physics2D.gravity.y);
                 Model.LastJumpReqTime = float.MinValue;
+                PlayAudioClip(View.AudioSetting.JumpAudioClip);
             }
 
         }
@@ -280,6 +281,13 @@ namespace Biz.Player {
             else {
                 Model.LastMeltOutTime = Time.fixedTime;
             }
+            //音效处理
+            if (meltStatus) {
+                PlayAudioClip(View.AudioSetting.MeltInAudioClip);
+            }
+            else {
+                PlayAudioClip(View.AudioSetting.MeltOutAudioClip);
+            }
             //依附处理
             if (meltStatus) {
                 foreach (MeltArea meltArea in Model.CurrentStayMeltAreas) {
@@ -349,6 +357,18 @@ namespace Biz.Player {
             }
             //Debug.Log("检查溶入状态:" + status);
             return status;
+        }
+
+        private void PlayAudioClip(AudioClip clip) {
+            if (clip == null) {
+                return;
+            }
+            AudioSource PlayerAudio = View.PlayerView.PlayerAudio;
+            if (PlayerAudio.isPlaying) {
+                PlayerAudio.Stop();
+            }
+            PlayerAudio.clip = clip;
+            PlayerAudio.Play();
         }
 
     }

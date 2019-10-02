@@ -24,6 +24,8 @@ namespace Biz.Player {
 
         public Rigidbody2D Rigidbody;
 
+        public AudioSource PlayerAudio;
+
         public GameObject NormalEntity;
 
         public GameObject MeltedEntity;
