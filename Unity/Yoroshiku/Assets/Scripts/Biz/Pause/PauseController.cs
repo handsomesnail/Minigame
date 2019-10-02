@@ -15,9 +15,9 @@ namespace Biz.Pause {
 
             View.RestartButton.onClick.AddListener (delegate {
                 View.Destroy ();
-                Call (new Biz.Gaming.ExitCommand ());
+                int i = Model.MapIndex;
                 Call (new Biz.Item.InitCommand (Model.StoragePoint?.Items));
-                Call (new Biz.Gaming.EnterCommand (Model.MapIndex));
+                Call (new Biz.Gaming.EnterCommand ());
             });
 
             View.HomeButton.onClick.AddListener (delegate {
