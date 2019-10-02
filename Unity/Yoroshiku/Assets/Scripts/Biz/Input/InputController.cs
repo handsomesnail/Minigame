@@ -14,6 +14,7 @@ namespace Biz.Input {
             View.InputView.Joystick.onMove.AddListener(OnJoyStickMove);
             View.InputView.JumpBtn.onDown.AddListener(OnClickDownJumpBtn);
             View.InputView.MeltBtn.onDown.AddListener(OnClickDownMeltBtn);
+            View.InputView.PauseBtn.onDown.AddListener (OnPauseBtn);
         }
 
         //Editor输入
@@ -48,6 +49,9 @@ namespace Biz.Input {
         }
         private void OnClickDownMeltBtn() {
             Call(new MeltCommand());
+        }
+        private void OnPauseBtn() {
+            Call (new Biz.Pause.PauseCommand ());
         }
 
     }

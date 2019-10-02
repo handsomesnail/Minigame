@@ -23,7 +23,7 @@ namespace Biz.Item {
     public class InitCommand : ItemCommand {
         public string [] Items;
         public InitCommand(params string [] items) {
-            Items = items;
+            Items = items ?? (new string [0]);
         }
     }
 }
