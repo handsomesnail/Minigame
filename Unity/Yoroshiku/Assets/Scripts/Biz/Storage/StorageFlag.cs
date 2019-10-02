@@ -18,10 +18,12 @@ namespace Biz.Storage {
         // Update is called once per frame
         void Update () { }
 
-        private void OnCollisionExit2D (Collision2D collision) {
+        private void OnCollisionEnter2D (Collision2D collision) {
+            Debug.Log (23);
         }
 
         private void OnTriggerEnter2D (Collider2D collision) {
+            Debug.Log (11);
             if ((DateTime.Now - LastInvoked).CompareTo (Interval) < 0) return;
             LastInvoked = DateTime.Now;
             Call (new SaveStorageCommand (new StoragePoint (transform.position)));
