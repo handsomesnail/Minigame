@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ZCore;
 using Biz.Gaming;
 using UnityEngine.UI;
@@ -15,7 +15,7 @@ namespace Biz.Chapter {
             });
 
             foreach (var item in View.ChapterButtons) {
-                if (item != null) InitButton (item, 1);
+                if (item != null) InitButton (item, Model.StoragePoint.PassChapter);
             }
 
         }
