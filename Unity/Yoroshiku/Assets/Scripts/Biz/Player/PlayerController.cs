@@ -206,14 +206,15 @@ namespace Biz.Player {
                     else {
                         Debug.Log("溶入成功");
                         //播放溶入特效
-                        GameObject meltInEffect = GameObject.Instantiate(View.PlayerView.MeltInEffect, Model.Map.transform);
-                        meltInEffect.transform.position = rigidbody.position;
-                        SetMeltEffectRandomEulerAngles(meltInEffect.transform);
-                        SetMeltEffectColor(meltInEffect.GetComponent<SpriteRenderer>());
-                        meltInEffect.GetComponent<Animator>().Play("Melt_In");
-                        AnimKiller killer = meltInEffect.AddComponent<AnimKiller>();
-                        killer.StateName = "Melt_In";
-                        //随机一个Quaternion旋转
+                        for (int i = 0; i < 2; i++) {
+                            GameObject meltInEffect = GameObject.Instantiate(View.PlayerView.MeltInEffect, Model.Map.transform);
+                            meltInEffect.transform.position = rigidbody.position;
+                            SetMeltEffectRandomEulerAngles(meltInEffect.transform);
+                            SetMeltEffectColor(meltInEffect.GetComponent<SpriteRenderer>());
+                            meltInEffect.GetComponent<Animator>().Play("Melt_In");
+                            AnimKiller killer = meltInEffect.AddComponent<AnimKiller>();
+                            killer.StateName = "Melt_In";
+                        }
                     }
                 }
             }
@@ -308,13 +309,15 @@ namespace Biz.Player {
             //特效处理
             if (meltStatus) { } else {
                 //播放溶出特效
-                GameObject meltOutEffect = GameObject.Instantiate(View.PlayerView.MeltOutEffect, Model.Map.transform);
-                meltOutEffect.transform.position = View.PlayerView.Rigidbody.position;
-                SetMeltEffectRandomEulerAngles(meltOutEffect.transform);
-                SetMeltEffectColor(meltOutEffect.GetComponent<SpriteRenderer>());
-                meltOutEffect.GetComponent<Animator>().Play("Melt_Out");
-                AnimKiller killer = meltOutEffect.AddComponent<AnimKiller>();
-                killer.StateName = "Melt_Out";
+                for (int i = 0; i < 2; i++) {
+                    GameObject meltOutEffect = GameObject.Instantiate(View.PlayerView.MeltOutEffect, Model.Map.transform);
+                    meltOutEffect.transform.position = View.PlayerView.Rigidbody.position;
+                    SetMeltEffectRandomEulerAngles(meltOutEffect.transform);
+                    SetMeltEffectColor(meltOutEffect.GetComponent<SpriteRenderer>());
+                    meltOutEffect.GetComponent<Animator>().Play("Melt_Out");
+                    AnimKiller killer = meltOutEffect.AddComponent<AnimKiller>();
+                    killer.StateName = "Melt_Out";
+                }
             }
 
             //音效处理
