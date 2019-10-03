@@ -15,7 +15,9 @@ namespace Biz.Item {
         public void OnCollectCommand (CollectCommand cmd) {
             //Call (new Biz.Gaming.PauseCommand ());
             //View.ItemText.text = cmd.Item.Text;
-
+            foreach ( string s in Model.Items) {
+                if (s == cmd.Item.ItemName) return;
+            }
             Model.Items.Add (cmd.Item.ItemName);
 
             //StartCoroutine (AutoDestroy (cmd));

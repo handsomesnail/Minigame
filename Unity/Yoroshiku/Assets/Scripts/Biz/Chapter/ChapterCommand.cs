@@ -9,6 +9,10 @@ namespace Biz.Chapter {
     }
 
     public class SelectChapterCommand : ChapterCommand {
-        
+        public int MapIndex;
+
+        public SelectChapterCommand (int mapIndex) {
+            MapIndex = mapIndex;
+        }
     }
 }
