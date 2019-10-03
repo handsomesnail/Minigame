@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
+using Biz.Item;
 using Biz.Loading;
 using Biz.Map;
 using Biz.Storage;
@@ -85,22 +86,23 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            // StoragePoint storagePoint = Model.StoragePoint;
-            // Vector3 returnPos = Vector3.zero;
-            // if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
-            //     returnPos = storagePoint.Postion;
-            // }
-            // else {
-            //     returnPos = Model.Map.BornPoint.position;
-            // }
             Call(new TransitCommand(() => {
                 Call(new Biz.Player.InitCommand());
-                //View.PlayerView.Player.transform.position = returnPos;
             }));
         }
 
         public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {
             Model.StayedGround = cmd.Ground;
+        }
+
+        public void OnShowItemTipCommand(ShowItemTipCommand cmd) {
+            GameObject itemTipGo = GameObject.Instantiate(View.PlayerView.ItemTipPrefab, View.PlayerView.TipViewCanvas.transform);
+            itemTipGo.transform.localPosition = cmd.Item.TipPosition;
+            ItemTip itemTip = itemTipGo.GetComponent<ItemTip>();
+            itemTip.FadeInDuration = cmd.Item.FadeInDuration;
+            itemTip.FadeOutDuration = cmd.Item.FadeOutDuration;
+            itemTip.StayDuration = cmd.Item.StayDuration;
+            itemTip.TipText.text = cmd.Item.Text;
         }
 
         private void FixedUpdate() {
