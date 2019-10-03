@@ -48,7 +48,8 @@ namespace Biz.Map {
                 if (msg.Anim != null && msg.Anim.gameObject != null) {
                     msg.Anim.Play(msg.State);
                     if (msg.KillSelf) {
-                        msg.Anim.gameObject.AddComponent<AnimKiller>();
+                        AnimKiller killer = msg.Anim.gameObject.AddComponent<AnimKiller>();
+                        killer.StateName = msg.State;
                     }
                 }
             }
