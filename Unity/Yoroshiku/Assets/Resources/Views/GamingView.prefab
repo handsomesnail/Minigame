@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4116674222363154}
   - component: {fileID: 50099434990176190}
   - component: {fileID: 95349346261833964}
+  - component: {fileID: 82282418026995070}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -591,6 +592,8 @@ Transform:
   - {fileID: 4466464062818052}
   - {fileID: 4868086889802200}
   - {fileID: 4392112509589398}
+  - {fileID: 4908371027435992}
+  - {fileID: 4687805642794680}
   m_Father: {fileID: 4663390634844906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -660,7 +663,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4868086889802200}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4350454344139858
 Transform:
@@ -713,7 +716,6 @@ Transform:
   m_Children:
   - {fileID: 4977246827079660}
   - {fileID: 4123627780693582}
-  - {fileID: 4687805642794680}
   - {fileID: 4933321495876208}
   m_Father: {fileID: 4116674222363154}
   m_RootOrder: 2
@@ -789,8 +791,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4466464062818052}
-  m_RootOrder: 2
+  m_Father: {fileID: 4116674222363154}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4785840492542854
 Transform:
@@ -844,7 +846,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4908371027435992}
   - {fileID: 4330151864799740}
   m_Father: {fileID: 4116674222363154}
   m_RootOrder: 3
@@ -872,8 +873,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4868086889802200}
-  m_RootOrder: 0
+  m_Father: {fileID: 4116674222363154}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4933321495876208
 Transform:
@@ -886,7 +887,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4466464062818052}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4977246827079660
 Transform:
@@ -1082,6 +1083,86 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0012088061, y: 0}
   m_Size: {x: 0.20077169, y: 0.3116677}
   m_Direction: 0
+--- !u!82 &82282418026995070
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1007574923424870}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95349346261833964
 Animator:
   serializedVersion: 3
@@ -1452,6 +1533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapList: {fileID: 11400000, guid: adb463dd2ff464c26978ad8dcdd63668, type: 2}
   PlayerSetting: {fileID: 11400000, guid: 4ca5990ef6c0b41eebfd59a994b333d1, type: 2}
+  AudioSetting: {fileID: 11400000, guid: 76e0be60915924ea18b172fc1f6730d7, type: 2}
   InputView:
     Joystick: {fileID: 114844067808118364}
     MeltBtn: {fileID: 114004649961235712}
@@ -1465,6 +1547,7 @@ MonoBehaviour:
     CenterCollider: {fileID: 58761353586267262}
     PlayerAnim: {fileID: 95349346261833964}
     Rigidbody: {fileID: 50099434990176190}
+    PlayerAudio: {fileID: 82282418026995070}
     NormalEntity: {fileID: 1590685367911548}
     MeltedEntity: {fileID: 1465784047860592}
     GroundChecker: {fileID: 4123627780693582}

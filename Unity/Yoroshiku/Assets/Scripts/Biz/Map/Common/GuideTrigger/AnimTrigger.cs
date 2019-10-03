@@ -27,12 +27,12 @@ namespace Biz.Map {
                 Call(new CameraAnimCommand(CameraAnimClip));
             }
             foreach (var anim in TriggerAnims) {
-                if (!anim.isPlaying) {
+                if (anim != null && !anim.isPlaying) {
                     anim.Play();
                 }
             }
             foreach (var anim in StopAnims) {
-                if (anim.isPlaying) {
+                if (anim != null && anim.isPlaying) {
                     anim.Stop();
                 }
             }

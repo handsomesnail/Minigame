@@ -28,7 +28,7 @@ namespace Biz.Player {
             Model.AttachedObject = null;
             Model.Offset = Vector2.zero;
             Model.Jump = false;
-            Model.CurrentStayMeltAreas = new List<MeltArea>();
+            Model.CurrentStayMeltAreas = new LinkedList<MeltArea>();
             Model.LastExitMeltArea = null;
             Model.LastJumpReqTime = float.MinValue;
             Model.LastMeltReqTime = float.MinValue;
@@ -61,12 +61,15 @@ namespace Biz.Player {
 
         public void OnEnterMeltAreaCommand(EnterMeltAreaCommand cmd) {
             Debug.Log("EnterMeltArea");
-            Model.CurrentStayMeltAreas.Add(cmd.MeltArea);
+            Model.CurrentStayMeltAreas.AddLast(cmd.MeltArea);
         }
 
         public void OnExitMeltAreaCommand(ExitMeltAreaCommand cmd) {
             Debug.Log("ExitMeltArea");
             Model.CurrentStayMeltAreas.Remove(cmd.MeltArea);
+        }
+
+        public void OnMeltOutCommand(MeltOutCommand cmd) {
             Model.LastExitMeltArea = cmd.MeltArea;
         }
 
@@ -116,8 +119,8 @@ namespace Biz.Player {
             if (Time.fixedTime - Model.LastMeltReqTime < playerSetting.MeltJudgeDuration && !Model.MeltStatus && IsMeltAvaliable()) {
                 SetMeltStatus(true);
             }
-            //当前是溶入状态且离开了可溶入区域 则进行溶出操作 (该判断在溶入彻底成功之后才开始)
-            if (Model.MeltStatus && !IsMeltAvaliable() && Time.fixedTime - Model.LastMeltTime > playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
+            //当前是溶入状态且溶入碰撞体离开了可溶入区域 则进行溶出操作 (该判断在溶入彻底成功之后才开始)
+            if (Model.MeltStatus && Model.CurrentStayMeltAreas.Count != 0 && !CheckMeltStatus(Model.CurrentStayMeltAreas.First.Value) && Time.fixedTime - Model.LastMeltTime > playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
                 Debug.Log("离开溶入区域自动溶出");
                 SetMeltStatus(false);
             }
@@ -180,10 +183,10 @@ namespace Biz.Player {
                 float meltProcess = Time.fixedTime - Model.LastMeltTime;
                 //+-0.5帧长 保证仅一次判定
                 if (Model.MeltStatus && meltProcess >= playerSetting.MeltInDuration - 0.5f * Time.fixedDeltaTime && meltProcess < playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
-                    if (!CheckMeltStatus()) {
+                    if (Model.CurrentStayMeltAreas.Count == 0 || !CheckMeltStatus(Model.CurrentStayMeltAreas.First.Value)) {
                         Debug.Log("溶入失败");
-                        Model.CurrentStayMeltAreas.RemoveAt(Model.CurrentStayMeltAreas.Count - 1);
-                        SetMeltStatus(false, false);
+                        //Model.CurrentStayMeltAreas.RemoveFirst();;
+                        SetMeltStatus(false);
                     }
                     else {
                         Debug.Log("溶入成功");
@@ -207,6 +210,7 @@ namespace Biz.Player {
                 rigidbody.drag = playerSetting.Air_LinearDrag; //跳跃的瞬间帧使用空中阻力和重力
                 rigidbody.gravityScale = (playerSetting.Gravity + playerSetting.Air_LinearDrag) / (-1 * Physics2D.gravity.y);
                 Model.LastJumpReqTime = float.MinValue;
+                PlayAudioClip(View.AudioSetting.JumpAudioClip);
             }
 
         }
@@ -246,7 +250,7 @@ namespace Biz.Player {
             else return View.PlayerSetting.InvertDirectionMultiplier * dirInput;
         }
 
-        /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])</summary>
+        /// <summary>当前和MeltArea相交(且颜色对应正确[已去掉])(可进行溶入操作)</summary>
         private bool IsMeltAvaliable() {
             return Model.CurrentStayMeltAreas.Count != 0;
         }
@@ -265,7 +269,7 @@ namespace Biz.Player {
 
         //只有在溶入过程结束后还没进入区域的情况不push
         /// <summary>设置溶入状态</summary>
-        private void SetMeltStatus(bool meltStatus, bool push = true) {
+        private void SetMeltStatus(bool meltStatus) {
             Model.MeltStatus = meltStatus;
             Model.LastMeltReqTime = float.MinValue;
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
@@ -277,12 +281,20 @@ namespace Biz.Player {
             else {
                 Model.LastMeltOutTime = Time.fixedTime;
             }
+            //音效处理
+            if (meltStatus) {
+                PlayAudioClip(View.AudioSetting.MeltInAudioClip);
+            }
+            else {
+                PlayAudioClip(View.AudioSetting.MeltOutAudioClip);
+            }
             //依附处理
             if (meltStatus) {
                 foreach (MeltArea meltArea in Model.CurrentStayMeltAreas) {
                     IAttachable attachedObject = meltArea.GetComponentInParent<IAttachable>();
                     if (attachedObject != null) {
                         Model.AttachedObject = attachedObject;
+                        Model.AttachedObject.OnStartAttached();
                     }
                 }
             }
@@ -290,18 +302,21 @@ namespace Biz.Player {
                 Model.AttachedObject = null;
             }
             //溶入和溶出时的推力处理
-            if (push) {
-                if (meltStatus) {
-                    //已经相交则不需要推力进入溶入区域
-                    if (!CheckMeltStatus()) {
-                        ColliderDistance2D distance2D = Physics2D.Distance(Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
-                        Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
-                        View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
-                    }
+            if (meltStatus) {
+                MeltArea targetMeltArea = Model.CurrentStayMeltAreas.First.Value;
+                //已经相交则不需要推力进入溶入区域
+                if (!CheckMeltStatus(targetMeltArea)) {
+                    ColliderDistance2D distance2D = Physics2D.Distance(targetMeltArea.GetComponent<Collider2D>(), View.PlayerView.CenterCollider);
+                    Vector2 v0 = GetPushInVelocity(distance2D.normal * distance2D.distance, View.PlayerSetting.MeltInDuration);
+                    View.PlayerView.Rigidbody.velocity = View.PlayerSetting.MeltInPushMultiplier * v0; //1.8
                 }
-                else {
-                    View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
-                    Debug.Log("【SetTrigger : MeltOut】");
+            }
+            else {
+                AnimatorStateInfo stateInfo = View.PlayerView.PlayerAnim.GetCurrentAnimatorStateInfo(0);
+                //只有在Melted.Idle状态下才推出
+                if (stateInfo.fullPathHash == Animator.StringToHash("Base Layer.Melted.Idle")) {
+                    Debug.Log("推力推出");
+                    //View.PlayerView.PlayerAnim.SetTrigger("MeltOut");
                     ColliderDistance2D distance2D = Physics2D.Distance(View.PlayerView.CenterCollider, Model.LastExitMeltArea.GetComponent<Collider2D>());
                     Vector2 pushForce = GetPushOutForce(distance2D.normal);
                     View.PlayerView.Rigidbody.AddForce(View.PlayerSetting.MeltOutPushMultiplier * pushForce);
@@ -325,23 +340,36 @@ namespace Biz.Player {
             return pushForce;
         }
 
-        /// <summary>检查溶入状态(在溶入过程开始后一段时间检查推力是否使其溶入成功) </summary>
-        private bool CheckMeltStatus() {
+        /// <summary>检查unMeltChecker是否在meltCollider内或相交 </summary>
+        private bool CheckMeltStatus(MeltArea meltArea) {
             bool status = false;
-            Collider2D meltCollider = Model.CurrentStayMeltAreas[0].GetComponent<Collider2D>();
+            //如果同时接触了两个可溶入区域 默认溶第一个
+            Collider2D meltCollider = meltArea.GetComponent<Collider2D>();
             if (View.PlayerView.UnMeltCheckCollider.IsTouching(meltCollider)) {
-                Debug.Log("刚好相交");
+                //Debug.Log("刚好相交");
                 status = true;
             }
             else if (meltCollider.OverlapPoint(View.PlayerView.Rigidbody.position)) {
-                Debug.Log("进入内部");
+                //Debug.Log("进入内部");
                 status = true;
             }
             else {
                 status = false;
             }
-            Debug.Log("检查溶入状态:" + status);
+            //Debug.Log("检查溶入状态:" + status);
             return status;
+        }
+
+        private void PlayAudioClip(AudioClip clip) {
+            if (clip == null) {
+                return;
+            }
+            AudioSource PlayerAudio = View.PlayerView.PlayerAudio;
+            if (PlayerAudio.isPlaying) {
+                PlayerAudio.Stop();
+            }
+            PlayerAudio.clip = clip;
+            PlayerAudio.Play();
         }
 
     }
