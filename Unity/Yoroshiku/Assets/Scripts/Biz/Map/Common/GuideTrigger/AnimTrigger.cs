@@ -6,6 +6,12 @@ using UnityEngine;
 using ZCore;
 
 namespace Biz.Map {
+    [Serializable]
+    public struct AnimMsg {
+        public Animator Anim;
+        public string State;
+        public bool KillSelf;
+    }
     public class AnimTrigger : BaseTrigger {
 
         public TriggerType Type;
@@ -18,6 +24,8 @@ namespace Biz.Map {
 
         /// <summary>关闭动画</summary>
         public Animation[] StopAnims;
+
+        public AnimMsg[] AnimMsgs;
 
         protected override void Trigger(TriggerType type) {
             if (type != Type) {
@@ -34,6 +42,15 @@ namespace Biz.Map {
             foreach (var anim in StopAnims) {
                 if (anim != null && anim.isPlaying) {
                     anim.Stop();
+                }
+            }
+            foreach (var msg in AnimMsgs) {
+                if (msg.Anim != null && msg.Anim.gameObject != null) {
+                    msg.Anim.Play(msg.State);
+                    if (msg.KillSelf) {
+                        AnimKiller killer = msg.Anim.gameObject.AddComponent<AnimKiller>();
+                        killer.StateName = msg.State;
+                    }
                 }
             }
             Triggered = true;

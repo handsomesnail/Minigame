@@ -30,6 +30,8 @@ namespace Biz.Player {
 
         public GameObject MeltedEntity;
 
+        public GameObject MeltedMoveEffect;
+
         public Transform GroundChecker;
 
         public Collider2D GroundCheckCollider;
@@ -41,6 +43,10 @@ namespace Biz.Player {
         public Collider2D NormalMoveCheckCollider;
 
         public Collider2D GroundCenterCollider;
+
+        [Header("Resource Reference")]
+        public GameObject MeltInEffect;
+        public GameObject MeltOutEffect;
 
     }
 }
