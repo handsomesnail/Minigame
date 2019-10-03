@@ -85,17 +85,17 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            StoragePoint storagePoint = Model.StoragePoint;
-            Vector3 returnPos = Vector3.zero;
-            if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
-                returnPos = storagePoint.Postion;
-            }
-            else {
-                returnPos = Model.Map.BornPoint.position;
-            }
+            // StoragePoint storagePoint = Model.StoragePoint;
+            // Vector3 returnPos = Vector3.zero;
+            // if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
+            //     returnPos = storagePoint.Postion;
+            // }
+            // else {
+            //     returnPos = Model.Map.BornPoint.position;
+            // }
             Call(new TransitCommand(() => {
                 Call(new Biz.Player.InitCommand());
-                View.PlayerView.Player.transform.position = returnPos;
+                //View.PlayerView.Player.transform.position = returnPos;
             }));
         }
 
