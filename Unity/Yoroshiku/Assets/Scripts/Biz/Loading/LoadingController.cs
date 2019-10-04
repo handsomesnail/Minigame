@@ -19,6 +19,13 @@ namespace Biz.Loading {
             if (cmd.TransitionAsyncCallback != null) {
                 yield return StartCoroutine(cmd.TransitionAsyncCallback);
             }
+            yield return null;
+            if (cmd.ClearResource) {
+                Resources.UnloadUnusedAssets();
+                GC.Collect();
+                Debug.Log("****清理内存****");
+            }
+            yield return null;
             View.Mask.DOFade(0, 0.5f);
             yield return new WaitForSeconds(0.5f);
             View.Destroy();

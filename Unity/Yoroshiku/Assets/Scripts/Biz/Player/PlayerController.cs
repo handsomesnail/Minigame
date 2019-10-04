@@ -88,7 +88,7 @@ namespace Biz.Player {
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
             Call(new TransitCommand(() => {
                 Call(new Biz.Player.InitCommand());
-            }));
+            }, false));
         }
 
         public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {

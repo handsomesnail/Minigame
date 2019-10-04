@@ -15,13 +15,17 @@ namespace Biz.Loading {
     public class TransitCommand : LoadingCommand {
         public Action TransitionCallback { get; private set; } //同步回调方法
         public IEnumerator TransitionAsyncCallback { get; private set; } //异步回调方法
+
+        public bool ClearResource{get; private set;} //是否清理资源
         public TransitCommand() { }
-        public TransitCommand(Action transitionCallback) {
+        public TransitCommand(Action transitionCallback, bool isClear) {
             this.TransitionCallback = transitionCallback;
+            this.ClearResource = isClear;
         }
 
-        public TransitCommand(IEnumerator transitionAsyncCallback) {
+        public TransitCommand(IEnumerator transitionAsyncCallback, bool isClear) {
             this.TransitionAsyncCallback = transitionAsyncCallback;
+            this.ClearResource = isClear;
         }
 
     }
