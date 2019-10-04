@@ -83,9 +83,11 @@ namespace Biz.Account {
 
             View.LoginButton.onClick.AddListener (delegate {
                 if (string.IsNullOrWhiteSpace (View.LoginUsername.text)) {
+                    ShowTip ("请输入用户名");
                     return;
                 }
                 if (string.IsNullOrWhiteSpace (View.LoginPassword.text)) {
+                    ShowTip ("请输入密码");
                     return;
                 }
 
