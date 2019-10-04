@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace Biz.Utils {
     public static class Util {
@@ -12,5 +13,12 @@ namespace Biz.Utils {
             stopwatch.Stop();
             return stopwatch.ElapsedMilliseconds;
         }
+
+        public static void Active(this GameObject gameObject, bool active) {
+            if (gameObject.activeSelf != active) {
+                gameObject.SetActive(active);
+            }
+        }
+
     }
 }

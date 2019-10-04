@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Biz.Gaming;
+using Biz.Item;
 using Biz.Loading;
 using Biz.Map;
 using Biz.Storage;
+using Biz.Utils;
 using DG.Tweening;
 using UnityEngine;
 using ZCore;
@@ -84,22 +86,23 @@ namespace Biz.Player {
         }
 
         public void OnDeadAreaTriggerCommand(DeadAreaTriggerCommand cmd) {
-            StoragePoint storagePoint = Model.StoragePoint;
-            Vector3 returnPos = Vector3.zero;
-            if (storagePoint != null && storagePoint.Chapter == Model.MapIndex) {
-                returnPos = storagePoint.Postion;
-            }
-            else {
-                returnPos = Model.Map.BornPoint.position;
-            }
             Call(new TransitCommand(() => {
                 Call(new Biz.Player.InitCommand());
-                View.PlayerView.Player.transform.position = returnPos;
             }));
         }
 
         public void OnSetStayedGroundCommand(SetStayedGroundCommand cmd) {
             Model.StayedGround = cmd.Ground;
+        }
+
+        public void OnShowItemTipCommand(ShowItemTipCommand cmd) {
+            GameObject itemTipGo = GameObject.Instantiate(View.PlayerView.ItemTipPrefab, View.PlayerView.TipViewCanvas.transform);
+            itemTipGo.transform.localPosition = cmd.Item.TipPosition;
+            ItemTip itemTip = itemTipGo.GetComponent<ItemTip>();
+            itemTip.FadeInDuration = cmd.Item.FadeInDuration;
+            itemTip.FadeOutDuration = cmd.Item.FadeOutDuration;
+            itemTip.StayDuration = cmd.Item.StayDuration;
+            itemTip.TipText.text = cmd.Item.Text;
         }
 
         private void FixedUpdate() {
@@ -174,11 +177,25 @@ namespace Biz.Player {
                 linearDrag = playerSetting.Melted_LinearDrag;
                 gravity = 0;
                 moveForceDirection = GetValidInput(Model.Offset, rigidbody.velocity, new Vector2(maxMoveSpeed, maxMoveSpeed));
+
                 //依附处理
                 if (Model.AttachedObject != null) {
                     View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
                     Model.AttachedObject.OnPlayerMove(moveForceDirection);
                 }
+
+                //溶入状态移动特效处理
+                GameObject meltedMoveEffect = View.PlayerView.MeltedMoveEffect;
+                Animator meltedMoveAnim = meltedMoveEffect.GetComponent<Animator>();
+                bool showed = moveForceDirection.magnitude > 0.1f;
+                meltedMoveEffect.Active(showed); //速度超过0.1显示特效
+                if (showed && !meltedMoveAnim.GetCurrentAnimatorStateInfo(0).IsName("Melt_Walk")) {
+                    Debug.Log("设置MeltMove动画");
+                    SetMeltEffectColor(meltedMoveEffect.GetComponent<SpriteRenderer>());
+                    meltedMoveAnim.Play("Melt_Walk");
+                }
+                //TODO: 根据速度设定特效大小
+
                 //溶入状态下如果在MeltInDuration后的一帧进行检查 若通过推力仍没有相交(可能受输入的影响) 自动溶出
                 float meltProcess = Time.fixedTime - Model.LastMeltTime;
                 //+-0.5帧长 保证仅一次判定
@@ -190,6 +207,16 @@ namespace Biz.Player {
                     }
                     else {
                         Debug.Log("溶入成功");
+                        //播放溶入特效
+                        for (int i = 0; i < 2; i++) {
+                            GameObject meltInEffect = GameObject.Instantiate(View.PlayerView.MeltInEffect, Model.Map.transform);
+                            meltInEffect.transform.position = rigidbody.position;
+                            SetMeltEffectRandomEulerAngles(meltInEffect.transform);
+                            SetMeltEffectColor(meltInEffect.GetComponent<SpriteRenderer>());
+                            meltInEffect.GetComponent<Animator>().Play("Melt_In");
+                            AnimKiller killer = meltInEffect.AddComponent<AnimKiller>();
+                            killer.StateName = "Melt_In";
+                        }
                     }
                 }
             }
@@ -281,6 +308,20 @@ namespace Biz.Player {
             else {
                 Model.LastMeltOutTime = Time.fixedTime;
             }
+            //特效处理
+            if (meltStatus) { } else {
+                //播放溶出特效
+                for (int i = 0; i < 2; i++) {
+                    GameObject meltOutEffect = GameObject.Instantiate(View.PlayerView.MeltOutEffect, Model.Map.transform);
+                    meltOutEffect.transform.position = View.PlayerView.Rigidbody.position;
+                    SetMeltEffectRandomEulerAngles(meltOutEffect.transform);
+                    SetMeltEffectColor(meltOutEffect.GetComponent<SpriteRenderer>());
+                    meltOutEffect.GetComponent<Animator>().Play("Melt_Out");
+                    AnimKiller killer = meltOutEffect.AddComponent<AnimKiller>();
+                    killer.StateName = "Melt_Out";
+                }
+            }
+
             //音效处理
             if (meltStatus) {
                 PlayAudioClip(View.AudioSetting.MeltInAudioClip);
@@ -370,6 +411,17 @@ namespace Biz.Player {
             }
             PlayerAudio.clip = clip;
             PlayerAudio.Play();
+        }
+
+        public void SetMeltEffectRandomEulerAngles(Transform transform) {
+            System.Random random = new System.Random();
+            transform.eulerAngles = new Vector3(random.Next(-45, 45), random.Next(-45, 45), random.Next(0, 360));
+        }
+
+        private void SetMeltEffectColor(SpriteRenderer renderer) {
+            Material splatterMat = renderer.material;
+            splatterMat.SetColor("_AColor", Model.CurrentStayMeltAreas.First.Value.SplatterColor);
+            renderer.material = splatterMat;
         }
 
     }

@@ -9,8 +9,9 @@ namespace Biz.Start {
         public void OnStartCommand (StartCommand cmd) {
             View.StartButton.onClick.AddListener (delegate {
                 View.Destroy ();
-                Call (new Biz.Item.InitCommand (Model.StoragePoint?.Items));
-                Call (new EnterCommand ());
+                Call (new Biz.Chapter.ChapterCommand ());
+                //Call (new Biz.Item.InitCommand (Model.StoragePoint?.Items));
+                //Call (new EnterCommand ());
             });
 
             View.HelpButton.onClick.AddListener (delegate {
