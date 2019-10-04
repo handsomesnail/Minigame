@@ -20,6 +20,7 @@ namespace Biz.Gaming {
 
         public PlayerView PlayerView;
 
-        public CollectItemList CollectItemList;
+        [Obsolete]
+        public CollectItemList CollectItemList; //没用了？
     }
 }

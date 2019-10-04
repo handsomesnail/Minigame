@@ -25,7 +25,7 @@ namespace Biz.Map {
             Vector3 offset = targetCamera.transform.position - targetPos;
             float x = transform.position.x + XMoveSpeed * offset.x;
             float y = transform.position.y + YMoveSpeed * offset.y;
-            transform.position = new Vector2(x, y);
+            transform.position = new Vector3(x, y, transform.position.z);
             targetPos = targetCamera.transform.position;
         }
 

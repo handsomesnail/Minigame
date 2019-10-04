@@ -44,9 +44,15 @@ namespace Biz.Player {
 
         public Collider2D GroundCenterCollider;
 
+        public RectTransform TipCanvasRoot;
+
         [Header("Resource Reference")]
         public GameObject MeltInEffect;
         public GameObject MeltOutEffect;
+
+        [Header("TipView")]
+        public GameObject ItemTipPrefab;
+        public GameObject TipViewCanvas;
 
     }
 }
