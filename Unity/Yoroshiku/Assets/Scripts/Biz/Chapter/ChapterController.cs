@@ -14,6 +14,13 @@ namespace Biz.Chapter {
                 Call (new Biz.Start.StartCommand ());
             });
 
+            View.UnlockAll.onClick.AddListener (delegate {
+                Call (new Biz.Storage.UnlockAllCommand ());
+                foreach (var item in View.ChapterButtons) {
+                    if (item != null) InitButton (item, Model.StoragePoint == null ? 0 : Model.StoragePoint.PassChapter);
+                }
+            });
+
             foreach (var item in View.ChapterButtons) {
                 if (item != null) InitButton (item, Model.StoragePoint == null? 0: Model.StoragePoint.PassChapter);
             }

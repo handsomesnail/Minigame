@@ -21,7 +21,9 @@ namespace Biz.Storage {
         }
         public void OnSaveStorageCommand (SaveStorageCommand cmd) {
             if (Model.StoragePoint == null) {
-                Model.StoragePoint = new StoragePoint ();
+                Model.StoragePoint = new StoragePoint () {
+                    Chapter = -1
+                };
             }
             // 修改本地存档
             if (cmd.StoragePoint.PassChapter > Model.StoragePoint.PassChapter) {
@@ -125,6 +127,10 @@ namespace Biz.Storage {
                     // ignore
                 })
             );
+        }
+
+        public void OnUnlockAllCommand(UnlockAllCommand cmd) {
+            Call (new SaveStorageCommand (10));
         }
 
     }
