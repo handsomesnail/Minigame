@@ -97,8 +97,6 @@ namespace Biz.Utils.IO {
             }
             progressCallback?.Invoke(1.0f);
             if (request.isHttpError || request.isNetworkError) {
-                Debug.Log("联网失败");
-                //Toast.Create("网络正在开小差");
                 Dialog.Create("网络正在开小差");
             }
             else {
