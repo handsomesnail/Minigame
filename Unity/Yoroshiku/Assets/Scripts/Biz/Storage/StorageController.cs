@@ -77,8 +77,8 @@ namespace Biz.Storage {
         public void OnLoadStorageCommand (LoadStorageCommand cmd) {
             if (Model.IsGuest) {
                 Debug.Log ("load storage from local.");
+                StoragePoint point = null;
                 try {
-                    StoragePoint point = null;
                     if (File.Exists (GetStoragePointFilename ())) {
                         string json = File.ReadAllText (GetStoragePointFilename (), Encoding.UTF8);
                         if (!string.IsNullOrWhiteSpace (json)) {
@@ -92,6 +92,7 @@ namespace Biz.Storage {
                 } catch {
                     Debug.Log ("failed to load storage from local.");
                 }
+                cmd.callback?.Invoke (point);
                 return;
             }
 
