@@ -5,6 +5,7 @@ using System.Collections;
 using Biz.Utils.IO;
 using System.Collections.Generic;
 using Biz.Gaming;
+using Biz.Utils;
 
 namespace Biz.Account {
     public class AccountController : Controller<GamingModel, AccountView> {
@@ -69,6 +70,7 @@ namespace Biz.Account {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Dialog.Create("注册成功");
                         Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
@@ -105,6 +107,7 @@ namespace Biz.Account {
                             ShowTip (obj.msg);
                             return;
                         }
+                        Dialog.Create("登陆成功");
                         Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
@@ -130,7 +133,8 @@ namespace Biz.Account {
         /// </summary>
         /// <param name="tip">Tip.</param>
         private void ShowTip (string tip) {
-            StartCoroutine (ShowTip0 (tip));
+            //StartCoroutine (ShowTip0 (tip));
+            Dialog.Create(tip);
         }
 
         private IEnumerator ShowTip0 (string tip) {

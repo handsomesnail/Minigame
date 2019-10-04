@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Biz.Utils.IO {
@@ -84,6 +85,7 @@ namespace Biz.Utils.IO {
         /// <summary>Post请求</summary>
         public static IEnumerator Post(string url, Dictionary<string, string> formFields, Action<HttpResponse> completeCallback, Action<float> progressCallback = null) {
             UnityWebRequest request = UnityWebRequest.Post(url, formFields);
+            request.timeout = 2; //2s超时
             yield return Request(request, completeCallback, progressCallback);
         }
 
@@ -95,10 +97,11 @@ namespace Biz.Utils.IO {
             }
             progressCallback?.Invoke(1.0f);
             if (request.isHttpError || request.isNetworkError) {
-                //UI提示联网失败
+                Dialog.Create("网络正在开小差");
             }
             else {
                 string data = System.Text.Encoding.UTF8.GetString(request.downloadHandler.data);
+                Debug.Log(data);
                 HttpResponse response = JsonConvert.DeserializeObject<HttpResponse>(data);
                 completeCallback.CheckedInvoke(response);
             }

@@ -15,7 +15,7 @@ namespace Biz.Chapter {
             });
 
             foreach (var item in View.ChapterButtons) {
-                if (item != null) InitButton (item, Model.StoragePoint.PassChapter);
+                if (item != null) InitButton (item, Model.StoragePoint == null? 0: Model.StoragePoint.PassChapter);
             }
 
         }
