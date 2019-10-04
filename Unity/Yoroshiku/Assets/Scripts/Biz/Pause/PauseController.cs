@@ -24,7 +24,7 @@ namespace Biz.Pause {
             View.HomeButton.onClick.AddListener (delegate {
                 View.Destroy ();
                 Call (new Biz.Gaming.ExitCommand ());
-                Call (new Biz.Start.StartCommand ());
+                Call (new Biz.Chapter.ChapterCommand ());
             });
         }
     }
