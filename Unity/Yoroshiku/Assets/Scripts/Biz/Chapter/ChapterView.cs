@@ -8,6 +8,8 @@ namespace Biz.Chapter {
     public class ChapterView : View {
         public Material DisabledMaterial;
 
+        public Button UnlockAll;
+
         public Button Back;
 
         public List<ChapterButton> ChapterButtons;

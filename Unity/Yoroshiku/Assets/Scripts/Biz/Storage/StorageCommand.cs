@@ -43,4 +43,8 @@ namespace Biz.Storage {
             this.callback = callback;
         }
     }
+
+    public class UnlockAllCommand: StorageCommand {
+
+    }
 }
