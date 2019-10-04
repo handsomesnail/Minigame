@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Biz.Account;
 using Biz.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,7 +23,12 @@ public class Main : CallerBehaviour {
 
     private void StartGame() {
         //总内容不多的时候尽量PreLoad所有Map到内存
-        Call(new Biz.Gaming.EnterCommand());
+        if (!string.IsNullOrEmpty(DebugMapName)) {
+            Call(new Biz.Gaming.EnterCommand());
+        }
+        else {
+            Call(new IndexCommand());
+        }
     }
 
     [ContextMenu("Test")]

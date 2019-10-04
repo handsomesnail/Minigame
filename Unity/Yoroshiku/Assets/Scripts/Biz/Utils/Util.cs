@@ -20,10 +20,5 @@ namespace Biz.Utils {
             }
         }
 
-        public static void SetRandomEulerAngles(this Transform transform) {
-            System.Random random = new System.Random();
-            transform.eulerAngles = new Vector3(random.Next(0, 360), random.Next(0, 360), random.Next(0, 360));
-        }
-
     }
 }

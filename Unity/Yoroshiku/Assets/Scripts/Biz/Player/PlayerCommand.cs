@@ -80,4 +80,11 @@ namespace Biz.Player {
         }
     }
 
+    public class ShowItemTipCommand : PlayerCommand {
+        public Biz.Item.Item Item;
+        public ShowItemTipCommand(Biz.Item.Item item) {
+            this.Item = item;
+        }
+    }
+
 }
