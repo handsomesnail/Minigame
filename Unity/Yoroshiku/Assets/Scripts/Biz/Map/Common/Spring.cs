@@ -30,6 +30,12 @@ namespace Biz.Map {
 
         private Vector2 currentVelocity;
 
+        /// <summary>Player是否踩在弹簧上</summary>
+        public SpringPlatform SpringPlatform;
+
+        // /// <summary>Player本次接触是否已受到推力</summary>
+        // private bool IsCurrentTouchPush = false;
+
         /// <summary>弹簧当前长度</summary>
         public float Length {
             get { return Top.position.y - Bottom.position.y; }
@@ -54,7 +60,8 @@ namespace Biz.Map {
         }
 
         private void FixedUpdate() {
-            if (Platform.velocity.y >= 0 && currentVelocity.y < 0 && PlatformCollider.IsTouchingLayers(LayerMask.GetMask("Player"))) {
+            if (Platform.velocity.y >= 0 && currentVelocity.y < 0 && SpringPlatform.IsGround) {
+                Debug.Log("推一次");
                 Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
             }
             currentVelocity = Platform.velocity;
