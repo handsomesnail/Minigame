@@ -29,6 +29,7 @@ namespace Biz.Map {
         public Transform Bottom;
 
         private Vector2 currentVelocity;
+        private float currentLength;
 
         /// <summary>Player是否踩在弹簧上</summary>
         public SpringPlatform SpringPlatform;
@@ -57,17 +58,26 @@ namespace Biz.Map {
         private float StaticLength = 0;
         private void Awake() {
             StaticLength = Length;
+            currentLength = Length;
         }
 
         private void FixedUpdate() {
             if (Platform.velocity.y >= 0 && currentVelocity.y < 0 && SpringPlatform.IsGround) {
-                Debug.Log("推一次");
-                Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
+                //if (Length >= StaticLength && Length < StaticLength && SpringPlatform.IsGround) {
+                Debug.Log("准备推一次");
+                StartCoroutine(Push());
             }
             currentVelocity = Platform.velocity;
+            currentLength = Length;
             if (Math.Abs(X) > 0.01f) {
                 Platform.AddForce(new Vector2(0, F));
             }
+        }
+
+        private IEnumerator Push() {
+            yield return null;
+            Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
+            Debug.Log("推");
         }
 
     }
