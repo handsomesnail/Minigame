@@ -87,4 +87,13 @@ namespace Biz.Player {
         }
     }
 
+    /// <summary>被喷气</summary>
+    public class JetedCommand : PlayerCommand {
+        public JetArea JetArea { get; private set; }
+        public JetedCommand(JetArea jetArea) {
+            this.JetArea = jetArea;
+        }
+
+    }
+
 }

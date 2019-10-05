@@ -105,6 +105,12 @@ namespace Biz.Player {
             itemTip.TipText.text = cmd.Item.Text;
         }
 
+        public void OnJetedCommand(JetedCommand cmd) {
+            float distance = View.PlayerView.Rigidbody.position.y - cmd.JetArea.JetSource.position.y;
+            float force = 1 / distance * cmd.JetArea.ForceMultiplier;
+            View.PlayerView.Rigidbody.AddForce(new Vector2(0, force));
+        }
+
         private void FixedUpdate() {
             if (Model.GameStatus == GameStatus.Gaming) {
                 UpdatePlayer();
