@@ -14,7 +14,7 @@ namespace Biz.Input {
             View.InputView.Joystick.onMove.AddListener(OnJoyStickMove);
             View.InputView.JumpBtn.onDown.AddListener(OnClickDownJumpBtn);
             View.InputView.MeltBtn.onDown.AddListener(OnClickDownMeltBtn);
-            View.InputView.PauseBtn.onDown.AddListener (OnPauseBtn);
+            View.InputView.PauseBtn.onDown.AddListener(OnPauseBtn);
         }
 
         //Editor输入
@@ -41,7 +41,9 @@ namespace Biz.Input {
 
         //UI输入
         private void OnJoyStickMove(Vector2 offset) {
-            Call(new MoveCommand(offset));
+            AnimationCurve curve = View.InputView.MoveCurve;
+            Vector2 outputOffset = new Vector2(Math.Sign(offset.x) * curve.Evaluate(Math.Abs(offset.x)), Math.Sign(offset.y) * curve.Evaluate(Math.Abs(offset.y)));
+            Call(new MoveCommand(outputOffset));
         }
 
         private void OnClickDownJumpBtn() {
@@ -51,7 +53,7 @@ namespace Biz.Input {
             Call(new MeltCommand());
         }
         private void OnPauseBtn() {
-            Call (new Biz.Pause.PauseCommand ());
+            Call(new Biz.Pause.PauseCommand());
         }
 
     }
