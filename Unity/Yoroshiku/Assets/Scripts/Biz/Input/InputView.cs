@@ -13,5 +13,6 @@ namespace Biz.Input {
         public ETCButton MeltBtn;
         public ETCButton JumpBtn;
         public ETCButton PauseBtn;
+        public AnimationCurve MoveCurve;
     }
 }
