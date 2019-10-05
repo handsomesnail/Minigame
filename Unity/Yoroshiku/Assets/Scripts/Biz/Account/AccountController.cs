@@ -107,7 +107,6 @@ namespace Biz.Account {
                             ShowTip (obj.msg);
                             return;
                         }
-                        Dialog.Create("登陆成功");
                         Model.IsGuest = false;
                         Model.Token = obj.data.ToString ();
                         View.Destroy ();
