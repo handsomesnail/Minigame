@@ -95,6 +95,11 @@ public static class ToolsHelperEditor {
         PlaceYoroshikuElement("Assets/Prefabs/MapObjects/PaperPlane.prefab");
     }
 
+    [MenuItem("GameObject/Yoroshiku/喷气区域", false, 13)]
+    public static void CreateNewJetArea() {
+        PlaceYoroshikuElement("Assets/Prefabs/MapObjects/JetArea.prefab");
+    }
+
     private static void PlaceYoroshikuElement(string prefabPath) {
         GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         GameObject gameObject = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
