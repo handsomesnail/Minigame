@@ -26,8 +26,10 @@ namespace Biz.Storage {
                 };
             }
             // 修改本地存档
-            if (cmd.StoragePoint.PassChapter > Model.StoragePoint.PassChapter) {
-                Model.StoragePoint.PassChapter = cmd.StoragePoint.PassChapter;
+            if (cmd.StoragePoint.PassChapter > 0) {
+                if(cmd.StoragePoint.PassChapter > Model.StoragePoint.PassChapter) {
+                    Model.StoragePoint.PassChapter = cmd.StoragePoint.PassChapter;
+                }
             } else {
                 Model.StoragePoint.Chapter = Model.MapIndex;
                 Model.StoragePoint.Postion = cmd.StoragePoint.Postion;
