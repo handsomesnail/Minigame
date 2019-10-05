@@ -34,15 +34,17 @@ namespace Biz.Chapter {
 
         private void InitButton (ChapterButton button, int maxChapter = 0) {
             if (button.MapIndex < maxChapter) {
-                Debug.Log ("<");
                 button.GetComponent<Image> ().sprite = button.EnabledSprite;
                 button.GetComponent<Image> ().material = null;
+                button.transform.localScale = new Vector3 {
+                    x = 1f,
+                    y = 1f
+                };
                 button.GetComponent<Button> ().onClick.AddListener (delegate {
                     View.Destroy ();
                     Call (new Biz.Gaming.EnterCommand (button.MapIndex));
                 });
             } else if (button.MapIndex == maxChapter) {
-                Debug.Log ("=");
                 button.GetComponent<Image> ().sprite = button.DisabledSprite;
                 button.GetComponent<Image> ().material = null;
                 button.transform.localScale = new Vector3 {
@@ -54,9 +56,12 @@ namespace Biz.Chapter {
                     Call (new Biz.Gaming.EnterCommand (button.MapIndex));
                 });
             } else {
-                Debug.Log (">");
                 button.GetComponent<Image> ().sprite = button.DisabledSprite;
                 button.GetComponent<Image> ().material = View.DisabledMaterial;
+                button.transform.localScale = new Vector3 {
+                    x = 1f,
+                    y = 1f
+                };
             }
 
             button.GetComponent<Image> ().alphaHitTestMinimumThreshold = 0.1f;
