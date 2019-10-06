@@ -24,7 +24,7 @@ namespace Biz.Item {
     public class InitCommand : ItemCommand {
         public List<string> Items;
         public InitCommand (List<string> items) {
-            Items = new List<string> (items);
+            Items = new List<string> (items ?? new List<string>());
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Biz.Pause {
 
             View.HomeButton.onClick.AddListener (delegate {
                 View.Destroy ();
+                Call (new Biz.Item.InitCommand (Model.StoragePoint?.Items));
                 Call (new Biz.Gaming.ExitCommand ());
                 Call (new Biz.Chapter.ChapterCommand ());
             });

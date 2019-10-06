@@ -40,9 +40,7 @@ namespace Biz.Item {
         }
 
         public List<string> OnListCollectedCommand(ListCollectedCommand cmd) {
-            List<string> ret = new List<string> ();
-            ret.AddRange (Model.Items);
-            return ret;
+            return new List<string>(Model.Items ?? new List<string>());
         }
 
     }
