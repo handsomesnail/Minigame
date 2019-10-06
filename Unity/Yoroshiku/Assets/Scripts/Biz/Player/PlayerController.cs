@@ -183,9 +183,11 @@ namespace Biz.Player {
                 linearDrag = playerSetting.Melted_LinearDrag;
                 gravity = 0;
                 moveForceDirection = GetValidInput(Model.Offset, rigidbody.velocity, new Vector2(maxMoveSpeed, maxMoveSpeed));
+                //溶入状态下如果在MeltInDuration后的一帧进行检查 若通过推力仍没有相交(可能受输入的影响) 自动溶出
+                float meltProcess = Time.fixedTime - Model.LastMeltTime;
 
                 //依附处理
-                if (Model.AttachedObject != null) {
+                if (meltProcess > playerSetting.MeltInDuration && Model.AttachedObject != null) {
                     View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
                     Model.AttachedObject.OnPlayerMove(moveForceDirection);
                 }
@@ -202,8 +204,6 @@ namespace Biz.Player {
                 }
                 //TODO: 根据速度设定特效大小
 
-                //溶入状态下如果在MeltInDuration后的一帧进行检查 若通过推力仍没有相交(可能受输入的影响) 自动溶出
-                float meltProcess = Time.fixedTime - Model.LastMeltTime;
                 //+-0.5帧长 保证仅一次判定
                 if (Model.MeltStatus && meltProcess >= playerSetting.MeltInDuration - 0.5f * Time.fixedDeltaTime && meltProcess < playerSetting.MeltInDuration + 0.5f * Time.fixedDeltaTime) {
                     if (Model.CurrentStayMeltAreas.Count == 0 || !CheckMeltStatus(Model.CurrentStayMeltAreas.First.Value)) {

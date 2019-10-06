@@ -15,6 +15,9 @@ namespace Biz.Map {
         public Rigidbody2D Shaker;
         public DistanceJoint2D Joint2D;
 
+        public Transform RopeTransform;
+        public Transform RopoEnd;
+
         private Vector3 currentShakerPos;
 
         //上一个fixedUpdate物理模拟的位移量
@@ -33,6 +36,8 @@ namespace Biz.Map {
         public void FixedUpdate() {
             currentOffset = Shaker.transform.position - currentShakerPos;
             currentShakerPos = Shaker.transform.position;
+            double angle = Math.Atan((RopoEnd.position.x - FixPoint.position.x) / (RopoEnd.position.y - FixPoint.position.y)) * 180 / Math.PI;
+            RopeTransform.eulerAngles = new Vector3(0, 0, -(float) angle);
         }
 
         public virtual void OnPlayerMove(Vector2 moveForce) {

@@ -81,11 +81,17 @@ namespace Biz.Map {
         }
 
         private IEnumerator Push() {
-            yield return new WaitForSeconds(0.2f);
-            Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
-            yield return new WaitForSeconds(0.2f);
-            readyPush = false;
-            Debug.Log("推");
+            yield return new WaitForSeconds(0.25f);
+            //如果0.2s后还在上面就弹出
+            if (SpringPlatform.IsGround) {
+                Debug.Log("推");
+                Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
+                yield return new WaitForSeconds(0.2f);
+                readyPush = false;
+            }
+            else {
+                readyPush = false;
+            }
         }
 
     }
