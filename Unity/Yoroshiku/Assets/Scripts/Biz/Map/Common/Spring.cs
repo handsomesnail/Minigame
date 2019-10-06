@@ -56,15 +56,21 @@ namespace Biz.Map {
 
         /// <summary>弹簧的静止长度</summary>
         private float StaticLength = 0;
+
+        //readyPush期间只能push一次
+        private bool readyPush = false;
+
         private void Awake() {
             StaticLength = Length;
             currentLength = Length;
         }
 
         private void FixedUpdate() {
-            if (Platform.velocity.y >= 0 && currentVelocity.y < 0 && SpringPlatform.IsGround) {
+            if (SpringPlatform.IsGround && !readyPush) {
+                //if (Platform.velocity.y >= 0 && currentVelocity.y < 0 && SpringPlatform.IsGround) {
                 //if (Length >= StaticLength && Length < StaticLength && SpringPlatform.IsGround) {
                 Debug.Log("准备推一次");
+                readyPush = true;
                 StartCoroutine(Push());
             }
             currentVelocity = Platform.velocity;
@@ -75,8 +81,10 @@ namespace Biz.Map {
         }
 
         private IEnumerator Push() {
-            yield return null;
+            yield return new WaitForSeconds(0.2f);
             Call(new SpringPushForceCommand(new Vector2(0, Bounciness)));
+            yield return new WaitForSeconds(0.2f);
+            readyPush = false;
             Debug.Log("推");
         }
 
