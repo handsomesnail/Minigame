@@ -81,7 +81,7 @@ namespace Biz.Map {
         }
 
         private IEnumerator Push() {
-            yield return new WaitForSeconds(0.35f);
+            yield return new WaitForSeconds(0.25f);
             //如果0.2s后还在上面就弹出
             if (SpringPlatform.IsGround) {
                 Debug.Log("推");
