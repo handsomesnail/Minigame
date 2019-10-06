@@ -21,7 +21,7 @@ namespace Biz.Map {
         }
 
         private void Pass() {
-            Call(new SaveStorageCommand(MapIndex));
+            Call(new PassChapterCommand()); // 记录通关
             Call(new ExitCommand());
             Call(new EnterCommand(MapIndex));
         }

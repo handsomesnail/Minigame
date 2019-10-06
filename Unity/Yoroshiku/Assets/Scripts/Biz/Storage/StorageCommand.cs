@@ -24,12 +24,6 @@ namespace Biz.Storage {
                 Postion = position
             };
         }
-
-        public SaveStorageCommand (int passChapter) {
-            this.StoragePoint = new StoragePoint {
-                PassChapter = passChapter
-            };
-        }
     }
 
 
@@ -45,6 +39,14 @@ namespace Biz.Storage {
     }
 
     public class UnlockAllCommand: StorageCommand {
+
+    }
+
+    public class PassChapterCommand : StorageCommand {
+
+    }
+
+    public class LastPlayCommand: StorageCommand {
 
     }
 }

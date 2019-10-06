@@ -39,15 +39,11 @@ namespace Biz.Item {
             }
         }
 
-        public string[] OnListCollectedCommand(ListCollectedCommand cmd) {
-            return Model.Items.ToArray();
+        public List<string> OnListCollectedCommand(ListCollectedCommand cmd) {
+            List<string> ret = new List<string> ();
+            ret.AddRange (Model.Items);
+            return ret;
         }
-
-        // private IEnumerator AutoDestroy (CollectCommand cmd) {
-        //     yield return new WaitForSeconds (cmd.Item.Duration == 0 ? 3 : cmd.Item.Duration / 1000.0f);
-        //     View.Destroy ();
-        //     Call (new Biz.Gaming.ResumeCommand ());
-        // }
 
     }
 }

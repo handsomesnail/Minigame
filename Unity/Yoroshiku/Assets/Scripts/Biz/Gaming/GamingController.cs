@@ -46,6 +46,8 @@ namespace Biz.Gaming {
             Call(new Biz.Player.InitCommand());
             //初始化UI开始接收输入
             Call(new Biz.Input.InitCommand());
+            // 存档，记录最后玩的关卡和解锁进度
+            Call(new Biz.Storage.LastPlayCommand ());
         }
 
     }

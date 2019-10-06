@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ZCore;
 
 namespace Biz.Item {
@@ -21,9 +22,9 @@ namespace Biz.Item {
     }
 
     public class InitCommand : ItemCommand {
-        public string [] Items;
-        public InitCommand(params string [] items) {
-            Items = items ?? (new string [0]);
+        public List<string> Items;
+        public InitCommand (List<string> items) {
+            Items = new List<string> (items);
         }
     }
 }

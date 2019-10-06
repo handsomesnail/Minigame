@@ -1,13 +1,15 @@
 ﻿using System;
 using UnityEngine;
-
+using System.Collections.Generic;
 namespace Biz.Storage {
     [Serializable]
     public class StoragePoint {
         public int Chapter;
-        public int PassChapter;
         public Vector3 Postion;
-        public string[] Items;
+        public int LastPlayChapter;
+        public List<string> Items;
+        public List<int> UnlockedChapters;
+        public List<int> PassChapters;
 
         public StoragePoint() { }
 
@@ -18,10 +20,6 @@ namespace Biz.Storage {
         public StoragePoint(int chapter, Vector3 postion) {
             Chapter = chapter;
             Postion = postion;
-        }
-
-        public StoragePoint(int passChapter) {
-            PassChapter = passChapter;
         }
 
         public override string ToString() {

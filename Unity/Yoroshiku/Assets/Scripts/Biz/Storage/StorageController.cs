@@ -25,17 +25,17 @@ namespace Biz.Storage {
                     Chapter = -1
                 };
             }
-            // 修改本地存档
-            if (cmd.StoragePoint.PassChapter > 0) {
-                if(cmd.StoragePoint.PassChapter > Model.StoragePoint.PassChapter) {
-                    Model.StoragePoint.PassChapter = cmd.StoragePoint.PassChapter;
-                }
-            } else {
-                Model.StoragePoint.Chapter = Model.MapIndex;
-                Model.StoragePoint.Postion = cmd.StoragePoint.Postion;
-            }
+
+            Model.StoragePoint.Chapter = Model.MapIndex;
+            Model.StoragePoint.Postion = cmd.StoragePoint.Postion;
+
+
+            Save ();
+        }
+
+        private void Save () {
             // 收集品收集后在经过过关点或存档点时进行存档
-            Model.StoragePoint.Items = Post<Biz.Item.ListCollectedCommand, string []> (new Biz.Item.ListCollectedCommand ());
+            Model.StoragePoint.Items = Post<Biz.Item.ListCollectedCommand, List<string>> (new Biz.Item.ListCollectedCommand ());
 
             if (Model.IsGuest) {
                 Debug.Log ("save storage to local.");
@@ -87,10 +87,20 @@ namespace Biz.Storage {
                         string json = File.ReadAllText (GetStoragePointFilename (), Encoding.UTF8);
                         if (!string.IsNullOrWhiteSpace (json)) {
                             point = JsonUtility.FromJson<StoragePoint> (json);
-                            if (point.Items == null) point.Items = new string [0];
+                            if (point.Items == null) point.Items = new List<string> ();
+                            if (point.UnlockedChapters == null) {
+                                point.UnlockedChapters = new List<int> {
+                                    0
+                                };
+                            }
                         }
                     } else {
                         Debug.Log ("there is no local storage.");
+                        point = new StoragePoint () {
+                            Chapter = -1,
+                            Items = new List<string> (),
+                            UnlockedChapters = new List<int> () { 0 }
+                        };
                     }
                     Model.StoragePoint = point;
                 } catch {
@@ -114,13 +124,15 @@ namespace Biz.Storage {
                 IOUtil.GetFullUrl ("/storage/load"),
                 form,
                 (HttpResponse obj) => {
-                    if (obj.code != 0) {
-                        Debug.Log ("failed to load storage from server.");
-                        return;
-                    }
-                    if (obj.data != null && !string.IsNullOrWhiteSpace (obj.data.ToString ())) {
+                    if (obj.code == 0 && obj.data != null && !string.IsNullOrWhiteSpace (obj.data.ToString ())) {
                         storagePoint = JsonUtility.FromJson<StoragePoint> (obj.data.ToString ());
                         // todo  call before enter chapter Call (new Biz.Item.InitCommand (storagePoint.Items));
+                    } else {
+                        storagePoint = new StoragePoint () {
+                            Chapter = -1,
+                            Items = new List<string> (),
+                            UnlockedChapters = new List<int> () { 0 }
+                        };
                     }
                     cmd.callback?.Invoke (storagePoint);
                     Model.StoragePoint = storagePoint;
@@ -131,10 +143,50 @@ namespace Biz.Storage {
             );
         }
 
-        public void OnUnlockAllCommand(UnlockAllCommand cmd) {
-            Call (new SaveStorageCommand (10));
+        public void OnUnlockAllCommand (UnlockAllCommand cmd) {
+            if (Model.StoragePoint == null) {
+                Model.StoragePoint = new StoragePoint () {
+                    Chapter = -1
+                };
+            }
+            int [] all = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            Model.StoragePoint.UnlockedChapters = new List<int> (all);
+
+            Save ();
         }
 
+        public void OnLastPlayCommand (LastPlayCommand cmd) {
+            if (Model.StoragePoint == null) {
+                Model.StoragePoint = new StoragePoint () {
+                    Chapter = -1
+                };
+            }
+            if (Model.StoragePoint.UnlockedChapters == null) {
+                Model.StoragePoint.UnlockedChapters = new List<int> () { 0 };
+            }
+            if (!Model.StoragePoint.UnlockedChapters.Exists ((obj) => obj == Model.MapIndex)) {
+                Model.StoragePoint.UnlockedChapters.Add (Model.MapIndex);
+            }
+            Model.StoragePoint.LastPlayChapter = Model.MapIndex;
+
+            Save ();
+        }
+
+        public void OnPassChapterCommand (PassChapterCommand cmd) {
+            if (Model.StoragePoint == null) {
+                Model.StoragePoint = new StoragePoint () {
+                    Chapter = -1
+                };
+            }
+            if (Model.StoragePoint.PassChapters == null) {
+                Model.StoragePoint.PassChapters = new List<int> ();
+            }
+            if (!Model.StoragePoint.PassChapters.Exists ((obj) => obj == Model.MapIndex)) {
+                Model.StoragePoint.PassChapters.Add (Model.MapIndex);
+            }
+
+            Save ();
+        }
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +42,7 @@ namespace Biz.Item {
 
         void Start() {
             // 查看当前存档中该收集品是否已收集
-            string[] collected = Post<ListCollectedCommand, string[]>(new ListCollectedCommand());
+            List<string> collected = Post<ListCollectedCommand, List<string>>(new ListCollectedCommand());
             foreach (var item in collected) {
                 if (ItemName == item) {
                     Destroy(ItemRoot);
