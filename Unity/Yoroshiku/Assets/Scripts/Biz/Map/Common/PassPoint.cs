@@ -12,10 +12,16 @@ namespace Biz.Map {
     [RequireComponent(typeof(Collider2D))]
     public class PassPoint : CallerBehaviour {
         public int MapIndex;
+        public bool IsReturn;
         private void OnTriggerEnter2D(Collider2D collider) {
             if (collider.gameObject.name == "MoveCheckerCollider") {
                 Call(new TransitCommand(() => {
-                    Pass();
+                    if (!IsReturn) {
+                        Pass();
+                    }
+                    else {
+                        Return();
+                    }
                 }, true));
             }
         }
@@ -24,6 +30,12 @@ namespace Biz.Map {
             Call(new PassChapterCommand()); // 记录通关
             Call(new ExitCommand());
             Call(new EnterCommand(MapIndex));
+        }
+
+        private void Return() {
+            Call(new PassChapterCommand()); // 记录通关
+            Call(new ExitCommand());
+            Call(new Start.StartCommand());
         }
     }
 }

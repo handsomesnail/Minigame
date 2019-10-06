@@ -29,6 +29,10 @@ namespace Biz.Map {
             }
         }
 
+        public virtual bool IsLock() {
+            return false;
+        }
+
         public void Start() {
             currentShakerPos = Shaker.transform.position;
         }
@@ -44,7 +48,7 @@ namespace Biz.Map {
             Shaker.AddForce(moveForce * MoveForceMultiplier);
         }
 
-        public virtual void OnStartAttached() { }
+        public virtual void OnStartAttached(Rigidbody2D playerRigidbod) { }
 
     }
 }

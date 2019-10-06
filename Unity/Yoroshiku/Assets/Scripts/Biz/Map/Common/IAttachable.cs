@@ -13,7 +13,10 @@ namespace Biz.Map {
         void OnPlayerMove(Vector2 moveForce);
 
         /// <summary>依附瞬间时调用</summary>
-        void OnStartAttached();
+        void OnStartAttached(Rigidbody2D playerRigidbod);
+
+        /// <summary>是否锁死(像飞机那样)</summary>
+        bool IsLock();
 
     }
 }
