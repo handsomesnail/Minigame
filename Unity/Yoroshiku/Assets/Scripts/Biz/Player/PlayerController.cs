@@ -188,8 +188,14 @@ namespace Biz.Player {
 
                 //依附处理
                 if (meltProcess > playerSetting.MeltInDuration && Model.AttachedObject != null) {
-                    View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
-                    Model.AttachedObject.OnPlayerMove(moveForceDirection);
+                    if (!Model.AttachedObject.IsLock()) {
+                        View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + Model.AttachedObject.CurrentMoveOffset;
+                        Debug.Log("位移：" + Model.AttachedObject.CurrentMoveOffset);
+                        Model.AttachedObject.OnPlayerMove(moveForceDirection);
+                    }
+                    else {
+                        View.PlayerView.PlayerTransform.position = View.PlayerView.PlayerTransform.position + (Model.AttachedObject as PaperPlane).CurrentVPOffset;
+                    }
                 }
 
                 //溶入状态移动特效处理
@@ -341,7 +347,7 @@ namespace Biz.Player {
                     IAttachable attachedObject = meltArea.GetComponentInParent<IAttachable>();
                     if (attachedObject != null) {
                         Model.AttachedObject = attachedObject;
-                        Model.AttachedObject.OnStartAttached();
+                        Model.AttachedObject.OnStartAttached(View.PlayerView.Rigidbody);
                     }
                 }
             }
