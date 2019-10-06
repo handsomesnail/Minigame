@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Biz.Account;
+using Biz.Map;
 using Biz.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -27,13 +28,19 @@ public class Main : CallerBehaviour {
             Call(new Biz.Gaming.EnterCommand());
         }
         else {
+            //显示Splash图片
+            //加载所有资源
+            //进入选关界面
             Call(new IndexCommand());
         }
     }
 
     [ContextMenu("Test")]
     public void Test() {
-        StartGame();
+        //StartGame();
+        Debug.Log("加载MapList");
+        MapList maplist = Resources.Load<MapList>("Configs/MapList");
+        GameObject.Instantiate(maplist.Maps[1].gameObject);
     }
 
 }
