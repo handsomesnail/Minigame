@@ -1,6 +1,6 @@
 ﻿using System;
-using ZCore;
 using UnityEngine.UI;
+using ZCore;
 
 namespace Biz.Start {
     public class StartView : View {
@@ -8,5 +8,7 @@ namespace Biz.Start {
         public Button ContinueButton;
         public Button HelpButton;
         public Button ExitBUtton;
+
+        public Button ClearButton;
     }
 }

@@ -12,64 +12,63 @@ namespace Biz.Storage {
 
         private const string STORAGE_FILENAME = "/StoragePoint.json";
 
-        private string GetStoragePointFilename () {
+        private string GetStoragePointFilename() {
 #if UNITY_EDITOR
             return Application.dataPath + STORAGE_FILENAME;
 #else
             return Application.persistentDataPath + STORAGE_FILENAME;
 #endif
         }
-        public void OnSaveStorageCommand (SaveStorageCommand cmd) {
+        public void OnSaveStorageCommand(SaveStorageCommand cmd) {
             if (Model.StoragePoint == null) {
-                Model.StoragePoint = new StoragePoint () {
-                    Chapter = -1
+                Model.StoragePoint = new StoragePoint() {
+                Chapter = -1
                 };
             }
 
             Model.StoragePoint.Chapter = Model.MapIndex;
             Model.StoragePoint.Postion = cmd.StoragePoint.Postion;
 
-
-            Save ();
+            Save();
         }
 
-        private void Save () {
+        private void Save() {
             // 收集品收集后在经过过关点或存档点时进行存档
-            Model.StoragePoint.Items = Post<Biz.Item.ListCollectedCommand, List<string>> (new Biz.Item.ListCollectedCommand ());
+            Model.StoragePoint.Items = Post<Biz.Item.ListCollectedCommand, List<string>>(new Biz.Item.ListCollectedCommand());
 
             if (Model.IsGuest) {
-                Debug.Log ("save storage to local.");
-                string json = JsonUtility.ToJson (Model.StoragePoint);
+                Debug.Log("save storage to local.");
+                string json = JsonUtility.ToJson(Model.StoragePoint);
                 try {
-                    File.WriteAllText (GetStoragePointFilename (), json, Encoding.UTF8);
-                } catch {
-                    Debug.Log ("failed to save storage to local.");
+                    File.WriteAllText(GetStoragePointFilename(), json, Encoding.UTF8);
+                }
+                catch {
+                    Debug.Log("failed to save storage to local.");
                 }
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace (Model.Token)) {
+            if (string.IsNullOrWhiteSpace(Model.Token)) {
                 return;
             }
 
-            Debug.Log ("save storage to server.");
-            Dictionary<string, string> form = new Dictionary<string, string> {
-                { "token", Model.Token },
-                { "storage", JsonUtility.ToJson (Model.StoragePoint) }
+            Debug.Log("save storage to server.");
+            Dictionary<string, string> form = new Dictionary<string, string> { { "token", Model.Token },
+                { "storage", JsonUtility.ToJson(Model.StoragePoint) }
             };
-            StartCoroutine (
-                IOUtil.Post (
-                    IOUtil.GetFullUrl ("/storage/save"),
-                form,
-                (HttpResponse obj) => {
-                    if (obj.code != 0) {
-                        Debug.Log ("failed to save storage to server.");
-                        return;
-                    }
-                },
-                (float obj) => {
-                    // ignore
-                })
+            StartCoroutine(
+                IOUtil.Post(
+                    IOUtil.GetFullUrl("/storage/save"),
+                    form,
+                    (HttpResponse obj) => {
+                        if (obj.code != 0) {
+                            Debug.Log("failed to save storage to server.");
+                            return;
+                        }
+                    },
+                    (float obj) => {
+                        // ignore
+                    })
             );
         }
 
@@ -78,115 +77,125 @@ namespace Biz.Storage {
         /// </summary>
         /// <returns>StoragePoint.</returns>
         /// <param name="cmd">Cmd.</param>
-        public void OnLoadStorageCommand (LoadStorageCommand cmd) {
+        public void OnLoadStorageCommand(LoadStorageCommand cmd) {
             if (Model.IsGuest) {
-                Debug.Log ("load storage from local.");
+                Debug.Log("load storage from local.");
                 StoragePoint point = null;
                 try {
-                    if (File.Exists (GetStoragePointFilename ())) {
-                        string json = File.ReadAllText (GetStoragePointFilename (), Encoding.UTF8);
-                        if (!string.IsNullOrWhiteSpace (json)) {
-                            point = JsonUtility.FromJson<StoragePoint> (json);
-                            if (point.Items == null) point.Items = new List<string> ();
+                    if (File.Exists(GetStoragePointFilename())) {
+                        string json = File.ReadAllText(GetStoragePointFilename(), Encoding.UTF8);
+                        if (!string.IsNullOrWhiteSpace(json)) {
+                            point = JsonUtility.FromJson<StoragePoint>(json);
+                            if (point.Items == null) point.Items = new List<string>();
                             if (point.UnlockedChapters == null) {
                                 point.UnlockedChapters = new List<int> {
-                                    0
+                                0
                                 };
                             }
                         }
-                    } else {
-                        Debug.Log ("there is no local storage.");
-                        point = new StoragePoint () {
+                    }
+                    else {
+                        Debug.Log("there is no local storage.");
+                        point = new StoragePoint() {
                             Chapter = -1,
-                            Items = new List<string> (),
-                            UnlockedChapters = new List<int> () { 0 }
+                            Items = new List<string>(),
+                            UnlockedChapters = new List<int>() { 0 }
                         };
                     }
                     Model.StoragePoint = point;
-                } catch {
-                    Debug.Log ("failed to load storage from local.");
                 }
-                cmd.callback?.Invoke (point);
+                catch {
+                    Debug.Log("failed to load storage from local.");
+                }
+                cmd.callback?.Invoke(point);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace (Model.Token)) {
+            if (string.IsNullOrWhiteSpace(Model.Token)) {
                 return;
             }
 
-            Debug.Log ("load storage form server.");
+            Debug.Log("load storage form server.");
             StoragePoint storagePoint = null;
-            Dictionary<string, string> form = new Dictionary<string, string> {
-                { "token", Model.Token }
+            Dictionary<string, string> form = new Dictionary<string, string> { { "token", Model.Token }
             };
-            StartCoroutine (
-                IOUtil.Post (
-                IOUtil.GetFullUrl ("/storage/load"),
-                form,
-                (HttpResponse obj) => {
-                    if (obj.code == 0 && obj.data != null && !string.IsNullOrWhiteSpace (obj.data.ToString ())) {
-                        storagePoint = JsonUtility.FromJson<StoragePoint> (obj.data.ToString ());
-                        // todo  call before enter chapter Call (new Biz.Item.InitCommand (storagePoint.Items));
-                    } else {
-                        storagePoint = new StoragePoint () {
-                            Chapter = -1,
-                            Items = new List<string> (),
-                            UnlockedChapters = new List<int> () { 0 }
-                        };
-                    }
-                    cmd.callback?.Invoke (storagePoint);
-                    Model.StoragePoint = storagePoint;
-                },
-                (float obj) => {
-                    // ignore
-                })
+            StartCoroutine(
+                IOUtil.Post(
+                    IOUtil.GetFullUrl("/storage/load"),
+                    form,
+                    (HttpResponse obj) => {
+                        if (obj.code == 0 && obj.data != null && !string.IsNullOrWhiteSpace(obj.data.ToString())) {
+                            storagePoint = JsonUtility.FromJson<StoragePoint>(obj.data.ToString());
+                            // todo  call before enter chapter Call (new Biz.Item.InitCommand (storagePoint.Items));
+                        }
+                        else {
+                            storagePoint = new StoragePoint() {
+                                Chapter = -1,
+                                Items = new List<string>(),
+                                UnlockedChapters = new List<int>() { 0 }
+                            };
+                        }
+                        cmd.callback?.Invoke(storagePoint);
+                        Model.StoragePoint = storagePoint;
+                    },
+                    (float obj) => {
+                        // ignore
+                    })
             );
         }
 
-        public void OnUnlockAllCommand (UnlockAllCommand cmd) {
+        public void OnUnlockAllCommand(UnlockAllCommand cmd) {
             if (Model.StoragePoint == null) {
-                Model.StoragePoint = new StoragePoint () {
-                    Chapter = -1
+                Model.StoragePoint = new StoragePoint() {
+                Chapter = -1
                 };
             }
-            int [] all = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-            Model.StoragePoint.UnlockedChapters = new List<int> (all);
+            int[] all = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+            Model.StoragePoint.UnlockedChapters = new List<int>(all);
 
-            Save ();
+            Save();
         }
 
-        public void OnLastPlayCommand (LastPlayCommand cmd) {
+        public void OnLastPlayCommand(LastPlayCommand cmd) {
             if (Model.StoragePoint == null) {
-                Model.StoragePoint = new StoragePoint () {
-                    Chapter = -1
+                Model.StoragePoint = new StoragePoint() {
+                Chapter = -1
                 };
             }
             if (Model.StoragePoint.UnlockedChapters == null) {
-                Model.StoragePoint.UnlockedChapters = new List<int> () { 0 };
+                Model.StoragePoint.UnlockedChapters = new List<int>() { 0 };
             }
-            if (!Model.StoragePoint.UnlockedChapters.Exists ((obj) => obj == Model.MapIndex)) {
-                Model.StoragePoint.UnlockedChapters.Add (Model.MapIndex);
+            if (!Model.StoragePoint.UnlockedChapters.Exists((obj) => obj == Model.MapIndex)) {
+                Model.StoragePoint.UnlockedChapters.Add(Model.MapIndex);
             }
             Model.StoragePoint.LastPlayChapter = Model.MapIndex;
 
-            Save ();
+            Save();
         }
 
-        public void OnPassChapterCommand (PassChapterCommand cmd) {
+        public void OnPassChapterCommand(PassChapterCommand cmd) {
             if (Model.StoragePoint == null) {
-                Model.StoragePoint = new StoragePoint () {
-                    Chapter = -1
+                Model.StoragePoint = new StoragePoint() {
+                Chapter = -1
                 };
             }
             if (Model.StoragePoint.PassChapters == null) {
-                Model.StoragePoint.PassChapters = new List<int> ();
+                Model.StoragePoint.PassChapters = new List<int>();
             }
-            if (!Model.StoragePoint.PassChapters.Exists ((obj) => obj == Model.MapIndex)) {
-                Model.StoragePoint.PassChapters.Add (Model.MapIndex);
+            if (!Model.StoragePoint.PassChapters.Exists((obj) => obj == Model.MapIndex)) {
+                Model.StoragePoint.PassChapters.Add(Model.MapIndex);
             }
 
-            Save ();
+            Save();
         }
+
+        public void OnDeleteLocalStorageCommand(DeleteLocalStorageCommand cmd) {
+            if (File.Exists(GetStoragePointFilename())) {
+                File.Delete(GetStoragePointFilename());
+                Debug.Log("删除本地存档");
+            }
+        }
+
     }
 
 }
