@@ -35,7 +35,7 @@ namespace Biz.Map {
         private void Return() {
             Call(new PassChapterCommand()); // 记录通关
             Call(new ExitCommand());
-            Call(new Start.StartCommand());
+            Call(new Over.ShowOverViewCommand());
         }
     }
 }
