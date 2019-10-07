@@ -33,6 +33,7 @@ public class Main : CallerBehaviour {
         //总内容不多的时候尽量PreLoad所有Map到内存
         if (!string.IsNullOrEmpty(DebugMapName)) {
             yield return null;
+            Destroy(SplashCanvas);
             Call(new Biz.Gaming.EnterCommand());
         }
         else {
