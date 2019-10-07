@@ -314,6 +314,11 @@ namespace Biz.Player {
             View.PlayerView.NormalEntity.SetActive(!Model.MeltStatus);
             View.PlayerView.MeltedEntity.SetActive(Model.MeltStatus);
             Debug.Log("设置溶入状态:" + meltStatus);
+            //修复在ground状态溶入再溶出的问题
+            if (meltStatus) {
+                Model.StayedGround = null;
+            }
+
             if (meltStatus) {
                 Model.LastMeltTime = Time.fixedTime;
             }
