@@ -10,8 +10,7 @@ using ZCore;
 namespace Biz.Gaming {
     public sealed class GamingView : View {
 
-        public MapList MapList;
-
+        //public MapList MapList;
         public PlayerSetting PlayerSetting;
 
         public PlayerAudioSetting AudioSetting;
@@ -19,6 +18,8 @@ namespace Biz.Gaming {
         public InputView InputView;
 
         public PlayerView PlayerView;
+
+        public Font[] LoadedFonts;
 
     }
 }

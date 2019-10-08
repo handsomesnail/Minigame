@@ -38,7 +38,6 @@ public class Main : CallerBehaviour {
         }
         else {
             yield return new WaitForSeconds(1.0f);
-            MapList mapList = Resources.Load<MapList>("Configs/MapList");
             GameObject GamingView = Resources.Load<GameObject>("Views/GamingView");
             Splash1.DOFade(0, 1.0f);
             Splash2.DOFade(1, 1.0f).OnComplete(() => {
